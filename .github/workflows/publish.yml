@@ -4,27 +4,29 @@ on:
   push:
     tags:
       - '*'
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
      - uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+     - name: Install Node.js
+       uses: actions/setup-node@v3
+       with:
+         node-version: 20
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-      
-      - name: Build packages
-        run: pnpm build
+     - name: Install pnpm
+       run: npm install -g pnpm
 
-      - name: Run tests
-        run: pnpm test
+     - name: Build packages
+       run: pnpm install --no-frozen-lockfile && pnpm build
 
-      - name: Publish
-        run: pnpm publish -r
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+     - name: Run tests
+       run: pnpm test
+
+     - name: Publish
+       run: pnpm publish -r
+       env:
+         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

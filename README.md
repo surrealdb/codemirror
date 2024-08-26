@@ -66,15 +66,15 @@ import { surrealql } from "@surrealdb/codemirror";
 import { surrealql } from "@surrealdb/codemirror";
 
 const state = EditorState.create({
-	doc: "SELECT * FROM table",
-	extensions: [
-		surrealql()
-	]
+    doc: "SELECT * FROM table",
+    extensions: [
+        surrealql()
+    ]
 });
 
 const editor = new EditorView({
-	parent: document.getElementById("editor"),
-	state: state,
+    parent: document.getElementById("editor"),
+    state: state,
 });
 ```
 

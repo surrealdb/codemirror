@@ -1,0 +1,8 @@
+{
+	"name": "surrealdb-cm",
+	"private": true,
+	"scripts": {
+		"test": "cd packages/lezer-surrealql && pnpm test",
+		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build"
+	}
+}

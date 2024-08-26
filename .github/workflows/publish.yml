@@ -10,23 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-     - name: Install Node.js
-       uses: actions/setup-node@v3
-       with:
-         node-version: 20
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+        registry-url: "https://registry.npmjs.org"
 
-     - name: Install pnpm
-       run: npm install -g pnpm
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+          version: 9
 
-     - name: Build packages
-       run: pnpm install --no-frozen-lockfile && pnpm build
+    - name: Extract versions
+      run: |
+        echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        echo "CM_VERSION=$(node -p "require('./packages/codemirror-surrealql/package.json').version")" >> $GITHUB_ENV
+        echo "LZ_VERSION=$(node -p "require('./packages/lezer-surrealql/package.json').version")" >> $GITHUB_ENV
 
-     - name: Run tests
-       run: pnpm test
+    - name: Assert package versions
+      run: |
+        echo "CM_VERSION=$CM_VERSION"
+        echo "LZ_VERSION=$LZ_VERSION"
+        echo "GIT_TAG=$GIT_TAG"
 
-     - name: Publish
-       run: pnpm publish -r
-       env:
-         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if [ "$CM_VERSION" != "$GIT_TAG" ] && [ "$LZ_VERSION" != "$GIT_TAG"]; then
+          echo "Version mismatch! Please correct package versions"
+          exit 1
+        else
+          echo "Version check complete"
+        fi
+
+    - name: Build packages
+      run: pnpm install --frozen-lockfile && pnpm build
+
+    - name: Run tests
+      run: pnpm test
+
+    - name: Publish
+      run: pnpm publish -r --no-git-checks --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,5 @@
 {
 	"name": "@surrealdb/codemirror",
-	"private": true,
 	"version": "1.0.0-beta.1",
 	"author": "SurrealDB",
 	"description": "SurrealQL language support for CodeMirror",

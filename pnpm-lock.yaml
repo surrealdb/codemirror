@@ -6,6 +6,8 @@ settings:
 
 importers:
 
+  .: {}
+
   packages/codemirror-surrealql:
     dependencies:
       '@codemirror/language':

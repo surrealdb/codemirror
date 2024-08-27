@@ -464,7 +464,10 @@ LiveSelectStatement {
 }
 
 // Other statements
-LetStatement { let VariableName "=" value }
+LetStatement {
+	let VariableName (":" type)? "=" value
+}
+
 ShowStatement {
 	show changes for table
 	Ident

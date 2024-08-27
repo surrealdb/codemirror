@@ -7,7 +7,7 @@ import {
 	LanguageSupport,
 } from "@codemirror/language";
 
-import { parser } from "lezer-surrealql";
+import { parser } from "@surrealdb/lezer";
 import { parseMixed } from "@lezer/common";
 import { parser as jsParser } from "@lezer/javascript";
 

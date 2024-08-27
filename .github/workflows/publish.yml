@@ -35,7 +35,7 @@ jobs:
         echo "LZ_VERSION=$LZ_VERSION"
         echo "GIT_TAG=$GIT_TAG"
 
-        if [[ "$CM_VERSION" != "$GIT_TAG" || "$LZ_VERSION" != "$GIT_TAG" ]]; then
+        if [[ "v$CM_VERSION" != "$GIT_TAG" || "v$LZ_VERSION" != "$GIT_TAG" ]]; then
           echo "Version mismatch! Please correct package versions"
           exit 1
         else

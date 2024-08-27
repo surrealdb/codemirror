@@ -11,7 +11,7 @@
 <p align="center">
     <a href="https://github.com/surrealdb/surrealql-codemirror"><img src="https://img.shields.io/badge/status-beta-ff00bb.svg?style=flat-square"></a>
     &nbsp;
-    <a href="https://www.npmjs.com/package/@surrealdb/codemirror"><img src="https://img.shields.io/npm/v/%40surrealdb%2Fcodemirror?style=flat-square"></a>
+    <a href="https://www.npmjs.com/package/@surrealdb/lezer"><img src="https://img.shields.io/npm/v/%40surrealdb%2Flezer?style=flat-square"></a>
 </p>
 
 <p align="center">

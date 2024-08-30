@@ -1120,7 +1120,7 @@ Operator {
 	prefixedString[@name=String] { $[ruds] String }
 
 	// Language
-	VariableName { "$" (@asciiLetter | @digit | "_" )+ }
+	VariableName { "$" (rawident | tickIdent | bracketIdent) }
 	tickIdent {
 		"`" ![`]+ '`'
 	}

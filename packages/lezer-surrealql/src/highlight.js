@@ -20,4 +20,5 @@ export const surqlHighlighting = styleTags({
 	"Distance Filter Tokenizer Literal": t.literal,
 	"RecordTbIdent RecordIdIdent": t.className,
 	"Operator! ArrowLeft ArrowRight ArrowBoth": t.operator,
+	"Regex": t.regexp,
 });

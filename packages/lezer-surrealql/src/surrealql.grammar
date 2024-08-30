@@ -509,6 +509,7 @@ baseValue {
 	false |
 	null |
 	none |
+	Regex |
 	VariableName |
 	Ident[@dynamicPrecedence=-1] { rawident } |
 	Array |
@@ -1139,6 +1140,8 @@ Operator {
 	customFunctionName[@name=FunctionName] {
 		"fn" ("::" functionNameSegment)*
 	}
+
+	Regex { "/" (![/\\\n[] | "\\" ![\n] | "[" (![\n\\\]] | "\\" ![\n])* "]")+ ("/" $[dgimsuvy]*)? }
 
 	durationUnit { "ns" | "us" | "µs" | "ms" | "s" | "m" | "h" | "d" | "w" | "y"}
 	DurationPart { @digit+ " "* durationUnit }

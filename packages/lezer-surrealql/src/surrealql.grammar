@@ -548,6 +548,7 @@ Path {
 pathElement {
 	GraphPath |
 	Subscript {
+		"?"?
 		"."
 		(
 			Ident |

@@ -87,6 +87,7 @@ CommitStatement { commit transaction? }
 DefineStatement {
 	define
 	(
+	( access defineAccessOptions ) |
 	( namespace defineNamespaceOptions ) |
 	( database defineDatabaseOptions ) |
 	( user defineUserOptions ) |
@@ -100,6 +101,20 @@ DefineStatement {
 	( scope defineScopeOptions ) |
 	( table defineTableOptions )
 	)
+}
+
+defineAccessOptions {
+	(IfNotExistsClause | overwrite)?
+	Ident
+	accessClauses1 {
+		OnRootNsDbClause
+		AccessTypeClause
+	}
+	accessClauses2 {
+		AuthenticateClause?
+		DurationClause?
+		CommentClause?
+	}
 }
 
 defineAnalyzerOptions {
@@ -218,7 +233,7 @@ defineTokenOptions {
 defineUserOptions {
 	(IfNotExistsClause | overwrite)?
 	Ident
-	( on ( root | namespace | database ) )
+	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
 }
@@ -685,7 +700,7 @@ PatchClause {
 }
 
 TableTypeClause {
-	type
+	typeKeyword
 	(
 		any |
 		normal |
@@ -727,8 +742,28 @@ SigninClause {
 	( SubQuery | Block )
 }
 
+AuthenticateClause {
+	authenticate
+	( SubQuery | Block )
+}
+
+JwtClause {
+	algorithm Ident key Ident | url String
+}
+
 OnTableClause {
 	on table? Ident
+}
+
+OnRootNsDbClause {
+	on ( root | namespace | database )
+}
+
+AccessTypeClause {
+	typeKeyword (
+		( jwt JwtClause ) |
+		( record SignupClause? SigninClause? ( with jwt JwtClause? ( with issuer key Ident )? )? )
+	)
 }
 
 FieldsColumnsClause {
@@ -792,7 +827,7 @@ IndexDimensionClause
 HnswDistClause { dist ( chebyshev | cosine | euclidean | hamming | jaccard | manhattan | ( minkowski number ) | pearson ) }
 
 IndexDimensionClause { dimension Int }
-IndexTypeClause { type ( f32 | f64 | i16 | i32 | i64 ) }
+IndexTypeClause { typeKeyword ( f32 | f64 | i16 | i32 | i64 ) }
 IndexCapacityClause { capacity Int }
 IndexLmClause { lm Float }
 IndexM0Clause { m0 Int }
@@ -966,8 +1001,12 @@ CommentClause {
 	String
 }
 
+DurationClause {
+	duration ( for token Duration ) ","? ( for session Duration )
+}
+
 TokenTypeClause {
-	type
+	typeKeyword
 	(
 		jwks |
 		eddsa |
@@ -1187,6 +1226,8 @@ piped<content> {
 @external propSource surqlHighlighting from "./highlight"
 
 @external extend { rawident } tokens from "./tokens" {
+	access					[@name=Keyword],
+	algorithm				[@name=Keyword],
 	alter					[@name=Keyword],
 	analyzer				[@name=Keyword],
 	any						[@name=Keyword],
@@ -1194,6 +1235,7 @@ piped<content> {
 	asc						[@name=Keyword],
 	assert					[@name=Keyword],
 	at						[@name=Keyword],
+	authenticate			[@name=Keyword],
 	begin					[@name=Keyword],
 	bm25					[@name=Keyword],
 	break					[@name=Keyword],
@@ -1222,6 +1264,7 @@ piped<content> {
 	doc_lengths_order		[@name=Keyword],
 	drop					[@name=Keyword],
 	duplicate				[@name=Keyword],
+	duration				[@name=Keyword],
 	efc						[@name=Keyword],
 	else					[@name=Keyword],
 	end						[@name=Keyword],
@@ -1246,6 +1289,8 @@ piped<content> {
 	info					[@name=Keyword],
 	insert					[@name=Keyword],
 	into					[@name=Keyword],
+	issuer					[@name=Keyword],
+	jwt						[@name=Keyword],
 	keep_pruned_connections	[@name=Keyword],
 	key						[@name=Keyword],
 	kill					[@name=Keyword],
@@ -1279,6 +1324,7 @@ piped<content> {
 	postings_order			[@name=Keyword],
 	readonly				[@name=Keyword],
 	rebuild					[@name=Keyword],
+	record					[@name=Keyword],
 	relate					[@name=Keyword],
 	relation				[@name=Keyword],
 	remove					[@name=Keyword],
@@ -1318,6 +1364,7 @@ piped<content> {
 	unset					[@name=Keyword],
 	update					[@name=Keyword],
 	upsert					[@name=Keyword],
+	url						[@name=Keyword],
 	use						[@name=Keyword],
 	user					[@name=Keyword],
 	valueKeyword			[@name=Keyword],

@@ -10,6 +10,16 @@
 	combinedExpressions
 }
 
+@top Syntax {
+	(
+		(for anyPermission) |
+		anyKeyword |
+		anyLiteral |
+		SyntaxDescribe { "@" rawident }
+		| "|" | "[" | "]"
+	)*
+}
+
 @precedence {
 	range @left
 	method
@@ -647,7 +657,7 @@ RecordId {
 // Durations
 
 Duration {
-	DurationPart+ 
+	DurationPart+
 }
 
 // JS Functions
@@ -1449,4 +1459,177 @@ piped<content> {
 	function,
 	rand					[@name=FunctionName],
 	count					[@name=FunctionName]
+}
+
+anyKeyword {
+	access |
+	algorithm |
+	alter |
+	analyzer |
+	any |
+	as |
+	asc |
+	assert |
+	at |
+	authenticate |
+	begin |
+	bm25 |
+	break |
+	by |
+	cancel |
+	capacity |
+	changefeed |
+	changes |
+	columns |
+	comment |
+	commit |
+	content |
+	continue |
+	create |
+	database |
+	db |
+	default |
+	define |
+	delete |
+	desc |
+	dimension |
+	dist |
+	doc_ids_cache |
+	doc_ids_order |
+	doc_lengths_cache |
+	doc_lengths_order |
+	drop |
+	duplicate |
+	duration |
+	efc |
+	else |
+	end |
+	event |
+	exists |
+	explain |
+	extend_candidates |
+	fetch |
+	field |
+	fields |
+	filters |
+	flexible |
+	for |
+	from |
+	group |
+	highlights |
+	hnsw |
+	if |
+	ignore |
+	in |
+	index |
+	info |
+	insert |
+	into |
+	issuer |
+	jwt |
+	keep_pruned_connections |
+	key |
+	kill |
+	let |
+	limit |
+	live |
+	lm |
+	m |
+	m0 |
+	merge |
+	mtree |
+	mtree_cache |
+	namespace |
+	noindex |
+	normal |
+	not |
+	ns |
+	on |
+	only |
+	option |
+	order |
+	out |
+	overwrite |
+	parallel |
+	param |
+	passhash |
+	password |
+	patch |
+	permissions |
+	postings_cache |
+	postings_order |
+	readonly |
+	rebuild |
+	record |
+	relate |
+	relation |
+	remove |
+	return |
+	roles |
+	root |
+	sc |
+	schemafull |
+	schemaless |
+	scope |
+	search |
+	select |
+	session |
+	set |
+	show |
+	signin |
+	signup |
+	since |
+	sleep |
+	split |
+	start |
+	structure |
+	table |
+	tb |
+	tempfiles |
+	terms_cache |
+	terms_order |
+	then |
+	throw |
+	timeout |
+	to |
+	token |
+	tokenizers |
+	transaction |
+	typeKeyword |
+	unique |
+	unset |
+	update |
+	upsert |
+	url |
+	use |
+	user |
+	valueKeyword |
+	values |
+	when |
+	where |
+	with
+}
+
+anyLiteral {
+	after |
+	before |
+	diff |
+	false |
+	full |
+	none |
+	null |
+	true |
+
+	f32 |
+	f64 |
+	i16 |
+	i32 |
+	i64
+}
+
+anyPermission {
+	createPermissions |
+	deletePermissions |
+	selectPermissions |
+	updatePermissions
 }

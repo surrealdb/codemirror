@@ -34,12 +34,13 @@ export const surrealqlLanguage = LRLanguage.define({
 	},
 });
 
-type Scope = "default" | "permission" | "combined-results";
+type Scope = "default" | "permission" | "combined-results" | "syntax";
 
 const languageMap = new Map<Scope, LRLanguage>([
 	["default", surrealqlLanguage.configure({ top: "SurrealQL" })],
 	["permission", surrealqlLanguage.configure({ top: "PermissionInput" })],
 	["combined-results", surrealqlLanguage.configure({ top: "CombinedResults" })],
+	["syntax", surrealqlLanguage.configure({ top: "Syntax" })],
 ]);
 
 /**

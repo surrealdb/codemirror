@@ -246,6 +246,7 @@ defineUserOptions {
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
+	DurationClause?
 }
 
 // Alter statement
@@ -350,8 +351,7 @@ InsertStatement {
 	insert
 	ignore?
 	relation?
-	into
-	Ident
+	(into Ident)?
 	(
 		Object |
 		( "[" commaSep<Object> "]" ) |
@@ -361,10 +361,12 @@ InsertStatement {
 			commaSep<(
 				"(" commaSep<value> ")"
 			)>
-			on duplicate key update
-			commaSep<FieldAssignment>
 		)
 	)
+	(
+		on duplicate key update
+		commaSep<FieldAssignment>
+	)?
 }
 
 IfElseStatement {
@@ -610,7 +612,7 @@ ObjectProperty {
 }
 
 ObjectContent {
-	commaSep<ObjectProperty>
+	commaSepTrailing<ObjectProperty>
 }
 
 Object {
@@ -1011,8 +1013,12 @@ CommentClause {
 	String
 }
 
+DurationValue {
+	(for token Duration) | (for session Duration)
+}
+  
 DurationClause {
-	duration ( for token Duration ) ","? ( for session Duration )
+	duration commaSep<DurationValue>
 }
 
 TokenTypeClause {
@@ -1224,6 +1230,10 @@ Operator {
 
 commaSep<content> {
 	content ("," content)*
+}
+
+commaSepTrailing<content> {
+	content ("," content)* ","?
 }
 
 piped<content> {

@@ -351,7 +351,6 @@ InsertStatement {
 	ignore?
 	relation?
 	(into Ident)?
-	Ident
 	(
 		Object |
 		( "[" commaSep<Object> "]" ) |
@@ -361,10 +360,12 @@ InsertStatement {
 			commaSep<(
 				"(" commaSep<value> ")"
 			)>
-			on duplicate key update
-			commaSep<FieldAssignment>
 		)
 	)
+	(
+		on duplicate key update
+		commaSep<FieldAssignment>
+	)?
 }
 
 IfElseStatement {

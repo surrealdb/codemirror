@@ -246,6 +246,7 @@ defineUserOptions {
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
+	DurationClause?
 }
 
 // Alter statement
@@ -1012,8 +1013,12 @@ CommentClause {
 	String
 }
 
+DurationValue {
+	(for token Duration) | (for session Duration)
+}
+  
 DurationClause {
-	duration ( for token Duration ) ","? ( for session Duration )
+	duration commaSep<DurationValue>
 }
 
 TokenTypeClause {

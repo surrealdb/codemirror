@@ -610,7 +610,7 @@ ObjectProperty {
 }
 
 ObjectContent {
-	commaSep<ObjectProperty>
+	commaSepTrailing<ObjectProperty>
 }
 
 Object {
@@ -1224,6 +1224,10 @@ Operator {
 
 commaSep<content> {
 	content ("," content)*
+}
+
+commaSepTrailing<content> {
+	content ("," content)* ","?
 }
 
 piped<content> {

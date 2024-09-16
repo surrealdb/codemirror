@@ -350,7 +350,7 @@ InsertStatement {
 	insert
 	ignore?
 	relation?
-	into
+	(into Ident)?
 	Ident
 	(
 		Object |

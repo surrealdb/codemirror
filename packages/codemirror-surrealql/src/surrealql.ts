@@ -34,24 +34,30 @@ export const surrealqlLanguage = LRLanguage.define({
 	},
 });
 
-type Scope = "default" | "permission" | "combined-results" | "syntax";
+type Scope ="permission" | "index" | "combined-results" | "syntax";
 
-const languageMap = new Map<Scope, LRLanguage>([
-	["default", surrealqlLanguage.configure({ top: "SurrealQL" })],
-	["permission", surrealqlLanguage.configure({ top: "PermissionInput" })],
-	["combined-results", surrealqlLanguage.configure({ top: "CombinedResults" })],
-	["syntax", surrealqlLanguage.configure({ top: "Syntax" })],
+const scopeMap = new Map<Scope, string>([
+	["permission", "PermissionInput"],
+	["index", "IndexInput"],
+	["combined-results", "CombinedResults"],
+	["syntax", "Syntax"],
 ]);
 
 /**
  * The CodeMirror extension used to add support for the SurrealQL language
+ * 
+ * @param scope Limit the scope of the highlighting
  */
-export function surrealql(scope: Scope = "default") {
-	const language = languageMap.get(scope);
+export function surrealql(scope?: Scope) {
+	if (!scope) {
+		return new LanguageSupport(surrealqlLanguage);
+	}
 
-	if (!language) {
+	const scopeId = scopeMap.get(scope);
+
+	if (!scopeId) {
 		throw new Error(`Unknown language scope: ${scope}`);
 	}
 
-	return new LanguageSupport(language);
+	return new LanguageSupport(surrealqlLanguage.configure({ top: scopeId }));
 }

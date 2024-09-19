@@ -1,16 +1,20 @@
 @top SurrealQL {
-	expressions | WhereClause
+	expressions
 }
 
 @top PermissionInput {
 	WhereClause | none | full
 }
 
-@top CombinedResults {
+@top IndexInput {
+	IndexClause
+}
+
+@top ResultsInput {
 	combinedExpressions
 }
 
-@top Syntax {
+@top SyntaxInput {
 	(
 		(for anyPermission) |
 		anyKeyword |
@@ -187,12 +191,7 @@ defineIndexOptions {
 	Ident
 	OnTableClause
 	FieldsColumnsClause
-	(
-		UniqueClause |
-		SearchAnalyzerClause |
-		MtreeClause |
-		HnswClause
-	)
+	IndexClause
 }
 
 defineNamespaceOptions {
@@ -794,6 +793,13 @@ AccessTypeClause {
 
 FieldsColumnsClause {
 	( fields | columns ) commaSep<Ident>
+}
+
+IndexClause {
+	UniqueClause |
+	SearchAnalyzerClause |
+	MtreeClause |
+	HnswClause
 }
 
 UniqueClause {

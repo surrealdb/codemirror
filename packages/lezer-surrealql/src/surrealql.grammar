@@ -190,8 +190,12 @@ defineIndexOptions {
 	(IfNotExistsClause | overwrite)?
 	Ident
 	OnTableClause
-	FieldsColumnsClause
-	IndexClause
+	(
+		FieldsColumnsClause |
+		IndexClause |
+		CommentClause |
+		concurrently
+	)*
 }
 
 defineNamespaceOptions {
@@ -1288,6 +1292,7 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
+	concurrently			[@name=Keyword],
 	config					[@name=Keyword],
 	content					[@name=Keyword],
 	continue				[@name=Keyword],
@@ -1520,6 +1525,7 @@ anyKeyword {
 	columns |
 	comment |
 	commit |
+	concurrently |
 	content |
 	continue |
 	create |

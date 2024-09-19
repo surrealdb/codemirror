@@ -365,7 +365,9 @@ InsertStatement {
 	relation?
 	(into Ident)?
 	(
+		// TODO this should be value, but cannot easily union with VALUES syntax
 		Object |
+		VariableName |
 		( "[" commaSep<Object> "]" ) |
 		(
 			"(" commaSep<Ident> ")"

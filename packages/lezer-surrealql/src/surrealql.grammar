@@ -147,8 +147,17 @@ defineEventOptions {
 	(IfNotExistsClause | overwrite)?
 	Ident
 	OnTableClause
-	WhenThenClause
-	CommentClause?
+	(
+		WhenClause {
+			when
+			value
+		} |
+		ThenClause {
+			then
+			commaSep<(SubQuery | Block)>
+		} |
+		CommentClause
+	)*
 }
 
 defineDatabaseOptions {

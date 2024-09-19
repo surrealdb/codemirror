@@ -596,7 +596,7 @@ pathElement {
 			Destructure
 		)
 	} |
-	Filter { !filter "[" (WhereClause | value | WhereClause { "?" value } ) "]" }
+	Filter { !filter "[" (WhereClause | WhereClause { "?" value } | expression) "]" }
 }
 
 GraphPath {

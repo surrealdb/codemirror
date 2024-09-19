@@ -109,7 +109,8 @@ DefineStatement {
 	( functionKw defineFunctionOptions ) |
 	( param defineParamOptions ) |
 	( scope defineScopeOptions ) |
-	( table defineTableOptions )
+	( table defineTableOptions ) |
+	( config defineConfigOptions )
 	)
 }
 
@@ -232,6 +233,17 @@ defineTableOptions {
 	)*
 }
 
+defineConfigOptions {
+	(IfNotExistsClause | overwrite)?
+	graphql
+	(
+		none |
+		auto |
+		tables ( none | auto | include commaSep<Ident> | exclude commaSep<Ident> ) |
+		functions ( none | auto )
+	)*
+}
+
 defineTokenOptions {
 	(IfNotExistsClause | overwrite)?
 	Ident
@@ -246,7 +258,7 @@ defineUserOptions {
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
-	DurationClause?
+  DurationClause?
 }
 
 // Alter statement
@@ -1256,6 +1268,7 @@ piped<content> {
 	assert					[@name=Keyword],
 	at						[@name=Keyword],
 	authenticate			[@name=Keyword],
+	auto					[@name=Keyword],
 	begin					[@name=Keyword],
 	bm25					[@name=Keyword],
 	break					[@name=Keyword],
@@ -1267,6 +1280,7 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
+	config					[@name=Keyword],
 	content					[@name=Keyword],
 	continue				[@name=Keyword],
 	create					[@name=Keyword],
@@ -1289,6 +1303,7 @@ piped<content> {
 	else					[@name=Keyword],
 	end						[@name=Keyword],
 	event					[@name=Keyword],
+	exclude					[@name=Keyword],
 	exists					[@name=Keyword],
 	explain					[@name=Keyword],
 	extend_candidates		[@name=Keyword],
@@ -1299,12 +1314,15 @@ piped<content> {
 	flexible				[@name=Keyword],
 	for						[@name=Keyword],
 	from					[@name=Keyword],
+	functions				[@name=Keyword],
+	graphql					[@name=Keyword],
 	group					[@name=Keyword],
 	highlights				[@name=Keyword],
 	hnsw					[@name=Keyword],
 	if						[@name=Keyword],
 	ignore					[@name=Keyword],
 	in						[@name=Keyword],
+	include					[@name=Keyword],
 	index					[@name=Keyword],
 	info					[@name=Keyword],
 	insert					[@name=Keyword],
@@ -1368,6 +1386,7 @@ piped<content> {
 	start					[@name=Keyword],
 	structure				[@name=Keyword],
 	table					[@name=Keyword],
+	tables					[@name=Keyword],
 	tb						[@name=Keyword],
 	tempfiles				[@name=Keyword],
 	terms_cache				[@name=Keyword],

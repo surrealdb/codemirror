@@ -10,11 +10,11 @@
 	IndexClause
 }
 
-@top ResultsInput {
+@top CombinedResults {
 	combinedExpressions
 }
 
-@top SyntaxInput {
+@top Syntax {
 	(
 		(for anyPermission) |
 		anyKeyword |

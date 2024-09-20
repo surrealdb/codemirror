@@ -11,7 +11,7 @@
 }
 
 @top CombinedResults {
-	combinedExpressions
+	CombinedResult { CommentResult expression CommentResultClose { "" } }+
 }
 
 @top Syntax {
@@ -34,10 +34,6 @@
 
 expressions {
 	(expression ";")* expression ";"?
-}
-
-combinedExpressions {
-	CombinedResult { CommentResult expression CommentResultClose { "" } }+
 }
 
 expression {

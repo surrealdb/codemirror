@@ -313,7 +313,7 @@ RemoveStatement {
 
 CreateStatement {
 	create only?
-	createTarget { Ident | VariableName | FunctionCall | RecordId }
+	commaSep<Ident | VariableName | FunctionCall | RecordId>
 	createContent { ContentClause | SetClause | UnsetClause | () }
 	ReturnClause?
 	TimeoutClause?

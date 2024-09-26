@@ -313,7 +313,7 @@ RemoveStatement {
 
 CreateStatement {
 	create only?
-	createTarget { Ident | VariableName | FunctionCall | RecordId }
+	createTargets { commaSep<Ident | VariableName | FunctionCall | RecordId> }
 	createContent { ContentClause | SetClause | UnsetClause | () }
 	ReturnClause?
 	TimeoutClause?
@@ -986,15 +986,6 @@ FunctionClause {
 	customFunctionName
 }
 
-WhenThenClause {
-	(
-		when
-		value
-	)?
-	then?
-	commaSep<(SubQuery | Block)>
-}
-
 TypeClause {
 	flexible?
 	typeKeyword
@@ -1045,7 +1036,7 @@ CommentClause {
 DurationValue {
 	(for token Duration) | (for session Duration)
 }
-  
+
 DurationClause {
 	duration commaSep<DurationValue>
 }

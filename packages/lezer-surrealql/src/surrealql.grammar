@@ -1089,7 +1089,7 @@ inclusivePredicate {
 
 literalType {
 	String |
-	ArrayType { "[" type "]" } |
+	ArrayType { "[" commaSep<type> "]" } |
 	ObjectType { objectOpen ObjectTypeContent? "}" }
 	// TODO support number and duration types
 }

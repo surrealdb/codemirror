@@ -453,6 +453,7 @@ UpdateStatement {
 			commaSep<value>
 			updateClause1 {
 				ContentClause |
+				ReplaceClause |
 				MergeClause |
 				PatchClause |
 				SetClause |
@@ -476,6 +477,7 @@ UpsertStatement {
 			commaSep<value>
 			updateClause1 {
 				ContentClause |
+				ReplaceClause |
 				MergeClause |
 				PatchClause |
 				SetClause |
@@ -879,6 +881,10 @@ IndexKeepPrunedConnectionsClause { keep_pruned_connections }
 
 ContentClause {
 	content Object
+}
+
+ReplaceClause {
+	replace Object
 }
 
 SetClause {
@@ -1375,6 +1381,7 @@ piped<content> {
 	relate					[@name=Keyword],
 	relation				[@name=Keyword],
 	remove					[@name=Keyword],
+	replace					[@name=Keyword],
 	return					[@name=Keyword],
 	roles					[@name=Keyword],
 	root					[@name=Keyword],

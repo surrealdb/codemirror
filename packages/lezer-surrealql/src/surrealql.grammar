@@ -324,7 +324,7 @@ SelectStatement {
 	(select)
 	(
 		valueKeyword Predicate |
-		commaSep<inclusivePredicate>
+		commaSep<inclusivePredicate> OmitClause?
 	)
 	(from)
 	(only)?
@@ -891,6 +891,10 @@ SetClause {
 	set commaSep<FieldAssignment>
 }
 
+OmitClause {
+    omit commaSep<inclusivePredicate>
+}
+
 UnsetClause {
 unset commaSep<FieldAssignment>
 }
@@ -1361,6 +1365,7 @@ piped<content> {
 	normal					[@name=Keyword],
 	not						[@name=Keyword],
 	ns						[@name=Keyword],
+	omit					[@name=Keyword],
 	on						[@name=Keyword],
 	only					[@name=Keyword],
 	option					[@name=Keyword],

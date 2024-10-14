@@ -1048,7 +1048,7 @@ DurationValue {
 }
 
 DurationClause {
-	duration commaSep<DurationValue>
+	duration (for session)? commaSep<DurationValue>
 }
 
 TokenTypeClause {

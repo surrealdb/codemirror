@@ -949,8 +949,10 @@ LimitStartComboClause {
 
 GroupClause {
 	group
-	by?
-	commaSep<Ident>
+	(
+	    by? commaSep<Ident> |
+	    all
+	)
 }
 
 OrderClause {
@@ -1278,6 +1280,7 @@ piped<content> {
 @external extend { rawident } tokens from "./tokens" {
 	access					[@name=Keyword],
 	algorithm				[@name=Keyword],
+	all						[@name=Keyword],
 	alter					[@name=Keyword],
 	analyzer				[@name=Keyword],
 	any						[@name=Keyword],

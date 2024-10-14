@@ -15,6 +15,7 @@ import {
     _with,
     access,
     algorithm,
+    all,
     alter,
     analyzer,
     any,
@@ -230,6 +231,7 @@ import {
 const tokenMap = {
     access,
     algorithm,
+    all,
     alter,
     analyzer,
     any,

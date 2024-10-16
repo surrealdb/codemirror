@@ -528,7 +528,7 @@ ShowStatement {
 	show changes for table
 	Ident
 	( since String )?
-	( limit Int )?
+	( limit number )?
 }
 
 SleepStatement {
@@ -578,7 +578,7 @@ baseValue {
 	Object |
 	TypeCast |
 	Duration |
-	Point { "(" Decimal "," Decimal ")" }
+	Point { "(" number "," number ")" }
 }
 
 Any { "?" }
@@ -587,6 +587,7 @@ AnyStar[@name=Any] { "*" }
 value[@isGroup=Value] {
 	baseValue |
 	BinaryExpression |
+	Range |
 	Path
 }
 
@@ -594,6 +595,12 @@ value[@isGroup=Value] {
 
 BinaryExpression {
 	value !binary Operator value
+}
+
+Range {
+	(number | String | prefixedString)?
+	!range (".." | ">.." | "..=" | ">..=")
+	(number | String | prefixedString)?
 }
 
 Path {
@@ -668,15 +675,15 @@ RecordIdIdent {
 
 recordIdValue {
 	RecordIdIdent |
-	Int |
+	number |
 	Array |
 	Object
 }
 
 RecordIdRange {
-	( recordIdValue !range ">"? )?
-	".."
-	( !range "="? recordIdValue )?
+	recordIdValue?
+	!range (".." | ">.." | "..=" | ">..=")
+	recordIdValue?
 }
 
 RecordId {
@@ -833,15 +840,15 @@ SearchAnalyzerClause {
 	 TermsCacheClause | highlights)*
 }
 
-Bm25Clause { bm25 ( "(" Float "," Float ")")? }
-DocIdsCacheClause { doc_ids_cache Int }
-DocIdsOrderClause { doc_ids_order Int }
-DocLenghtsCacheClause { doc_lengths_cache Int }
-DocLenghtsOrderClause { doc_lengths_order Int }
-PostingsCacheClause { postings_cache Int }
-PostingsOrderClause { postings_order Int }
-TermsCacheClause { terms_cache Int }
-TermsOrderClause { terms_order Int }
+Bm25Clause { bm25 ( "(" number "," number ")")? }
+DocIdsCacheClause { doc_ids_cache number }
+DocIdsOrderClause { doc_ids_order number }
+DocLenghtsCacheClause { doc_lengths_cache number }
+DocLenghtsOrderClause { doc_lengths_order number }
+PostingsCacheClause { postings_cache number }
+PostingsOrderClause { postings_order number }
+TermsCacheClause { terms_cache number }
+TermsOrderClause { terms_order number }
 
 MtreeClause {
 	mtree
@@ -856,7 +863,7 @@ MtreeClause {
 	)*
 }
 
-MtreeCacheClause { mtree_cache Int }
+MtreeCacheClause { mtree_cache number }
 MtreeDistClause { dist ( Distance ) }
 
 HnswClause {
@@ -877,12 +884,12 @@ IndexDimensionClause
 
 HnswDistClause { dist ( Distance | ( minkowski number )) }
 
-IndexDimensionClause { dimension Int }
-IndexCapacityClause { capacity Int }
-IndexLmClause { lm Float }
-IndexM0Clause { m0 Int }
-IndexMClause { m Int }
-IndexEfcClause { efc Int }
+IndexDimensionClause { dimension number }
+IndexCapacityClause { capacity number }
+IndexLmClause { lm number }
+IndexM0Clause { m0 number }
+IndexMClause { m number }
+IndexEfcClause { efc number }
 IndexExtendCandidatesClause { extend_candidates }
 IndexKeepPrunedConnectionsClause { keep_pruned_connections }
 
@@ -940,13 +947,13 @@ FetchClause {
 StartClause {
 	start
 	at?
-	(Int | VariableName)
+	(number | VariableName)
 }
 
 LimitClause {
 	limit
 	by?
-	(Int | VariableName)
+	(number | VariableName)
 }
 
 LimitStartComboClause {
@@ -1068,7 +1075,7 @@ TokenTypeClause {
 // Support
 
 AnalyzerFilters {
-	Filter ("(" (Int "," Int | Ident) ")")?
+	Filter ("(" (number "," number | Ident) ")")?
 }
 
 Predicate {
@@ -1123,7 +1130,7 @@ Ident {
 	tickIdent
 }
 
-number { Int | Float | Decimal }
+number { "-"? (Int | Float | Decimal) }
 
 Operator {
     binaryOperator |
@@ -1132,11 +1139,11 @@ Operator {
 	is | ( is opNot ) |
 	in | ( opNot opIn ) |
 
-	( "@" Int "@" ) |
+	( "@" number "@" ) |
 	(
 		"<|"
-		Int
-		( "," ( Int | Distance | ( minkowski number ) ) )
+		number
+		( "," ( number | Distance | ( minkowski number ) ) )
 		"|>"
 	)
 }
@@ -1174,11 +1181,11 @@ Operator {
 	CommentResult[@name=Comment,closedBy=CommentResultClose] { "-------- Query" ![\n]* }
 
 	// Numbers
-	Int { "-"? @digit+ }
+	Int { @digit+ }
 	frac { '.' @digit+ }
 	exp { $[eE] $[+\-]? @digit+ }
-	Float { "-"? @digit+ (frac exp? | exp) "f"? }
-	Decimal { "-"? @digit+ frac? exp? "dec" }
+	Float { @digit+ (frac exp? | exp) "f"? }
+	Decimal { @digit+ frac? exp? "dec" }
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
@@ -1220,6 +1227,8 @@ Operator {
 	@precedence { DurationPart Int }
 	@precedence { numberident Int rawident }
     @precedence { "/*" Regex }
+	@precedence { Decimal numberident }
+	@precedence { Float numberident }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }

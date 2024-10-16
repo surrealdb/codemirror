@@ -226,3 +226,15 @@ SurrealQL(
 	TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(String),Pipe,LiteralType(ArrayType("[",TypeName,"]"))))),BraceClose)),Pipe,TypeName),">",Ident),
 	TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,TypeName)),BraceClose)),Pipe,LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(ArrayType("[",ParameterizedType(TypeName,"<",TypeName,">"),"]")),Pipe,LiteralType(String)))),BraceClose))),">",Ident)
 )
+
+# Ranges
+
+1>..2;
+
+-3..;
+
+..='a';
+
+==>
+
+SurrealQL(Range(Int,Int),Range(Int),Range(String))

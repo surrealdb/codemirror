@@ -8,6 +8,7 @@ export const surqlHighlighting = styleTags({
 	"Int Float Decimal VersionNumber Duration!": t.number,
 	"Bool": t.bool,
 	"Comment": t.lineComment,
+	"BlockComment": t.blockComment,
 	"VariableName": t.variableName,
 	"None": t.null,
 	"FunctionName": t.function(t.name),

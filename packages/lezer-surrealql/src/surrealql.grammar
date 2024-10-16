@@ -706,6 +706,9 @@ FunctionJs {
 	javaScriptElement {
 		javaScriptContent | javaScriptBraceOpen javaScriptElement* javaScriptBraceClose
 	}
+	BlockComment {
+		"/*" (blockCommentContent | blockCommentNewline)* blockCommentEnd
+	}
 }
 
 // Function invocation
@@ -1136,6 +1139,12 @@ Operator {
 	)
 }
 
+@local tokens {
+	blockCommentEnd { "*/" }
+	blockCommentNewline { "\n" }
+	@else blockCommentContent
+}
+
 @external tokens objectToken from "./tokens" {
 	objectOpen[@name=BraceOpen]
 }
@@ -1208,6 +1217,7 @@ Operator {
 	@precedence { DurationPart rawident }
 	@precedence { DurationPart Int }
 	@precedence { numberident Int rawident }
+    @precedence { "/*" Regex }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }
@@ -1238,7 +1248,7 @@ piped<content> {
 	content ("|" content)*
 }
 
-@skip { whitespace | Comment }
+@skip { whitespace | Comment | BlockComment }
 @detectDelim
 
 @external propSource surqlHighlighting from "./highlight"

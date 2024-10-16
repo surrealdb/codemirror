@@ -16,7 +16,7 @@
 
 @top Syntax {
 	(
-		(for anyPermission) |
+		(for !for (create | update | delete | select)) |
 		anyKeyword |
 		anyLiteral |
 		SyntaxDescribe { "@" rawident }
@@ -30,6 +30,7 @@
 	binary @left
 	union @left
 	filter
+	for
 }
 
 expressions {
@@ -849,7 +850,7 @@ MtreeClause {
 }
 
 MtreeCacheClause { mtree_cache Int }
-MtreeDistClause { dist ( cosine | euclidean | manhattan ) }
+MtreeDistClause { dist ( Distance ) }
 
 HnswClause {
 hnsw
@@ -867,10 +868,9 @@ IndexDimensionClause
 	)*
 }
 
-HnswDistClause { dist ( chebyshev | cosine | euclidean | hamming | jaccard | manhattan | ( minkowski number ) | pearson ) }
+HnswDistClause { dist ( Distance | ( minkowski number )) }
 
 IndexDimensionClause { dimension Int }
-IndexTypeClause { typeKeyword ( f32 | f64 | i16 | i32 | i64 ) }
 IndexCapacityClause { capacity Int }
 IndexLmClause { lm Float }
 IndexM0Clause { m0 Int }
@@ -986,7 +986,7 @@ ExplainClause {
 	full?
 }
 
-TokenizersClause { tokenizers commaSep<AnalyzerTokenizers> }
+TokenizersClause { tokenizers commaSep<AnalyzerTokenizer> }
 
 FiltersClause {
 	filters
@@ -1029,7 +1029,7 @@ PermissionsForClause {
 		none | full |
 		(
 			for
-			commaSep<( selectPermissions | createPermissions | updatePermissions | deletePermissions )>
+			commaSep<select | create | update | delete>
 			( WhereClause | none | full )
 		)+
 	)
@@ -1055,37 +1055,13 @@ DurationClause {
 
 TokenTypeClause {
 	typeKeyword
-	(
-		jwks |
-		eddsa |
-		es256 |
-		es384 |
-		es512 |
-		ps256 |
-		ps384 |
-		ps512 |
-		rs256 |
-		rs384 |
-		rs512
-	)
+	TokenType
 }
 
 // Support
 
-AnalyzerTokenizers {
-	blank |
-	camel |
-	class |
-	punct
-}
-
 AnalyzerFilters {
-	ascii |
-	lowercase |
-	uppercase |
-	( edgengram "(" Int "," Int ")" ) |
-	( ngram "(" Int "," Int ")" ) |
-	( snowball "(" Ident ")" )
+	Filter ("(" (Int "," Int | Ident) ")")?
 }
 
 Predicate {
@@ -1143,29 +1119,15 @@ number { Int | Float | Decimal }
 Operator {
     binaryOperator |
 	"-" | "=" | ">" | "<" |
-	and |
-	or |
-	is |
-	( is opNot ) |
-	contains |
-	containsnot |
-	containsall |
-	containsany |
-	containsnone |
-	inside | in |
-	notinside | ( opNot opIn ) |
-	allinside |
-	anyinside |
-	noneinside |
-
-	outside |
-	intersects |
+	binaryOperatorKeyword |
+	is | ( is opNot ) |
+	in | ( opNot opIn ) |
 
 	( "@" Int "@" ) |
 	(
 		"<|"
 		Int
-		( "," ( Int | chebyshev | cosine | euclidean | hamming | jaccard | manhattan | ( minkowski number ) | pearson ) )
+		( "," ( Int | Distance | ( minkowski number ) ) )
 		"|>"
 	)
 }
@@ -1446,68 +1408,20 @@ piped<content> {
 	null					[@name=None],
 	true					[@name=Bool],
 
-	f32						[@name=Literal],
-	f64						[@name=Literal],
-	i16						[@name=Literal],
-	i32						[@name=Literal],
-	i64						[@name=Literal],
-
-	createPermissions		[@name=PermissionTarget],
-	deletePermissions		[@name=PermissionTarget],
-	selectPermissions		[@name=PermissionTarget],
-	updatePermissions		[@name=PermissionTarget],
-
-	jwks					[@name=TokenType],
-	eddsa					[@name=TokenType],
-	es256					[@name=TokenType],
-	es384					[@name=TokenType],
-	es512					[@name=TokenType],
-	ps256					[@name=TokenType],
-	ps384					[@name=TokenType],
-	ps512					[@name=TokenType],
-	rs256					[@name=TokenType],
-	rs384					[@name=TokenType],
-	rs512					[@name=TokenType],
+	IndexTypeClause,
+	TokenType,
 
 	// Operators
-	allinside,
-	and,
-	anyinside,
-	contains,
-	containsall,
-	containsany,
-	containsnone,
-	containsnot,
-	inside,
-	intersects,
+	binaryOperatorKeyword,
 	is,
-	noneinside,
-	notinside,
 	opIn,
 	opNot,
-	or,
-	outside,
 
-	chebyshev 				[@name=Distance],
-	cosine					[@name=Distance],
-	euclidean				[@name=Distance],
-	hamming					[@name=Distance],
-	jaccard					[@name=Distance],
-	manhattan				[@name=Distance],
+	Distance,
 	minkowski				[@name=Distance],
-	pearson					[@name=Distance],
+	Filter,
 
-	ascii					[@name=Filter],
-	edgengram				[@name=Filter],
-	lowercase				[@name=Filter],
-	ngram					[@name=Filter],
-	snowball				[@name=Filter],
-	uppercase				[@name=Filter],
-
-	blank					[@name=Tokenizer],
-	camel					[@name=Tokenizer],
-	class					[@name=Tokenizer],
-	punct					[@name=Tokenizer],
+	AnalyzerTokenizer,
 
 	function,
 	rand					[@name=FunctionName],
@@ -1681,16 +1595,5 @@ anyLiteral {
 	null |
 	true |
 
-	f32 |
-	f64 |
-	i16 |
-	i32 |
-	i64
-}
-
-anyPermission {
-	createPermissions |
-	deletePermissions |
-	selectPermissions |
-	updatePermissions
+	IndexTypeClause
 }

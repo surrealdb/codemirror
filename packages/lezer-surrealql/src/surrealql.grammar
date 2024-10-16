@@ -31,6 +31,7 @@
 	union @left
 	filter
 	for
+	clause
 }
 
 expressions {
@@ -337,23 +338,20 @@ SelectStatement {
 		statement |
 		(
 			commaSep<value>
-			selectClauses1 {
-				WithClause?
-				WhereClause?
-				SplitClause?
-			}
-			selectClauses2 {
-				GroupClause?
-				OrderClause?
-				LimitStartComboClause?
-			}
-			selectClauses3 {
-				FetchClause?
-				TimeoutClause?
-				ParallelClause?
-				TempfilesClause?
-				ExplainClause?
-			}
+			(
+				WithClause |
+				WhereClause |
+				SplitClause |
+				GroupClause |
+				OrderClause |
+				LimitStartComboClause |
+				FetchClause |
+				TimeoutClause |
+				ParallelClause |
+				TempfilesClause |
+				ExplainClause |
+				VersionClause
+			)*
 		)
 	)
 }
@@ -958,8 +956,8 @@ LimitClause {
 }
 
 LimitStartComboClause {
-	StartClause LimitClause? |
-	LimitClause StartClause?
+	StartClause (!clause LimitClause)? |
+	LimitClause (!clause StartClause)?
 }
 
 GroupClause {
@@ -999,6 +997,11 @@ WithClause {
 ExplainClause {
 	explain
 	full?
+}
+
+VersionClause {
+	version
+	prefixedString
 }
 
 TokenizersClause { tokenizers commaSep<AnalyzerTokenizer> }
@@ -1420,6 +1423,7 @@ piped<content> {
 	user					[@name=Keyword],
 	valueKeyword			[@name=Keyword],
 	values					[@name=Keyword],
+	version					[@name=Keyword],
 	when					[@name=Keyword],
 	where					[@name=Keyword],
 	with					[@name=Keyword],

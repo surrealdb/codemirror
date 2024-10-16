@@ -66,3 +66,11 @@ SurrealQL(
 ==>
 
 SurrealQL(BinaryExpression(Int,BlockComment,Operator,Int))
+
+# Version Clause
+
+SELECT * FROM person VERSION d'2024-10-10T14:37:08.444Z'
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Any,Keyword,Ident,VersionClause(Keyword,String)))

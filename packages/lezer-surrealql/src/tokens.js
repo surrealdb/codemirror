@@ -156,6 +156,7 @@ import {
     user,
     valueKeyword,
     values,
+    version,
     when,
     where,
 
@@ -339,6 +340,7 @@ const tokenMap = {
     user,
     value: valueKeyword,
     values,
+    version,
     when,
     where,
     with: _with,

@@ -11,7 +11,7 @@ export const surqlHighlighting = styleTags({
 	"BlockComment": t.blockComment,
 	"VariableName": t.variableName,
 	"None": t.null,
-	"FunctionName": t.function(t.name),
+	"FunctionName FunctionCall/RecordId/RecordIdIdent": t.function(t.name),
 	", |": t.separator,
 	"[ ]": t.squareBracket,
 	"< >": t.angleBracket,

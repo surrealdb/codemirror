@@ -238,3 +238,11 @@ SurrealQL(
 ==>
 
 SurrealQL(Range(Int,Int),Range(Int),Range(String))
+
+# Record ID Call
+
+stuff:ulid();
+
+==>
+
+SurrealQL(FunctionCall(RecordId(RecordTbIdent,Colon,RecordIdIdent),ArgumentList))

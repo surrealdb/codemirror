@@ -723,10 +723,11 @@ FunctionJs {
 FunctionCall {
 	( count ArgumentListCount ) |
 	(
-	   (FunctionName | customFunctionName | rand)
-    	Version { "<" VersionNumber ">" }?
-    	ArgumentList
-	)
+		(FunctionName | customFunctionName | rand)
+		Version { "<" VersionNumber ">" }?
+		ArgumentList
+	) |
+	RecordId ArgumentList
 }
 
 ArgumentList { "(" commaSep<value>? ")" }

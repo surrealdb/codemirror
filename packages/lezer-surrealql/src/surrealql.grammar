@@ -1084,6 +1084,8 @@ inclusivePredicate {
 
 literalType {
 	String |
+	number |
+	Duration |
 	ArrayType { "[" commaSep<type> "]" } |
 	ObjectType { objectOpen ObjectTypeContent? "}" }
 	// TODO support number and duration types
@@ -1091,7 +1093,7 @@ literalType {
 
 singleType {
     TypeName { rawident } |
-    ParameterizedType { singleType "<" (type | Int) ">" } |
+    ParameterizedType { singleType "<" type ">" } |
     LiteralType { literalType }
 }
 

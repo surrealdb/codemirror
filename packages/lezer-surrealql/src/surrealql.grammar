@@ -56,13 +56,27 @@ Closure {
 	ParamList { "|" commaSep<VariableName ":" safeType>? "|" } ("->" type)? Block
 }
 
+subqueryStatement {
+	IfElseStatement |
+	LetStatement |
+	DeleteStatement |
+	CreateStatement |
+	SelectStatement |
+	RelateStatement |
+	UpdateStatement |
+	RemoveStatement |
+	UpsertStatement |
+	ReturnStatement |
+	AlterStatement |
+	DefineStatement |
+	RebuildStatement |
+	InsertStatement
+}
+
 statement[@isGroup=Statement] {
 	BeginStatement |
 	CancelStatement |
 	CommitStatement |
-	DefineStatement |
-	AlterStatement |
-	RemoveStatement |
 	InfoForStatement |
 	KillStatement |
 	LiveSelectStatement |
@@ -70,21 +84,11 @@ statement[@isGroup=Statement] {
 	SleepStatement |
 	UseStatement |
 	OptionStatement |
-	RebuildStatement |
-	CreateStatement |
-	SelectStatement |
-	DeleteStatement |
-	InsertStatement |
 	BreakStatement |
 	ContinueStatement |
 	ForStatement |
-	ReturnStatement |
 	ThrowStatement |
-	IfElseStatement |
-	LetStatement |
-	RelateStatement |
-	UpdateStatement |
-	UpsertStatement
+	subqueryStatement
 }
 
 // Transaction statements
@@ -517,7 +521,7 @@ LiveSelectStatement {
 
 // Other statements
 LetStatement {
-	let VariableName (":" type)? "=" value
+	let VariableName (":" type)? "=" (value | subqueryStatement)
 }
 
 ShowStatement {

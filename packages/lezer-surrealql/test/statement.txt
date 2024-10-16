@@ -45,3 +45,14 @@ SurrealQL(
 	LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident),
 	LiveSelectStatement(Keyword,Keyword,Any,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)),
 )
+
+# Let Substatements
+
+LET $bla = (SELECT * FROM 123);
+LET $bla = SELECT * FROM 123;
+
+==>
+
+SurrealQL(
+  LetStatement(Keyword,VariableName,SubQuery(SelectStatement(Keyword,Any,Keyword,Int))),
+  LetStatement(Keyword,VariableName,SelectStatement(Keyword,Any,Keyword,Int)))

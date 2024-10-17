@@ -183,6 +183,11 @@ import {
     rand,
     count,
     objectOpen,
+
+    rangeOp,
+    rangeOpOpenLeft,
+    rangeOpOpenRight,
+    rangeOpOpenBoth
 } from "./parser.terms";
 
 const tokenMap = {
@@ -418,10 +423,14 @@ export const tokens = function (t, stack) {
     return tokenMap[t.toLowerCase()] ?? -1;
 };
 
+function isSpace(ch) {
+    return ch === 32 || ch === 9 || ch === 10 || ch === 13
+}
+
 function skipSpace(input, off) {
     for (;;) {
         let next = input.peek(off);
-        if (next === 32 || next === 9 || next === 10 || next === 13) {
+        if (isSpace(next)) {
             off++;
         } else if (
             next === 35 /* '#' */ ||
@@ -466,7 +475,7 @@ function skipObjKey(input, off) {
     }
 }
 
-export const objectToken = new ExternalTokenizer((input, _stack) => {
+export const objectToken = new ExternalTokenizer(input => {
     if (input.next === 123 /* '{' */) {
         let off = skipSpace(input, 1);
 
@@ -495,3 +504,30 @@ export const objectToken = new ExternalTokenizer((input, _stack) => {
         }
     }
 });
+
+function closedRangeBefore(ch) {
+    return isSpace(ch) || ch < 0 || ch === 91 /* '[' */ || ch === 44 /* ',' */ ||
+        ch === 123 /* '{' */ || ch === 40 /* '(' */ || ch === 59 /* ';' */ || ch === 58 /* ':' */
+}
+
+function closedRangeAfter(ch) {
+    return isSpace(ch) || ch < 0 || ch === 93 /* ']' */ || ch === 44 /* ',' */ ||
+        ch === 125 /* '}' */ || ch === 41 /* ')' */ || ch === 59 /* ';' */ || ch === 58 /* ':' */
+}
+
+export const rangeOperator = new ExternalTokenizer(input => {
+    if (input.next === 46 /* '.' */ && input.peek(1) === 46 ||
+        input.next === 62 /* '>' */ && input.peek(1) === 46 && input.peek(1) === 46) {
+        let inclStart = input.next !== 62
+        let closedBefore = closedRangeBefore(input.peek(-1))
+        if (!inclStart && closedBefore) return
+        input.advance(inclStart ? 2 : 3)
+        let inclEnd = input.next === 61 /* '=' */
+        if (inclEnd) input.advance()
+        let closedAfter = closedRangeAfter(input.next) || input.next < 0
+        if (inclEnd && closedAfter) return
+        input.acceptToken(closedBefore && closedAfter ? rangeOpOpenBoth
+                          : closedBefore ? rangeOpOpenLeft
+                          : closedAfter ? rangeOpOpenRight : rangeOp)
+    }
+})

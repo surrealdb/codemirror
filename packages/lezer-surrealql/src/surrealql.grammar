@@ -597,9 +597,10 @@ BinaryExpression {
 }
 
 Range {
-	(number | String | prefixedString)?
-	!range (".." | ">.." | "..=" | ">..=")
-	(number | String | prefixedString)?
+	rangeOpOpenBoth |
+	value !range rangeOpOpenRight |
+	rangeOpOpenLeft !range value |
+	value !range rangeOp !range value
 }
 
 Path {
@@ -680,9 +681,10 @@ recordIdValue {
 }
 
 RecordIdRange {
-	recordIdValue?
-	!range (".." | ">.." | "..=" | ">..=")
-	recordIdValue?
+	rangeOpOpenBoth |
+	recordIdValue !range rangeOpOpenRight |
+	rangeOpOpenLeft !range recordIdValue |
+	recordIdValue !range rangeOp !range recordIdValue
 }
 
 RecordId {
@@ -1169,6 +1171,13 @@ Operator {
 
 @external tokens objectToken from "./tokens" {
 	objectOpen[@name=BraceOpen]
+}
+
+@external tokens rangeOperator from "./tokens" {
+	rangeOp[@name=RangeOp],
+	rangeOpOpenBoth[@name=RangeOp],
+	rangeOpOpenLeft[@name=RangeOp],
+	rangeOpOpenRight[@name=RangeOp]
 }
 
 @tokens {

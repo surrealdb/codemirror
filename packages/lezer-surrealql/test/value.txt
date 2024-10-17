@@ -237,7 +237,7 @@ SurrealQL(
 
 ==>
 
-SurrealQL(Range(Int,Int),Range(Int),Range(String))
+SurrealQL(Range(Int,RangeOp,Int),Range(Int,RangeOp),Range(RangeOp,String))
 
 # Record ID Call
 

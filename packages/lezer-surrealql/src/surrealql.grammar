@@ -823,7 +823,7 @@ OnRootNsDbClause {
 AccessTypeClause {
 	typeKeyword (
 		( jwt JwtClause ) |
-		( record SignupClause? SigninClause? ( with jwt JwtClause? ( with issuer key Ident )? )? )
+		( record (SignupClause | SigninClause)* ( with jwt JwtClause ( with issuer key Ident )? )? )
 	)
 }
 

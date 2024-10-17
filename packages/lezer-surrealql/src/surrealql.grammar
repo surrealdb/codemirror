@@ -558,6 +558,7 @@ OnTableClause
 baseValue {
 	String |
 	prefixedString |
+	FormatString |
 	number |
 	true |
 	false |
@@ -714,6 +715,14 @@ FunctionJs {
 	BlockComment {
 		"/*" (blockCommentContent | blockCommentNewline)* blockCommentEnd
 	}
+	FormatString {
+		'f"' (formatStringContentDouble | Interpolation)* '"' |
+		"f'" (formatStringContentSingle | Interpolation)* "'"
+	}
+}
+
+Interpolation {
+	"{" expression "}"
 }
 
 // Function invocation
@@ -1195,6 +1204,9 @@ Operator {
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
 	prefixedString[@name=String] { $[ruds] String }
 
+	formatStringContentDouble { ("\\" _ | !["{\\])+ }
+	formatStringContentSingle { ("\\" _ | !['{\\])+ }
+
 	// Language
 	VariableName { "$" (rawident | tickIdent | bracketIdent) }
 	tickIdent {
@@ -1230,6 +1242,7 @@ Operator {
 	@precedence { DurationPart rawident }
 	@precedence { DurationPart Int }
 	@precedence { numberident Int rawident }
+	@precedence { "f'" 'f"' rawident }
     @precedence { "/*" Regex }
 	@precedence { Decimal numberident }
 	@precedence { Float numberident }

@@ -5,6 +5,7 @@ export const surqlHighlighting = styleTags({
 	"Keyword function": t.keyword,
 	"ObjectKey!": t.propertyName,
 	"String": t.string,
+	"FormatString": t.special(t.string),
 	"Int Float Decimal VersionNumber Duration!": t.number,
 	"Bool": t.bool,
 	"Comment": t.lineComment,

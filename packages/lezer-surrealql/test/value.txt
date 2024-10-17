@@ -246,3 +246,14 @@ stuff:ulid();
 ==>
 
 SurrealQL(FunctionCall(RecordId(RecordTbIdent,Colon,RecordIdIdent),ArgumentList))
+
+# Format Strings
+
+f"some \" quote {1 + 2 + 3} and \{ some } brackets";
+f'nested {f"string {22}"}'
+
+==>
+
+SurrealQL(
+  FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Int,Operator,Int),Operator,Int),BraceClose)),
+  FormatString(Interpolation(BraceOpen,FormatString(Interpolation(BraceOpen,Int,BraceClose)),BraceClose)))

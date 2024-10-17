@@ -16,7 +16,7 @@
 
 @top Syntax {
 	(
-		(for anyPermission) |
+		(for !for (create | update | delete | select)) |
 		anyKeyword |
 		anyLiteral |
 		SyntaxDescribe { "@" rawident }
@@ -30,6 +30,8 @@
 	binary @left
 	union @left
 	filter
+	for
+	clause
 }
 
 expressions {
@@ -55,13 +57,27 @@ Closure {
 	ParamList { "|" commaSep<VariableName ":" safeType>? "|" } ("->" type)? Block
 }
 
+subqueryStatement {
+	IfElseStatement |
+	LetStatement |
+	DeleteStatement |
+	CreateStatement |
+	SelectStatement |
+	RelateStatement |
+	UpdateStatement |
+	RemoveStatement |
+	UpsertStatement |
+	ReturnStatement |
+	AlterStatement |
+	DefineStatement |
+	RebuildStatement |
+	InsertStatement
+}
+
 statement[@isGroup=Statement] {
 	BeginStatement |
 	CancelStatement |
 	CommitStatement |
-	DefineStatement |
-	AlterStatement |
-	RemoveStatement |
 	InfoForStatement |
 	KillStatement |
 	LiveSelectStatement |
@@ -69,21 +85,11 @@ statement[@isGroup=Statement] {
 	SleepStatement |
 	UseStatement |
 	OptionStatement |
-	RebuildStatement |
-	CreateStatement |
-	SelectStatement |
-	DeleteStatement |
-	InsertStatement |
 	BreakStatement |
 	ContinueStatement |
 	ForStatement |
-	ReturnStatement |
 	ThrowStatement |
-	IfElseStatement |
-	LetStatement |
-	RelateStatement |
-	UpdateStatement |
-	UpsertStatement
+	subqueryStatement
 }
 
 // Transaction statements
@@ -332,23 +338,20 @@ SelectStatement {
 		statement |
 		(
 			commaSep<value>
-			selectClauses1 {
-				WithClause?
-				WhereClause?
-				SplitClause?
-			}
-			selectClauses2 {
-				GroupClause?
-				OrderClause?
-				LimitStartComboClause?
-			}
-			selectClauses3 {
-				FetchClause?
-				TimeoutClause?
-				ParallelClause?
-				TempfilesClause?
-				ExplainClause?
-			}
+			(
+				WithClause |
+				WhereClause |
+				SplitClause |
+				GroupClause |
+				OrderClause |
+				LimitStartComboClause |
+				FetchClause |
+				TimeoutClause |
+				ParallelClause |
+				TempfilesClause |
+				ExplainClause |
+				VersionClause
+			)*
 		)
 	)
 }
@@ -516,14 +519,14 @@ LiveSelectStatement {
 
 // Other statements
 LetStatement {
-	let VariableName (":" type)? "=" value
+	let VariableName (":" type)? "=" (value | subqueryStatement)
 }
 
 ShowStatement {
 	show changes for table
 	Ident
 	( since String )?
-	( limit Int )?
+	( limit number )?
 }
 
 SleepStatement {
@@ -555,6 +558,7 @@ OnTableClause
 baseValue {
 	String |
 	prefixedString |
+	FormatString |
 	number |
 	true |
 	false |
@@ -573,7 +577,7 @@ baseValue {
 	Object |
 	TypeCast |
 	Duration |
-	Point { "(" Decimal "," Decimal ")" }
+	Point { "(" number "," number ")" }
 }
 
 Any { "?" }
@@ -582,6 +586,7 @@ AnyStar[@name=Any] { "*" }
 value[@isGroup=Value] {
 	baseValue |
 	BinaryExpression |
+	Range |
 	Path
 }
 
@@ -589,6 +594,13 @@ value[@isGroup=Value] {
 
 BinaryExpression {
 	value !binary Operator value
+}
+
+Range {
+	rangeOpOpenBoth |
+	value !range rangeOpOpenRight |
+	rangeOpOpenLeft !range value |
+	value !range rangeOp !range value
 }
 
 Path {
@@ -663,15 +675,16 @@ RecordIdIdent {
 
 recordIdValue {
 	RecordIdIdent |
-	Int |
+	number |
 	Array |
 	Object
 }
 
 RecordIdRange {
-	( recordIdValue !range ">"? )?
-	".."
-	( !range "="? recordIdValue )?
+	rangeOpOpenBoth |
+	recordIdValue !range rangeOpOpenRight |
+	rangeOpOpenLeft !range recordIdValue |
+	recordIdValue !range rangeOp !range recordIdValue
 }
 
 RecordId {
@@ -701,6 +714,17 @@ FunctionJs {
 	javaScriptElement {
 		javaScriptContent | javaScriptBraceOpen javaScriptElement* javaScriptBraceClose
 	}
+	BlockComment {
+		"/*" (blockCommentContent | blockCommentNewline)* blockCommentEnd
+	}
+	FormatString {
+		'f"' (formatStringContentDouble | Interpolation)* '"' |
+		"f'" (formatStringContentSingle | Interpolation)* "'"
+	}
+}
+
+Interpolation {
+	"{" expression "}"
 }
 
 // Function invocation
@@ -708,10 +732,11 @@ FunctionJs {
 FunctionCall {
 	( count ArgumentListCount ) |
 	(
-	   (FunctionName | customFunctionName | rand)
-    	Version { "<" VersionNumber ">" }?
-    	ArgumentList
-	)
+		(FunctionName | customFunctionName | rand)
+		Version { "<" VersionNumber ">" }?
+		ArgumentList
+	) |
+	RecordId ArgumentList
 }
 
 ArgumentList { "(" commaSep<value>? ")" }
@@ -825,15 +850,15 @@ SearchAnalyzerClause {
 	 TermsCacheClause | highlights)*
 }
 
-Bm25Clause { bm25 ( "(" Float "," Float ")")? }
-DocIdsCacheClause { doc_ids_cache Int }
-DocIdsOrderClause { doc_ids_order Int }
-DocLenghtsCacheClause { doc_lengths_cache Int }
-DocLenghtsOrderClause { doc_lengths_order Int }
-PostingsCacheClause { postings_cache Int }
-PostingsOrderClause { postings_order Int }
-TermsCacheClause { terms_cache Int }
-TermsOrderClause { terms_order Int }
+Bm25Clause { bm25 ( "(" number "," number ")")? }
+DocIdsCacheClause { doc_ids_cache number }
+DocIdsOrderClause { doc_ids_order number }
+DocLenghtsCacheClause { doc_lengths_cache number }
+DocLenghtsOrderClause { doc_lengths_order number }
+PostingsCacheClause { postings_cache number }
+PostingsOrderClause { postings_order number }
+TermsCacheClause { terms_cache number }
+TermsOrderClause { terms_order number }
 
 MtreeClause {
 	mtree
@@ -848,8 +873,8 @@ MtreeClause {
 	)*
 }
 
-MtreeCacheClause { mtree_cache Int }
-MtreeDistClause { dist ( cosine | euclidean | manhattan ) }
+MtreeCacheClause { mtree_cache number }
+MtreeDistClause { dist ( Distance ) }
 
 HnswClause {
 hnsw
@@ -867,15 +892,14 @@ IndexDimensionClause
 	)*
 }
 
-HnswDistClause { dist ( chebyshev | cosine | euclidean | hamming | jaccard | manhattan | ( minkowski number ) | pearson ) }
+HnswDistClause { dist ( Distance | ( minkowski number )) }
 
-IndexDimensionClause { dimension Int }
-IndexTypeClause { typeKeyword ( f32 | f64 | i16 | i32 | i64 ) }
-IndexCapacityClause { capacity Int }
-IndexLmClause { lm Float }
-IndexM0Clause { m0 Int }
-IndexMClause { m Int }
-IndexEfcClause { efc Int }
+IndexDimensionClause { dimension number }
+IndexCapacityClause { capacity number }
+IndexLmClause { lm number }
+IndexM0Clause { m0 number }
+IndexMClause { m number }
+IndexEfcClause { efc number }
 IndexExtendCandidatesClause { extend_candidates }
 IndexKeepPrunedConnectionsClause { keep_pruned_connections }
 
@@ -933,18 +957,18 @@ FetchClause {
 StartClause {
 	start
 	at?
-	(Int | VariableName)
+	(number | VariableName)
 }
 
 LimitClause {
 	limit
 	by?
-	(Int | VariableName)
+	(number | VariableName)
 }
 
 LimitStartComboClause {
-	StartClause LimitClause? |
-	LimitClause StartClause?
+	StartClause (!clause LimitClause)? |
+	LimitClause (!clause StartClause)?
 }
 
 GroupClause {
@@ -986,7 +1010,12 @@ ExplainClause {
 	full?
 }
 
-TokenizersClause { tokenizers commaSep<AnalyzerTokenizers> }
+VersionClause {
+	version
+	prefixedString
+}
+
+TokenizersClause { tokenizers commaSep<AnalyzerTokenizer> }
 
 FiltersClause {
 	filters
@@ -1029,7 +1058,7 @@ PermissionsForClause {
 		none | full |
 		(
 			for
-			commaSep<( selectPermissions | createPermissions | updatePermissions | deletePermissions )>
+			commaSep<select | create | update | delete>
 			( WhereClause | none | full )
 		)+
 	)
@@ -1055,37 +1084,13 @@ DurationClause {
 
 TokenTypeClause {
 	typeKeyword
-	(
-		jwks |
-		eddsa |
-		es256 |
-		es384 |
-		es512 |
-		ps256 |
-		ps384 |
-		ps512 |
-		rs256 |
-		rs384 |
-		rs512
-	)
+	TokenType
 }
 
 // Support
 
-AnalyzerTokenizers {
-	blank |
-	camel |
-	class |
-	punct
-}
-
 AnalyzerFilters {
-	ascii |
-	lowercase |
-	uppercase |
-	( edgengram "(" Int "," Int ")" ) |
-	( ngram "(" Int "," Int ")" ) |
-	( snowball "(" Ident ")" )
+	Filter ("(" (number "," number | Ident) ")")?
 }
 
 Predicate {
@@ -1101,6 +1106,8 @@ inclusivePredicate {
 
 literalType {
 	String |
+	number |
+	Duration |
 	ArrayType { "[" commaSep<type> "]" } |
 	ObjectType { objectOpen ObjectTypeContent? "}" }
 	// TODO support number and duration types
@@ -1108,7 +1115,7 @@ literalType {
 
 singleType {
     TypeName { rawident } |
-    ParameterizedType { singleType "<" (type | Int) ">" } |
+    ParameterizedType { singleType "<" type ">" } |
     LiteralType { literalType }
 }
 
@@ -1138,40 +1145,39 @@ Ident {
 	tickIdent
 }
 
-number { Int | Float | Decimal }
+number { "-"? (Int | Float | Decimal) }
 
 Operator {
     binaryOperator |
 	"-" | "=" | ">" | "<" |
-	and |
-	or |
-	is |
-	( is opNot ) |
-	contains |
-	containsnot |
-	containsall |
-	containsany |
-	containsnone |
-	inside | in |
-	notinside | ( opNot opIn ) |
-	allinside |
-	anyinside |
-	noneinside |
+	binaryOperatorKeyword |
+	is | ( is opNot ) |
+	in | ( opNot opIn ) |
 
-	outside |
-	intersects |
-
-	( "@" Int "@" ) |
+	( "@" number "@" ) |
 	(
 		"<|"
-		Int
-		( "," ( Int | chebyshev | cosine | euclidean | hamming | jaccard | manhattan | ( minkowski number ) | pearson ) )
+		number
+		( "," ( number | Distance | ( minkowski number ) ) )
 		"|>"
 	)
 }
 
+@local tokens {
+	blockCommentEnd { "*/" }
+	blockCommentNewline { "\n" }
+	@else blockCommentContent
+}
+
 @external tokens objectToken from "./tokens" {
 	objectOpen[@name=BraceOpen]
+}
+
+@external tokens rangeOperator from "./tokens" {
+	rangeOp[@name=RangeOp],
+	rangeOpOpenBoth[@name=RangeOp],
+	rangeOpOpenLeft[@name=RangeOp],
+	rangeOpOpenRight[@name=RangeOp]
 }
 
 @tokens {
@@ -1197,15 +1203,18 @@ Operator {
 	CommentResult[@name=Comment,closedBy=CommentResultClose] { "-------- Query" ![\n]* }
 
 	// Numbers
-	Int { "-"? @digit+ }
+	Int { @digit+ }
 	frac { '.' @digit+ }
 	exp { $[eE] $[+\-]? @digit+ }
-	Float { "-"? @digit+ (frac exp? | exp) "f"? }
-	Decimal { "-"? @digit+ frac? exp? "dec" }
+	Float { @digit+ (frac exp? | exp) "f"? }
+	Decimal { @digit+ frac? exp? "dec" }
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
 	prefixedString[@name=String] { $[ruds] String }
+
+	formatStringContentDouble { ("\\" _ | !["{\\])+ }
+	formatStringContentSingle { ("\\" _ | !['{\\])+ }
 
 	// Language
 	VariableName { "$" (rawident | tickIdent | bracketIdent) }
@@ -1242,6 +1251,10 @@ Operator {
 	@precedence { DurationPart rawident }
 	@precedence { DurationPart Int }
 	@precedence { numberident Int rawident }
+	@precedence { "f'" 'f"' rawident }
+    @precedence { "/*" Regex }
+	@precedence { Decimal numberident }
+	@precedence { Float numberident }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }
@@ -1272,7 +1285,7 @@ piped<content> {
 	content ("|" content)*
 }
 
-@skip { whitespace | Comment }
+@skip { whitespace | Comment | BlockComment }
 @detectDelim
 
 @external propSource surqlHighlighting from "./highlight"
@@ -1432,6 +1445,7 @@ piped<content> {
 	user					[@name=Keyword],
 	valueKeyword			[@name=Keyword],
 	values					[@name=Keyword],
+	version					[@name=Keyword],
 	when					[@name=Keyword],
 	where					[@name=Keyword],
 	with					[@name=Keyword],
@@ -1446,68 +1460,20 @@ piped<content> {
 	null					[@name=None],
 	true					[@name=Bool],
 
-	f32						[@name=Literal],
-	f64						[@name=Literal],
-	i16						[@name=Literal],
-	i32						[@name=Literal],
-	i64						[@name=Literal],
-
-	createPermissions		[@name=PermissionTarget],
-	deletePermissions		[@name=PermissionTarget],
-	selectPermissions		[@name=PermissionTarget],
-	updatePermissions		[@name=PermissionTarget],
-
-	jwks					[@name=TokenType],
-	eddsa					[@name=TokenType],
-	es256					[@name=TokenType],
-	es384					[@name=TokenType],
-	es512					[@name=TokenType],
-	ps256					[@name=TokenType],
-	ps384					[@name=TokenType],
-	ps512					[@name=TokenType],
-	rs256					[@name=TokenType],
-	rs384					[@name=TokenType],
-	rs512					[@name=TokenType],
+	IndexTypeClause,
+	TokenType,
 
 	// Operators
-	allinside,
-	and,
-	anyinside,
-	contains,
-	containsall,
-	containsany,
-	containsnone,
-	containsnot,
-	inside,
-	intersects,
+	binaryOperatorKeyword,
 	is,
-	noneinside,
-	notinside,
 	opIn,
 	opNot,
-	or,
-	outside,
 
-	chebyshev 				[@name=Distance],
-	cosine					[@name=Distance],
-	euclidean				[@name=Distance],
-	hamming					[@name=Distance],
-	jaccard					[@name=Distance],
-	manhattan				[@name=Distance],
+	Distance,
 	minkowski				[@name=Distance],
-	pearson					[@name=Distance],
+	Filter,
 
-	ascii					[@name=Filter],
-	edgengram				[@name=Filter],
-	lowercase				[@name=Filter],
-	ngram					[@name=Filter],
-	snowball				[@name=Filter],
-	uppercase				[@name=Filter],
-
-	blank					[@name=Tokenizer],
-	camel					[@name=Tokenizer],
-	class					[@name=Tokenizer],
-	punct					[@name=Tokenizer],
+	AnalyzerTokenizer,
 
 	function,
 	rand					[@name=FunctionName],
@@ -1681,16 +1647,5 @@ anyLiteral {
 	null |
 	true |
 
-	f32 |
-	f64 |
-	i16 |
-	i32 |
-	i64
-}
-
-anyPermission {
-	createPermissions |
-	deletePermissions |
-	selectPermissions |
-	updatePermissions
+	IndexTypeClause
 }

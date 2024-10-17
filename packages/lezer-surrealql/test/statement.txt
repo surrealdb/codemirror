@@ -45,3 +45,32 @@ SurrealQL(
 	LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident),
 	LiveSelectStatement(Keyword,Keyword,Any,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)),
 )
+
+# Let Substatements
+
+LET $bla = (SELECT * FROM 123);
+LET $bla = SELECT * FROM 123;
+
+==>
+
+SurrealQL(
+  LetStatement(Keyword,VariableName,SubQuery(SelectStatement(Keyword,Any,Keyword,Int))),
+  LetStatement(Keyword,VariableName,SelectStatement(Keyword,Any,Keyword,Int)))
+
+# Block Comments
+
+1 /* this is
+     a block
+     comment */ + 2;
+
+==>
+
+SurrealQL(BinaryExpression(Int,BlockComment,Operator,Int))
+
+# Version Clause
+
+SELECT * FROM person VERSION d'2024-10-10T14:37:08.444Z'
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Any,Keyword,Ident,VersionClause(Keyword,String)))

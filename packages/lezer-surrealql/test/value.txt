@@ -226,3 +226,34 @@ SurrealQL(
 	TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(String),Pipe,LiteralType(ArrayType("[",TypeName,"]"))))),BraceClose)),Pipe,TypeName),">",Ident),
 	TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,TypeName)),BraceClose)),Pipe,LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(ArrayType("[",ParameterizedType(TypeName,"<",TypeName,">"),"]")),Pipe,LiteralType(String)))),BraceClose))),">",Ident)
 )
+
+# Ranges
+
+1>..2;
+
+-3..;
+
+..='a';
+
+==>
+
+SurrealQL(Range(Int,RangeOp,Int),Range(Int,RangeOp),Range(RangeOp,String))
+
+# Record ID Call
+
+stuff:ulid();
+
+==>
+
+SurrealQL(FunctionCall(RecordId(RecordTbIdent,Colon,RecordIdIdent),ArgumentList))
+
+# Format Strings
+
+f"some \" quote {1 + 2 + 3} and \{ some } brackets";
+f'nested {f"string {22}"}'
+
+==>
+
+SurrealQL(
+  FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Int,Operator,Int),Operator,Int),BraceClose)),
+  FormatString(Interpolation(BraceOpen,FormatString(Interpolation(BraceOpen,Int,BraceClose)),BraceClose)))

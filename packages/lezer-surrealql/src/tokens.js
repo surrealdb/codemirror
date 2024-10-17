@@ -156,6 +156,7 @@ import {
     user,
     valueKeyword,
     values,
+    version,
     when,
     where,
 
@@ -168,64 +169,25 @@ import {
     diff,
     full,
     none,
-    f32,
-    f64,
-    i16,
-    i32,
-    i64,
-    createPermissions,
-    deletePermissions,
-    selectPermissions,
-    updatePermissions,
-    jwks,
-    eddsa,
-    es256,
-    es384,
-    es512,
-    ps256,
-    ps384,
-    ps512,
-    rs256,
-    rs384,
-    rs512,
-    allinside,
-    and,
-    anyinside,
-    contains,
-    containsall,
-    containsany,
-    containsnone,
-    containsnot,
-    inside,
-    intersects,
+    IndexTypeClause,
+    TokenType,
     is,
-    noneinside,
-    notinside,
+    binaryOperatorKeyword,
     opIn,
     opNot,
-    or,
-    outside,
-    chebyshev,
-    cosine,
-    euclidean,
-    hamming,
-    jaccard,
-    manhattan,
+    Distance,
     minkowski,
-    pearson,
-    ascii,
-    edgengram,
-    ngram,
-    snowball,
-    uppercase,
-    _class,
-    blank,
-    camel,
-    punct,
+    Filter,
+    AnalyzerTokenizer,
     _function,
     rand,
     count,
     objectOpen,
+
+    rangeOp,
+    rangeOpOpenLeft,
+    rangeOpOpenRight,
+    rangeOpOpenBoth
 } from "./parser.terms";
 
 const tokenMap = {
@@ -383,6 +345,7 @@ const tokenMap = {
     user,
     value: valueKeyword,
     values,
+    version,
     when,
     where,
     with: _with,
@@ -397,59 +360,58 @@ const tokenMap = {
     null: _null,
     true: _true,
 
-    f32,
-    f64,
-    i16,
-    i32,
-    i64,
+    f32: IndexTypeClause,
+    f64: IndexTypeClause,
+    i16: IndexTypeClause,
+    i32: IndexTypeClause,
+    i64: IndexTypeClause,
 
-    jwks,
-    eddsa,
-    es256,
-    es384,
-    es512,
-    ps256,
-    ps384,
-    ps512,
-    rs256,
-    rs384,
-    rs512,
+    jwks: TokenType,
+    eddsa: TokenType,
+    es256: TokenType,
+    es384: TokenType,
+    es512: TokenType,
+    ps256: TokenType,
+    ps384: TokenType,
+    ps512: TokenType,
+    rs256: TokenType,
+    rs384: TokenType,
+    rs512: TokenType,
 
-    allinside,
-    and,
-    anyinside,
-    contains,
-    containsall,
-    containsany,
-    containsnone,
-    containsnot,
-    inside,
-    intersects,
+    and: binaryOperatorKeyword,
+    or: binaryOperatorKeyword,
+    contains: binaryOperatorKeyword,
+    containsnot: binaryOperatorKeyword,
+    containsall: binaryOperatorKeyword,
+    containsany: binaryOperatorKeyword,
+    containsnone: binaryOperatorKeyword,
+    inside: binaryOperatorKeyword, notinside: binaryOperatorKeyword,
+    allinside: binaryOperatorKeyword,
+    anyinside: binaryOperatorKeyword,
+    noneinside: binaryOperatorKeyword,
+    outside: binaryOperatorKeyword,
+    intersects: binaryOperatorKeyword,
     is,
-    noneinside,
-    notinside,
-    or,
-    outside,
 
-    chebyshev,
-    cosine,
-    euclidean,
-    hamming,
-    jaccard,
-    manhattan,
+    chebyshev: Distance,
+    cosine: Distance,
+    euclidean: Distance,
+    hamming: Distance,
+    jaccard: Distance,
+    manhattan: Distance,
     minkowski,
-    pearson,
+    pearson: Distance,
 
-    ascii,
-    edgengram,
-    ngram,
-    snowball,
-    uppercase,
+    ascii: Filter,
+    edgengram: Filter,
+    ngram: Filter,
+    snowball: Filter,
+    uppercase: Filter,
 
-    blank,
-    camel,
-    class: _class,
-    punct,
+    blank: AnalyzerTokenizer,
+    camel: AnalyzerTokenizer,
+    class: AnalyzerTokenizer,
+    punct: AnalyzerTokenizer,
 
     // Function names
     function: _function,
@@ -457,27 +419,18 @@ const tokenMap = {
     count,
 };
 
-const tryMapped = new Map([
-    ["select", [selectPermissions]],
-    ["create", [createPermissions]],
-    ["update", [updatePermissions]],
-    ["delete", [deletePermissions]],
-    ["not", [opNot]],
-    ["in", [opIn]],
-]);
-
 export const tokens = function (t, stack) {
-    for (const tk of tryMapped.get(t.toLowerCase()) ?? []) {
-        if (stack.canShift(tk)) return tk;
-    }
-
     return tokenMap[t.toLowerCase()] ?? -1;
 };
+
+function isSpace(ch) {
+    return ch === 32 || ch === 9 || ch === 10 || ch === 13
+}
 
 function skipSpace(input, off) {
     for (;;) {
         let next = input.peek(off);
-        if (next === 32 || next === 9 || next === 10 || next === 13) {
+        if (isSpace(next)) {
             off++;
         } else if (
             next === 35 /* '#' */ ||
@@ -522,7 +475,7 @@ function skipObjKey(input, off) {
     }
 }
 
-export const objectToken = new ExternalTokenizer((input, _stack) => {
+export const objectToken = new ExternalTokenizer(input => {
     if (input.next === 123 /* '{' */) {
         let off = skipSpace(input, 1);
 
@@ -551,3 +504,30 @@ export const objectToken = new ExternalTokenizer((input, _stack) => {
         }
     }
 });
+
+function closedRangeBefore(ch) {
+    return isSpace(ch) || ch < 0 || ch === 91 /* '[' */ || ch === 44 /* ',' */ ||
+        ch === 123 /* '{' */ || ch === 40 /* '(' */ || ch === 59 /* ';' */ || ch === 58 /* ':' */
+}
+
+function closedRangeAfter(ch) {
+    return isSpace(ch) || ch < 0 || ch === 93 /* ']' */ || ch === 44 /* ',' */ ||
+        ch === 125 /* '}' */ || ch === 41 /* ')' */ || ch === 59 /* ';' */ || ch === 58 /* ':' */
+}
+
+export const rangeOperator = new ExternalTokenizer(input => {
+    if (input.next === 46 /* '.' */ && input.peek(1) === 46 ||
+        input.next === 62 /* '>' */ && input.peek(1) === 46 && input.peek(1) === 46) {
+        let inclStart = input.next !== 62
+        let closedBefore = closedRangeBefore(input.peek(-1))
+        if (!inclStart && closedBefore) return
+        input.advance(inclStart ? 2 : 3)
+        let inclEnd = input.next === 61 /* '=' */
+        if (inclEnd) input.advance()
+        let closedAfter = closedRangeAfter(input.next) || input.next < 0
+        if (inclEnd && closedAfter) return
+        input.acceptToken(closedBefore && closedAfter ? rangeOpOpenBoth
+                          : closedBefore ? rangeOpOpenLeft
+                          : closedAfter ? rangeOpOpenRight : rangeOp)
+    }
+})

@@ -1,6 +1,7 @@
-import { nodeResolve } from "@rollup/plugin-node-resolve"
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import copy from "rollup-plugin-copy";
 
-export default {
+export default [{
 	input: "./src/parser.js",
 	output: [
 		{ format: "cjs", file: "./dist/index.cjs" },
@@ -10,6 +11,9 @@ export default {
 		return !/^([\.\/]|\w:\\)/.test(id)
 	},
 	plugins: [
-		nodeResolve()
+		nodeResolve(),
+		copy({
+			targets: [{ src: 'src/typing.d.ts', dest: 'dist' }]
+		})
 	]
-}
+}]

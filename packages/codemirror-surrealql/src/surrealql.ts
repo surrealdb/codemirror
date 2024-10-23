@@ -30,7 +30,7 @@ export const surrealqlLanguage = LRLanguage.define({
 	languageData: {
 		closeBrackets: { brackets: ["[", "{", '"', "'", "("] },
 		indentOnInput: /^\s*[\]}]$/,
-		commentTokens: { line: "--" },
+		commentTokens: { line: "--", block: { open: "/*", close: "*/" } },
 	},
 });
 

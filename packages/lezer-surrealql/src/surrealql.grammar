@@ -681,7 +681,8 @@ recordIdValue {
 	RecordIdIdent |
 	number |
 	Array |
-	Object
+	Object |
+	RecordIdString { prefixedString }
 }
 
 RecordIdRange {
@@ -1249,14 +1250,14 @@ Operator {
 
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }
-	@precedence { prefixedString rawident }
+	@precedence { prefixedString numberident rawident }
 	@precedence { customFunctionName FunctionName rawident }
 	@precedence { Float Decimal Int rawident }
 	@precedence { DurationPart rawident }
 	@precedence { DurationPart Int }
 	@precedence { numberident Int rawident }
 	@precedence { "f'" 'f"' rawident }
-    @precedence { "/*" Regex }
+	@precedence { "/*" Regex }
 	@precedence { Decimal numberident }
 	@precedence { Float numberident }
 

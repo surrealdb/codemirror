@@ -220,6 +220,10 @@ defineParamOptions {
 	VariableName
 	valueKeyword
 	value
+	(
+		PermissionsBasicClause |
+		CommentClause
+	)*
 }
 
 defineScopeOptions {
@@ -1066,7 +1070,7 @@ PermissionsForClause {
 
 PermissionsBasicClause {
 	permissions
-	none | full | WhereClause
+	(none | full | WhereClause)
 }
 
 CommentClause {

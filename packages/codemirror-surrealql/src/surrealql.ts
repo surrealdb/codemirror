@@ -47,7 +47,9 @@ const scopeMap = new Map<Scope, string>([
 ]);
 
 /**
- * TODO
+ * A linter that checks if the syntax tree uses features that are not available in the given SurrealDB version
+ *
+ * @param version The SurrealDB version to check against (e.g. "2.0.0")
  */
 export function surrealqlVersionLinter(version: string): Extension {
 	return linter((view) => {
@@ -84,7 +86,6 @@ export function surrealqlVersionLinter(version: string): Extension {
  * The CodeMirror extension used to add support for the SurrealQL language
  *
  * @param scope Limit the scope of the highlighting
- * @param version Limit the version of the syntax
  */
 export function surrealql(scope?: Scope): LanguageSupport {
 	console.log("using surql");

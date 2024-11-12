@@ -56,6 +56,10 @@ export function surrealqlVersionLinter(version: string): Extension {
 		const diagnostics: Diagnostic[] = [];
 
 		syntaxTree(view.state).cursor().iterate((node) => {
+			if (node.from === node.to) {
+				return;
+			}
+
 			const sinceVersionProp = node.type.prop(sinceProp);
 			const untilVersionProp = node.type.prop(untilProp);
 
@@ -88,8 +92,6 @@ export function surrealqlVersionLinter(version: string): Extension {
  * @param scope Limit the scope of the highlighting
  */
 export function surrealql(scope?: Scope): LanguageSupport {
-	console.log("using surql");
-
 	if (!scope) {
 		return new LanguageSupport(surrealqlLanguage);
 	}

@@ -135,7 +135,7 @@ defineAccessOptions {
 }
 
 defineAnalyzerOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	(
 		TokenizersClause |
@@ -146,7 +146,7 @@ defineAnalyzerOptions {
 }
 
 defineEventOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	OnTableClause
 	(
@@ -163,13 +163,13 @@ defineEventOptions {
 }
 
 defineDatabaseOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident on Ident
 	CommentClause?
 }
 
 defineFieldOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	OnTableClause
 	(
@@ -184,7 +184,7 @@ defineFieldOptions {
 }
 
 defineFunctionOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	customFunctionName
 	ParamList { "(" commaSep<VariableName ":" type>? ")" }
 	("->" type)?
@@ -198,25 +198,25 @@ defineFunctionOptions {
 functionKw[@name=Keyword] { function }
 
 defineIndexOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	OnTableClause
 	(
 		FieldsColumnsClause |
 		IndexClause |
 		CommentClause |
-		concurrently
+		ConcurrentlyClause[since=2_0_0] { concurrently }
 	)*
 }
 
 defineNamespaceOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	CommentClause?
 }
 
 defineParamOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	VariableName
 	valueKeyword
 	value
@@ -227,7 +227,7 @@ defineParamOptions {
 }
 
 defineScopeOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	(
 		SessionClause |
@@ -238,7 +238,7 @@ defineScopeOptions {
 }
 
 defineTableOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	(
 		drop |
@@ -252,7 +252,7 @@ defineTableOptions {
 }
 
 defineConfigOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	graphql
 	(
 		none |
@@ -263,7 +263,7 @@ defineConfigOptions {
 }
 
 defineTokenOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	( on ( namespace | database | scope Ident ) )
 	TokenTypeClause
@@ -271,7 +271,7 @@ defineTokenOptions {
 }
 
 defineUserOptions {
-	(IfNotExistsClause | overwrite)?
+	(IfNotExistsClause | OverwriteClause)?
 	Ident
 	OnRootNsDbClause
 	( ( password | passhash ) String )
@@ -396,6 +396,7 @@ InsertStatement {
 		on duplicate key update
 		commaSep<FieldAssignment>
 	)?
+	InsertReturnClause[since=2_0_0] { ReturnClause? }
 }
 
 IfElseStatement {
@@ -600,7 +601,7 @@ BinaryExpression {
 	value !binary Operator value
 }
 
-Range {
+Range[since=2_0_0] {
 	rangeOpOpenBoth |
 	value !range rangeOpOpenRight |
 	rangeOpOpenLeft !range value |
@@ -765,7 +766,7 @@ PatchClause {
 	patch Array
 }
 
-TableTypeClause {
+TableTypeClause[since=1_4_0] {
 	typeKeyword
 	(
 		any |
@@ -774,6 +775,7 @@ TableTypeClause {
 			relation
 			( ( in | from ) piped<Ident> )?
 			( ( out | to ) piped<Ident> )?
+			EnforcedClause[since=2_0_0] { enforced? }
 		)
 	)
 }
@@ -936,6 +938,10 @@ IfExistsClause[since=1_3_0] {
 	if exists
 }
 
+OverwriteClause[since=2_0_0] {
+	overwrite
+}
+
 ReturnClause {
 	return
 	( before | after | diff | commaSep<inclusivePredicate> )
@@ -1032,7 +1038,7 @@ FunctionClause {
 	customFunctionName
 }
 
-TypeClause[since=1_4_0] {
+TypeClause {
 	flexible?
 	typeKeyword
 	type
@@ -1179,10 +1185,10 @@ Operator {
 }
 
 @external tokens rangeOperator from "./tokens" {
-	rangeOp[@name=RangeOp,since=2_0_0],
-	rangeOpOpenBoth[@name=RangeOp,since=2_0_0],
-	rangeOpOpenLeft[@name=RangeOp,since=2_0_0],
-	rangeOpOpenRight[@name=RangeOp,since=2_0_0]
+	rangeOp[@name=RangeOp],
+	rangeOpOpenBoth[@name=RangeOp],
+	rangeOpOpenLeft[@name=RangeOp],
+	rangeOpOpenRight[@name=RangeOp]
 }
 
 @tokens {
@@ -1321,7 +1327,7 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
-	concurrently			[@name=Keyword,since=2_0_0],
+	concurrently			[@name=Keyword],
 	config					[@name=Keyword],
 	content					[@name=Keyword],
 	continue				[@name=Keyword],
@@ -1344,6 +1350,7 @@ piped<content> {
 	efc						[@name=Keyword],
 	else					[@name=Keyword],
 	end						[@name=Keyword],
+	enforced				[@name=Keyword],
 	event					[@name=Keyword],
 	exclude					[@name=Keyword],
 	exists					[@name=Keyword],
@@ -1394,7 +1401,7 @@ piped<content> {
 	option					[@name=Keyword],
 	order					[@name=Keyword],
 	out						[@name=Keyword],
-	overwrite				[@name=Keyword,since=2_0_0],
+	overwrite				[@name=Keyword],
 	parallel				[@name=Keyword],
 	param					[@name=Keyword],
 	passhash				[@name=Keyword],

@@ -1,21 +1,23 @@
 {
 	"name": "surrealdb-cm",
-  "workspaces": [
-    "packages/*"
-  ],
+	"workspaces": ["packages/*"],
 	"private": true,
 	"scripts": {
 		"test": "cd packages/lezer-surrealql && pnpm test",
 		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build",
-    "dev": "vite"
+		"dev": "vite",
+		"lint:check": "biome check . --formatter-enabled=false",
+		"lint:apply": "biome check . --formatter-enabled=false --write",
+		"lint:apply:unsafe": "biome check . --formatter-enabled=false --write --unsafe"
 	},
-  "devDependencies": {
-    "vite": "^5.4.11",
-    "@codemirror/language": "^6.10.3",
-    "@codemirror/commands": "^6.7.1",
-    "@codemirror/autocomplete": "^6.18.2",
-    "@codemirror/view": "^6.34.2",
-    "@codemirror/state": "^6.4.1",
-    "@lezer/highlight": "^1.2.1"
-  }
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"vite": "^5.4.11",
+		"@codemirror/language": "^6.10.3",
+		"@codemirror/commands": "^6.7.1",
+		"@codemirror/autocomplete": "^6.18.2",
+		"@codemirror/view": "^6.34.2",
+		"@codemirror/state": "^6.4.1",
+		"@lezer/highlight": "^1.2.1"
+	}
 }

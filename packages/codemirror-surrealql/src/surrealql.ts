@@ -1,18 +1,18 @@
 import {
-	continuedIndent,
-	indentNodeProp,
-	foldNodeProp,
-	foldInside,
 	LRLanguage,
 	LanguageSupport,
+	continuedIndent,
+	foldInside,
+	foldNodeProp,
+	indentNodeProp,
 	syntaxTree,
 } from "@codemirror/language";
-import { linter, type Diagnostic, type LintSource } from "@codemirror/lint";
-import { parser, sinceProp, untilProp } from "@surrealdb/lezer";
+import { type Diagnostic, linter } from "@codemirror/lint";
+import type { Extension } from "@codemirror/state";
 import { parseMixed } from "@lezer/common";
 import { parser as jsParser } from "@lezer/javascript";
-import type { Extension } from "@codemirror/state";
-import { compare, compareVersions } from "compare-versions";
+import { parser, sinceProp, untilProp } from "@surrealdb/lezer";
+import { compareVersions } from "compare-versions";
 
 export const surrealqlLanguage = LRLanguage.define({
 	name: "surrealql",
@@ -37,7 +37,7 @@ export const surrealqlLanguage = LRLanguage.define({
 	},
 });
 
-type Scope ="permission" | "index" | "combined-results" | "syntax";
+type Scope = "permission" | "index" | "combined-results" | "syntax";
 
 const scopeMap = new Map<Scope, string>([
 	["permission", "PermissionInput"],
@@ -55,32 +55,34 @@ export function surrealqlVersionLinter(version: string): Extension {
 	return linter((view) => {
 		const diagnostics: Diagnostic[] = [];
 
-		syntaxTree(view.state).cursor().iterate((node) => {
-			if (node.from === node.to) {
-				return;
-			}
+		syntaxTree(view.state)
+			.cursor()
+			.iterate((node) => {
+				if (node.from === node.to) {
+					return;
+				}
 
-			const sinceVersionProp = node.type.prop(sinceProp);
-			const untilVersionProp = node.type.prop(untilProp);
+				const sinceVersionProp = node.type.prop(sinceProp);
+				const untilVersionProp = node.type.prop(untilProp);
 
-			if (sinceVersionProp && compareVersions(version, sinceVersionProp) < 0) {
-				diagnostics.push({
-					from: node.from,
-					to: node.to,
-					severity: "error",
-					message: `This syntax is only available on SurrealDB ${sinceVersionProp} and up`,
-				});
-			}
+				if (sinceVersionProp && compareVersions(version, sinceVersionProp) < 0) {
+					diagnostics.push({
+						from: node.from,
+						to: node.to,
+						severity: "error",
+						message: `This syntax is only available on SurrealDB ${sinceVersionProp} and up`,
+					});
+				}
 
-			if (untilVersionProp && compareVersions(version, untilVersionProp) >= 0) {
-				diagnostics.push({
-					from: node.from,
-					to: node.to,
-					severity: "error",
-					message: `This syntax is only available until SurrealDB ${untilVersionProp}`,
-				});
-			}
-		});
+				if (untilVersionProp && compareVersions(version, untilVersionProp) >= 0) {
+					diagnostics.push({
+						from: node.from,
+						to: node.to,
+						severity: "error",
+						message: `This syntax is only available until SurrealDB ${untilVersionProp}`,
+					});
+				}
+			});
 
 		return diagnostics;
 	});

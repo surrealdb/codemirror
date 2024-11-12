@@ -9,10 +9,9 @@ import {
 } from "@codemirror/language";
 import { linter, type Diagnostic, type LintSource } from "@codemirror/lint";
 
-import { parser } from "@surrealdb/lezer";
+import { parser, surqlVersion } from "@surrealdb/lezer";
 import { NodeProp, parseMixed } from "@lezer/common";
 import { parser as jsParser } from "@lezer/javascript";
-import { surqlVersion } from "../../lezer-surrealql/src/version";
 
 export const surrealqlLanguage = LRLanguage.define({
 	name: "surrealql",
@@ -75,7 +74,7 @@ function surqlVersionLinter(version: Version): LintSource {
 
 		syntaxTree(view.state).cursor().iterate((node) => {
 			// FIXME: This is a hack to get the version prop, as for some reason the id used for finding it is 1 less then what i can read of the prop
-			const prop = node.type.prop({ id: surqlVersion.id - 1 } as any);
+			const prop = node.type.prop({ id: (surqlVersion as any).id - 1 } as any);
 
 			if (isValidVersion(prop)) {
 				if (!supportedVersions.includes(prop)) {

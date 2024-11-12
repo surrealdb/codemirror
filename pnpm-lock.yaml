@@ -47,6 +47,9 @@ importers:
       '@surrealdb/lezer':
         specifier: 'workspace:'
         version: link:../lezer-surrealql
+      compare-versions:
+        specifier: ^6.1.1
+        version: 6.1.1
     devDependencies:
       '@codemirror/buildhelper':
         specifier: ^1.0.0
@@ -499,6 +502,9 @@ packages:
 
   colorette@1.4.0:
     resolution: {integrity: sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==}
+
+  compare-versions@6.1.1:
+    resolution: {integrity: sha512-4hm4VPpIecmlg59CHXnRDnqGplJFrbLG4aFEl5vl6cK1u76ws3LLvX7ikFnTDl5vo39sjWD6AaDPYodJp/NNHg==}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -1429,6 +1435,8 @@ snapshots:
   color-name@1.1.4: {}
 
   colorette@1.4.0: {}
+
+  compare-versions@6.1.1: {}
 
   concat-map@0.0.1: {}
 

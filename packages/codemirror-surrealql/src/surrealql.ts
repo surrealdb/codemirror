@@ -8,10 +8,11 @@ import {
 	syntaxTree,
 } from "@codemirror/language";
 import { linter, type Diagnostic, type LintSource } from "@codemirror/lint";
-
-import { parser, surqlVersion } from "@surrealdb/lezer";
-import { NodeProp, parseMixed } from "@lezer/common";
+import { parser, sinceProp, untilProp } from "@surrealdb/lezer";
+import { parseMixed } from "@lezer/common";
 import { parser as jsParser } from "@lezer/javascript";
+import type { Extension } from "@codemirror/state";
+import { compare, compareVersions } from "compare-versions";
 
 export const surrealqlLanguage = LRLanguage.define({
 	name: "surrealql",
@@ -36,8 +37,7 @@ export const surrealqlLanguage = LRLanguage.define({
 	},
 });
 
-type Scope ="permission" | "index" | "combined-results" | "syntax" | "all";
-type Version = "v1.0.0" | "v1.1.0" | "v1.2.0" | "v1.3.0" | "v1.4.0" | "v1.5.0" | "v2.0.0";
+type Scope ="permission" | "index" | "combined-results" | "syntax";
 
 const scopeMap = new Map<Scope, string>([
 	["permission", "PermissionInput"],
@@ -46,58 +46,47 @@ const scopeMap = new Map<Scope, string>([
 	["syntax", "Syntax"],
 ]);
 
-const supportedVersionsMap = new Map<Version, Version[]>([
-	["v1.0.0", ["v1.0.0"]],
-	["v1.1.0", ["v1.0.0", "v1.1.0"]],
-	["v1.2.0", ["v1.0.0", "v1.1.0", "v1.2.0"]],
-	["v1.3.0", ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0"]],
-	["v1.4.0", ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0"]],
-	["v1.5.0", ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0", "v1.5.0"]],
-	["v2.0.0", ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0", "v1.5.0", "v2.0.0"]],
-]);
-
-function isValidVersion(version: unknown): version is Version {
-	return typeof version === "string" && ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0", "v1.5.0", "v2.0.0"].includes(version);
-}
-
-function surqlVersionLinter(version: Version): LintSource {
-	console.log("using surqlVersionLinter");
-
-	const supportedVersions = supportedVersionsMap.get(version);
-
-	if (!supportedVersions) {
-		throw new Error(`Unknown version: ${version}`);
-	}
-
-	return (view) => {
+/**
+ * TODO
+ */
+export function surrealqlVersionLinter(version: string): Extension {
+	return linter((view) => {
 		const diagnostics: Diagnostic[] = [];
 
 		syntaxTree(view.state).cursor().iterate((node) => {
-			// FIXME: This is a hack to get the version prop, as for some reason the id used for finding it is 1 less then what i can read of the prop
-			const prop = node.type.prop({ id: (surqlVersion as any).id - 1 } as any);
+			const sinceVersionProp = node.type.prop(sinceProp);
+			const untilVersionProp = node.type.prop(untilProp);
 
-			if (isValidVersion(prop)) {
-				if (!supportedVersions.includes(prop)) {
-					diagnostics.push({
-						from: node.from,
-						to: node.to,
-						severity: "error",
-						message: `This syntax is not supported untill version ${prop} of SurrealDB`,
-					});
-				}
+			if (sinceVersionProp && compareVersions(version, sinceVersionProp) < 0) {
+				diagnostics.push({
+					from: node.from,
+					to: node.to,
+					severity: "error",
+					message: `This syntax is only available on SurrealDB ${sinceVersionProp} and up`,
+				});
+			}
+
+			if (untilVersionProp && compareVersions(version, untilVersionProp) > 0) {
+				diagnostics.push({
+					from: node.from,
+					to: node.to,
+					severity: "error",
+					message: `This syntax is only available until SurrealDB ${untilVersionProp}`,
+				});
 			}
 		});
 
 		return diagnostics;
-	}
+	});
 }
 
 /**
  * The CodeMirror extension used to add support for the SurrealQL language
  *
  * @param scope Limit the scope of the highlighting
+ * @param version Limit the version of the syntax
  */
-export function surrealql(scope?: Scope, version?: Version): LanguageSupport {
+export function surrealql(scope?: Scope): LanguageSupport {
 	console.log("using surql");
 
 	if (!scope) {
@@ -106,9 +95,9 @@ export function surrealql(scope?: Scope, version?: Version): LanguageSupport {
 
 	const scopeId = scopeMap.get(scope);
 
-	if (!scopeId && scope !== "all") {
+	if (!scopeId) {
 		throw new Error(`Unknown language scope: ${scope}`);
 	}
 
-	return new LanguageSupport(surrealqlLanguage.configure({ top: scopeId }), version ? linter(surqlVersionLinter(version)) : undefined);
+	return new LanguageSupport(surrealqlLanguage.configure({ top: scopeId }));
 }

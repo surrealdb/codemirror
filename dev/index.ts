@@ -1,5 +1,5 @@
 import { crosshairCursor, drawSelection, dropCursor, EditorView, highlightActiveLineGutter, highlightSpecialChars, keymap, rectangularSelection } from "@codemirror/view";
-import { surrealql } from "../packages/codemirror-surrealql/src/surrealql";
+import { surrealql, surrealqlVersionLinter } from "../packages/codemirror-surrealql/src/surrealql";
 import { Compartment, EditorState } from "@codemirror/state";
 import { bracketMatching, codeFolding, foldGutter, foldKeymap, HighlightStyle, indentOnInput, indentUnit, syntaxHighlighting } from "@codemirror/language";
 import { defaultKeymap, history, indentWithTab } from "@codemirror/commands";
@@ -37,7 +37,8 @@ new EditorView({
 		indentUnit.of("    "),
 		EditorState.allowMultipleSelections.of(true),
 		EditorView.lineWrapping,
-		surrealql("all", "v1.3.0"),
+		surrealql(),
+		surrealqlVersionLinter("1.3.0"),
 		themeComp.of(syntaxHighlighting(HighlightStyle.define(
 			[
 				{ tag: t.string, color: "#00a547" },

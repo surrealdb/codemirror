@@ -1,9 +1,13 @@
 {
 	"name": "surrealdb-cm",
+  "workspaces": [
+    "packages/*"
+  ],
 	"private": true,
 	"scripts": {
 		"test": "cd packages/lezer-surrealql && pnpm test",
-		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build"
+		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build",
+    "dev": "vite"
 	},
   "devDependencies": {
     "vite": "^5.4.11",

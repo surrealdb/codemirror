@@ -10,7 +10,7 @@
     "exports": {
         "import": "./dist/index.js",
         "require": "./dist/index.cjs",
-		"types": "./dist/typing.d.ts"
+		    "types": "./dist/typing.d.ts"
     },
     "scripts": {
         "build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",

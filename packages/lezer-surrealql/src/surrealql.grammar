@@ -53,7 +53,7 @@ Block {
 	"{" expressions? "}"
 }
 
-Closure[surqlVersion=v2_0_0] {
+Closure[since=2_0_0] {
 	ParamList { "|" commaSep<VariableName ":" safeType>? "|" } ("->" type)? Block
 }
 
@@ -103,7 +103,7 @@ CommitStatement { commit transaction? }
 DefineStatement {
 	define
 	(
-	( access defineAccessOptions ) |
+	AccessDefinition[since=2_0_0] { access defineAccessOptions } |
 	( namespace defineNamespaceOptions ) |
 	( database defineDatabaseOptions ) |
 	( user defineUserOptions ) |
@@ -281,7 +281,7 @@ defineUserOptions {
 
 // Alter statement
 
-AlterStatement[surqlVersion=v2_0_0] {
+AlterStatement[since=2_0_0] {
 	alter
 	(
 	( table alterTableOptions )
@@ -383,7 +383,7 @@ InsertStatement {
 		// TODO this should be value, but cannot easily union with VALUES syntax
 		Object |
 		VariableName |
-		BulkInsert[surqlVersion=v2_0_0] { ( "[" commaSep<Object> "]" ) } |
+		BulkInsert[since=2_0_0] { ( "[" commaSep<Object> "]" ) } |
 		(
 			"(" commaSep<Ident> ")"
 			values
@@ -476,7 +476,7 @@ UpdateStatement {
 	)
 }
 
-UpsertStatement[surqlVersion=v2_0_0] {
+UpsertStatement[since=2_0_0] {
 	upsert only?
 	(
 		statement |
@@ -523,7 +523,7 @@ LiveSelectStatement {
 
 // Other statements
 LetStatement {
-	let VariableName TypedLetStatement[surqlVersion=v2_0_0] { (":" type)? } "=" (value | subqueryStatement)
+	let VariableName TypedLetStatement[since=2_0_0] { (":" type)? } "=" (value | subqueryStatement)
 }
 
 ShowStatement {
@@ -550,7 +550,7 @@ Ident
 ( "=" ( true | false ) )?
 }
 
-RebuildStatement[surqlVersion=v1_5_0] {
+RebuildStatement[since=1_5_0] {
 rebuild index
 IfExistsClause?
 Ident
@@ -614,7 +614,7 @@ Path {
 
 pathElement {
 	GraphPath |
-	Subscript[surqlVersion=v2_0_0] {
+	Subscript[since=2_0_0] {
 		"?"?
 		"."
 		(
@@ -865,7 +865,7 @@ PostingsOrderClause { postings_order number }
 TermsCacheClause { terms_cache number }
 TermsOrderClause { terms_order number }
 
-MtreeClause[surqlVersion=v1_3_0] {
+MtreeClause[since=1_3_0] {
 	mtree
 	IndexDimensionClause
 	(
@@ -881,7 +881,7 @@ MtreeClause[surqlVersion=v1_3_0] {
 MtreeCacheClause { mtree_cache number }
 MtreeDistClause { dist ( Distance ) }
 
-HnswClause[surqlVersion=v1_5_0] {
+HnswClause[since=1_5_0] {
 hnsw
 IndexDimensionClause
 	(
@@ -928,11 +928,11 @@ UnsetClause {
 unset commaSep<FieldAssignment>
 }
 
-IfNotExistsClause[surqlVersion=v1_3_0] {
+IfNotExistsClause[since=1_3_0] {
 	if not exists
 }
 
-IfExistsClause[surqlVersion=v1_3_0] {
+IfExistsClause[since=1_3_0] {
 	if exists
 }
 
@@ -950,7 +950,7 @@ ParallelClause {
 	parallel
 }
 
-TempfilesClause[surqlVersion=v2_0_0] {
+TempfilesClause[since=2_0_0] {
 	tempfiles
 }
 
@@ -1015,7 +1015,7 @@ ExplainClause {
 	full?
 }
 
-VersionClause[surqlVersion=v2_0_0] {
+VersionClause[since=2_0_0] {
 	version
 	prefixedString
 }
@@ -1032,13 +1032,13 @@ FunctionClause {
 	customFunctionName
 }
 
-TypeClause[surqlVersion=v1_4_0] {
+TypeClause[since=1_4_0] {
 	flexible?
 	typeKeyword
 	type
 }
 
-ReadonlyClause[surqlVersion=v1_2_0] {
+ReadonlyClause[since=1_2_0] {
 	readonly
 }
 
@@ -1083,7 +1083,7 @@ DurationValue {
 	(for token Duration) | (for session Duration)
 }
 
-DurationClause[surqlVersion=v2_0_0] {
+DurationClause[since=2_0_0] {
 	duration (for session)? commaSep<DurationValue>
 }
 
@@ -1121,7 +1121,7 @@ literalType {
 singleType {
     TypeName { rawident } |
     ParameterizedType { singleType "<" type ">" } |
-    LiteralType[surqlVersion=v2_0_0] { literalType }
+    LiteralType[since=2_0_0] { literalType }
 }
 
 type {
@@ -1179,10 +1179,10 @@ Operator {
 }
 
 @external tokens rangeOperator from "./tokens" {
-	rangeOp[@name=RangeOp,surqlVersion=v2_0_0],
-	rangeOpOpenBoth[@name=RangeOp,surqlVersion=v2_0_0],
-	rangeOpOpenLeft[@name=RangeOp,surqlVersion=v2_0_0],
-	rangeOpOpenRight[@name=RangeOp,surqlVersion=v2_0_0]
+	rangeOp[@name=RangeOp,since=2_0_0],
+	rangeOpOpenBoth[@name=RangeOp,since=2_0_0],
+	rangeOpOpenLeft[@name=RangeOp,since=2_0_0],
+	rangeOpOpenRight[@name=RangeOp,since=2_0_0]
 }
 
 @tokens {
@@ -1294,10 +1294,11 @@ piped<content> {
 @detectDelim
 
 @external propSource surqlHighlighting from "./highlight"
-@external prop surqlVersion from "./version"
+@external prop since from "./version"
+@external prop until from "./version"
 
 @external extend { rawident } tokens from "./tokens" {
-	access					[@name=Keyword,surqlVersion=v2_0_0],
+	access					[@name=Keyword],
 	algorithm				[@name=Keyword],
 	all						[@name=Keyword],
 	alter					[@name=Keyword],
@@ -1320,7 +1321,7 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
-	concurrently			[@name=Keyword,surqlVersion=v2_0_0],
+	concurrently			[@name=Keyword,since=2_0_0],
 	config					[@name=Keyword],
 	content					[@name=Keyword],
 	continue				[@name=Keyword],
@@ -1393,7 +1394,7 @@ piped<content> {
 	option					[@name=Keyword],
 	order					[@name=Keyword],
 	out						[@name=Keyword],
-	overwrite				[@name=Keyword,surqlVersion=v2_0_0],
+	overwrite				[@name=Keyword,since=2_0_0],
 	parallel				[@name=Keyword],
 	param					[@name=Keyword],
 	passhash				[@name=Keyword],

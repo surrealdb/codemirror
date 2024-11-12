@@ -58,7 +58,7 @@ const supportedVersionsMap = new Map<Version, Version[]>([
 ]);
 
 function isValidVersion(version: unknown): version is Version {
-	return typeof version === "string" && ["v1.0.0", "v1.3.0", "v2.0.0"].includes(version);
+	return typeof version === "string" && ["v1.0.0", "v1.1.0", "v1.2.0", "v1.3.0", "v1.4.0", "v1.5.0", "v2.0.0"].includes(version);
 }
 
 function surqlVersionLinter(version: Version): LintSource {
@@ -74,6 +74,7 @@ function surqlVersionLinter(version: Version): LintSource {
 		const diagnostics: Diagnostic[] = [];
 
 		syntaxTree(view.state).cursor().iterate((node) => {
+			// FIXME: This is a hack to get the version prop, as for some reason the id used for finding it is 1 less then what i can read of the prop
 			const prop = node.type.prop({ id: surqlVersion.id - 1 } as any);
 
 			if (isValidVersion(prop)) {

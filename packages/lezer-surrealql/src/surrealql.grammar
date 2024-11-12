@@ -114,7 +114,7 @@ DefineStatement {
 	( analyzer defineAnalyzerOptions ) |
 	( functionKw defineFunctionOptions ) |
 	( param defineParamOptions ) |
-	( scope defineScopeOptions ) |
+	ScopeDefinition[until=2_0_0] { scope defineScopeOptions } |
 	( table defineTableOptions ) |
 	( config defineConfigOptions )
 	)

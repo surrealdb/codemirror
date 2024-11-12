@@ -12,13 +12,7 @@ const parent = document.getElementById("root")!;
 const themeComp = new Compartment();
 
 const doc = `
--- Insert a record and return nothing
-INSERT INTO company {
-	name: 'SurrealDB',
-	founded: "2021-09-10",
-	founders: [person:tobie, person:jaime],
-	tags: ['big data', 'database']
-} RETURN NONE;
+DEFINE SCOPE account
 `;
 
 new EditorView({
@@ -48,7 +42,7 @@ new EditorView({
 		EditorState.allowMultipleSelections.of(true),
 		EditorView.lineWrapping,
 		surrealql(),
-		surrealqlVersionLinter("1.0.0"),
+		surrealqlVersionLinter("2.0.0"),
 		themeComp.of(syntaxHighlighting(HighlightStyle.define(
 			[
 				{ tag: t.string, color: "#00a547" },

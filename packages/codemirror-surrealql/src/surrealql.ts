@@ -72,7 +72,7 @@ export function surrealqlVersionLinter(version: string): Extension {
 				});
 			}
 
-			if (untilVersionProp && compareVersions(version, untilVersionProp) > 0) {
+			if (untilVersionProp && compareVersions(version, untilVersionProp) >= 0) {
 				diagnostics.push({
 					from: node.from,
 					to: node.to,

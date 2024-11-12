@@ -20,7 +20,8 @@
     },
     "dependencies": {
         "@lezer/highlight": "^1.2.1",
-        "@lezer/lr": "^1.4.2"
+        "@lezer/lr": "^1.4.2",
+        "@lezer/common": "^1.2.3"
     },
     "devDependencies": {
         "@lezer/generator": "^1.7.1",

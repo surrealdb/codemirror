@@ -17,6 +17,7 @@
     "module": "dist/index.js",
     "dependencies": {
         "@codemirror/language": "^6.10.3",
+        "@codemirror/lint": "^6.8.2",
         "@lezer/common": "^1.2.3",
         "@lezer/javascript": "^1.4.19",
         "@surrealdb/lezer": "workspace:"

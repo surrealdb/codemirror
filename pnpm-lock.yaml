@@ -54,9 +54,6 @@ importers:
         specifier: ^6.1.1
         version: 6.1.1
     devDependencies:
-      '@biomejs/biome':
-        specifier: ^1.9.4
-        version: 1.9.4
       '@codemirror/buildhelper':
         specifier: ^1.0.0
         version: 1.0.2
@@ -73,9 +70,6 @@ importers:
         specifier: ^1.4.2
         version: 1.4.2
     devDependencies:
-      '@biomejs/biome':
-        specifier: ^1.9.4
-        version: 1.9.4
       '@lezer/generator':
         specifier: ^1.7.1
         version: 1.7.1

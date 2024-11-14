@@ -225,6 +225,7 @@ export const
   SubQuery = 231,
   Block = 232,
   Closure = 233,
+  LiteralType = 239,
   Duration = 240,
   DurationPart = 241,
   ObjectTypeContent = 244,

@@ -1115,7 +1115,7 @@ inclusivePredicate {
 
 // Types
 
-literalType {
+LiteralType[since=2_0_0] {
 	String |
 	number |
 	Duration |
@@ -1127,7 +1127,7 @@ literalType {
 singleType {
     TypeName { rawident } |
     ParameterizedType { singleType "<" type ">" } |
-    LiteralType[since=2_0_0] { literalType }
+    LiteralType
 }
 
 type {

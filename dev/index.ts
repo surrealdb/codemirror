@@ -37,8 +37,8 @@ if (!parent) {
 
 const themeComp = new Compartment();
 
-const doc = `
-DEFINE SCOPE account
+const doc = /* surql */ `
+DEFINE FIELD test ON test TYPE "test"
 `;
 
 new EditorView({
@@ -68,7 +68,7 @@ new EditorView({
 		EditorState.allowMultipleSelections.of(true),
 		EditorView.lineWrapping,
 		surrealql(),
-		surrealqlVersionLinter("2.0.0"),
+		surrealqlVersionLinter("1.0.0"),
 		themeComp.of(
 			syntaxHighlighting(
 				HighlightStyle.define([

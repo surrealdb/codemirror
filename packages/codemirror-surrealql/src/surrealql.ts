@@ -12,7 +12,7 @@ import type { Extension } from "@codemirror/state";
 import { parseMixed } from "@lezer/common";
 import { parser as jsParser } from "@lezer/javascript";
 import { parser, sinceProp, untilProp } from "@surrealdb/lezer";
-import { compareVersions } from "compare-versions";
+import { compareVersions, validate } from "compare-versions";
 
 export const surrealqlLanguage = LRLanguage.define({
 	name: "surrealql",
@@ -52,6 +52,10 @@ const scopeMap = new Map<Scope, string>([
  * @param version The SurrealDB version to check against (e.g. "2.0.0")
  */
 export function surrealqlVersionLinter(version: string): Extension {
+	if (!validate(version)) {
+		throw new Error(`Invalid SurrealDB version: ${version}`);
+	}
+
 	return linter((view) => {
 		const diagnostics: Diagnostic[] = [];
 

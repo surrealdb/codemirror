@@ -34,6 +34,7 @@ Some features include:
 - Automatic indentation support
 - Support for comment toggling
 - Embedded JavaScript highlighting
+- Support for linting of supported syntax based on version
 
 ## How to install
 
@@ -69,6 +70,23 @@ const state = EditorState.create({
     doc: "SELECT * FROM table",
     extensions: [
         surrealql()
+    ]
+});
+
+const editor = new EditorView({
+    parent: document.getElementById("editor"),
+    state: state,
+});
+```
+
+```ts
+import { surrealql, surrealqlVersionLinter } from "@surrealdb/codemirror";
+
+const state = EditorState.create({
+    doc: "SELECT * FROM table",
+    extensions: [
+        surrealql(),
+		surrealqlVersionLinter("2.0.0")
     ]
 });
 

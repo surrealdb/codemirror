@@ -610,6 +610,7 @@ Range[since=2_0_0] {
 
 Path {
 	baseValue pathElement+ |
+	"@" ( dotPart pathElement* | pathElement+ ) |
 	GraphPath pathElement*
 }
 
@@ -618,14 +619,18 @@ pathElement {
 	Subscript[since=2_0_0] {
 		"?"?
 		"."
-		(
-			Ident |
-			FunctionName { rawident !method } ArgumentList |
-			AnyStar |
-			Destructure
-		)
+		dotPart
 	} |
 	Filter { !filter "[" (WhereClause | WhereClause { "?" value } | expression) "]" }
+}
+
+dotPart {
+	"@" |
+	Ident |
+	FunctionName { rawident !method } ArgumentList |
+	AnyStar |
+	Destructure |
+	Recurse
 }
 
 GraphPath {
@@ -638,7 +643,20 @@ GraphPredicate {
 }
 
 Destructure {
-	"{" commaSep<((Ident ":")? Ident pathElement?)> "}"
+	"{" commaSep<((Ident ":")? ( Ident | GraphPath ) pathElement* )> "}"
+}
+
+Recurse {
+	"{" RecurseRange "}"
+	( "(" Path ")" )?
+}
+
+RecurseRange {
+	number |
+	rangeOpOpenBoth |
+	number rangeOpOpenRight |
+	rangeOpOpenLeft number |
+	number rangeOp number
 }
 
 // Objects
@@ -1202,6 +1220,7 @@ Operator {
 	"<-"[@name=ArrowLeft]
 	"<->"[@name=ArrowBoth]
 	"|"[@name=Pipe]
+	"@"[@name=At]
 
 	// Helpers
 	whitespace { $[ \n\r\t] }

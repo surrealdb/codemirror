@@ -74,3 +74,59 @@ SELECT * FROM person VERSION d'2024-10-10T14:37:08.444Z'
 ==>
 
 SurrealQL(SelectStatement(Keyword,Any,Keyword,Ident,VersionClause(Keyword,String)))
+
+
+# Recurse part
+
+person:tobie.{..}->knows->person;
+person:tobie.{..}(->knows->person).name;
+person:tobie.{..}.{ id, name, knows: ->knows->person.@ };
+a:1.{1};
+a:1.{1..};
+a:1.{1..2};
+a:1.{..2};
+@.name;
+@name;
+
+==>
+
+SurrealQL(
+  Path(
+    RecordId(RecordTbIdent,Colon,RecordIdIdent),
+    Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),BraceClose)),
+    GraphPath(ArrowRight,Ident), GraphPath(ArrowRight,Ident)
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,RecordIdIdent),
+    Subscript(
+      Recurse(
+        BraceOpen, RecurseRange(RangeOp), BraceClose,
+        Path(GraphPath(ArrowRight,Ident), GraphPath(ArrowRight,Ident))
+      )
+    ),
+    Subscript(Ident)
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,RecordIdIdent),
+    Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),BraceClose)),
+    Subscript(Destructure(BraceOpen,Ident,Ident,Ident,Colon,GraphPath(ArrowRight,Ident),GraphPath(ArrowRight,Ident),Subscript(At),BraceClose))
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,Int),
+    Subscript(Recurse(BraceOpen,RecurseRange(Int),BraceClose))
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,Int),
+    Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp),BraceClose))
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,Int),
+    Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp,Int),BraceClose))
+  ),
+  Path(
+    RecordId(RecordTbIdent,Colon,Int),
+    Subscript(Recurse(BraceOpen,RecurseRange(RangeOp,Int),BraceClose))
+  ),
+  Path(At,Subscript(Ident)),
+  Path(At,Ident)
+)

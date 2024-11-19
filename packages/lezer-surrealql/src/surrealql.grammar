@@ -587,6 +587,8 @@ baseValue {
 
 Any { "?" }
 AnyStar[@name=Any] { "*" }
+At[since=2_1_0] { "@" }
+Optional[since=2_0_0] { "?" }
 
 value[@isGroup=Value] {
 	baseValue |
@@ -610,14 +612,14 @@ Range[since=2_0_0] {
 
 Path {
 	baseValue pathElement+ |
-	"@" ( dotPart pathElement* | pathElement+ ) |
+	At ( dotPart pathElement* | pathElement+ ) |
 	GraphPath pathElement*
 }
 
 pathElement {
 	GraphPath |
-	Subscript[since=2_0_0] {
-		"?"?
+	Subscript {
+		Optional?
 		"."
 		dotPart
 	} |
@@ -625,9 +627,9 @@ pathElement {
 }
 
 dotPart {
-	"@" |
+	At |
 	Ident |
-	FunctionName { rawident !method } ArgumentList |
+	IdiomFunction |
 	AnyStar |
 	Destructure |
 	Recurse
@@ -642,11 +644,15 @@ GraphPredicate {
 	(value | Any) WhereClause? (as Ident)?
 }
 
-Destructure {
+Destructure[since=2_0_0] {
 	"{" commaSep<((Ident ":")? ( Ident | GraphPath ) pathElement* )> "}"
 }
 
-Recurse {
+IdiomFunction[since=2_0_0] { 
+	FunctionName { rawident !method } ArgumentList 
+}
+
+Recurse[since=2_1_0] {
 	"{" RecurseRange "}"
 	( "(" Path ")" )?
 }
@@ -1220,7 +1226,6 @@ Operator {
 	"<-"[@name=ArrowLeft]
 	"<->"[@name=ArrowBoth]
 	"|"[@name=Pipe]
-	"@"[@name=At]
 
 	// Helpers
 	whitespace { $[ \n\r\t] }

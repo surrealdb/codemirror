@@ -304,8 +304,8 @@ alterTableOptions {
 RemoveStatement {
 	remove
 	(
-	( namespace IfExistsClause? Ident ) |
-	( database IfExistsClause? Ident ) |
+	( namespace IfExistsClause? Ident (and expunge)? ) |
+	( database IfExistsClause? Ident (and expunge)? ) |
 	( user IfExistsClause? Ident on ( root | namespace | database ) ) |
 	( token IfExistsClause? Ident on ( namespace | database | scope ) ) |
 	( event IfExistsClause? Ident on table? Ident ) |
@@ -315,7 +315,7 @@ RemoveStatement {
 	( functionKw IfExistsClause? customFunctionName ) |
 	( param IfExistsClause? VariableName ) |
 	( scope IfExistsClause? Ident ) |
-	( table IfExistsClause? Ident )
+	( table IfExistsClause? Ident (and expunge)? )
 	)
 }
 
@@ -1333,6 +1333,7 @@ piped<content> {
 	all						[@name=Keyword],
 	alter					[@name=Keyword],
 	analyzer				[@name=Keyword],
+	and						[@name=Keyword],
 	any						[@name=Keyword],
 	as						[@name=Keyword],
 	asc						[@name=Keyword],
@@ -1379,6 +1380,7 @@ piped<content> {
 	exclude					[@name=Keyword],
 	exists					[@name=Keyword],
 	explain					[@name=Keyword],
+	expunge					[@name=Keyword],
 	extend_candidates		[@name=Keyword],
 	fetch					[@name=Keyword],
 	field					[@name=Keyword],

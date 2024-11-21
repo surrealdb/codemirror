@@ -1333,6 +1333,7 @@ piped<content> {
 	all						[@name=Keyword],
 	alter					[@name=Keyword],
 	analyzer				[@name=Keyword],
+	and						[@name=Keyword],
 	any						[@name=Keyword],
 	as						[@name=Keyword],
 	asc						[@name=Keyword],

@@ -477,6 +477,8 @@ function skipObjKey(input, off) {
 			escaped = next === 92; /* '\\' */
 		}
 	}
+
+	return null;
 }
 
 export const objectToken = new ExternalTokenizer(input => {

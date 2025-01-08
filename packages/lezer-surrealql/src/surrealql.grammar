@@ -332,10 +332,8 @@ CreateStatement {
 
 SelectStatement {
 	(select)
-	(
-		valueKeyword Predicate |
-		commaSep<inclusivePredicate> OmitClause?
-	)
+	(Fields)
+	(OmitClause?)
 	(from)
 	(only)?
 	(
@@ -665,6 +663,13 @@ RecurseRange {
 	number rangeOp number
 }
 
+// Fields
+
+Fields {
+	valueKeyword Predicate |
+	commaSep<inclusivePredicate>
+}
+
 // Objects
 
 ObjectKey {
@@ -968,7 +973,7 @@ OverwriteClause[since=2_0_0] {
 
 ReturnClause {
 	return
-	( before | after | diff | commaSep<inclusivePredicate> )
+	( before | after | diff | Fields )
 }
 
 TimeoutClause {
@@ -986,7 +991,7 @@ TempfilesClause[since=2_0_0] {
 
 FetchClause {
 	fetch
-	commaSep<Ident>
+	commaSep<Path>
 }
 
 StartClause {

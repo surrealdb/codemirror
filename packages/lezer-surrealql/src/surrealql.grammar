@@ -986,7 +986,7 @@ TempfilesClause[since=2_0_0] {
 
 FetchClause {
 	fetch
-	commaSep<Ident>
+	commaSep<Path>
 }
 
 StartClause {

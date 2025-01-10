@@ -432,7 +432,7 @@ IfElseStatement {
 relateSubject { Array | Ident | FunctionCall | VariableName | RecordId }
 RelateStatement {
 	relate only?
-	relateSubject "->" relateSubject "->" relateSubject
+	relateSubject ("->" | "<-") relateSubject ("->" | "<-") relateSubject
 	( ContentClause | SetClause )?
 	ReturnClause?
 	TimeoutClause?

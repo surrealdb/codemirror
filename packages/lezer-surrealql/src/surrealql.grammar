@@ -1079,7 +1079,7 @@ ReadonlyClause[since=1_2_0] {
 
 DefaultClause {
 	default
-	always?
+	DefaultAlways[since=2_2_0] { always? }
 	value
 }
 

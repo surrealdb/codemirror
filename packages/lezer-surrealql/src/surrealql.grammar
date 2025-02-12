@@ -635,11 +635,30 @@ dotPart {
 
 GraphPath {
 	("<-" | "->" | "<->")
-	(Ident | Any | "(" commaSep<GraphPredicate> ")")
+	(Ident | Any | GraphSelection)
+}
+
+GraphSelection {
+	"("
+	GraphFieldSelection[since=2_2_0] {
+		select
+		Fields
+		from
+	}?
+	commaSep<GraphPredicate>
+	(
+		WhereClause |
+		GraphSplitClause[since=2_2_0] { SplitClause } |
+		GraphGroupClause[since=2_2_0] { GroupClause } |
+		GraphOrderClause[since=2_2_0] { OrderClause } |
+		GraphLimitStartComboClause[since=2_2_0] { LimitStartComboClause } |
+		as Ident
+	)*
+	")"
 }
 
 GraphPredicate {
-	(value | Any) WhereClause? (as Ident)?
+	(value | Any)
 }
 
 Destructure[since=2_0_0] {

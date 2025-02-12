@@ -1079,6 +1079,7 @@ ReadonlyClause[since=1_2_0] {
 
 DefaultClause {
 	default
+	always?
 	value
 }
 
@@ -1337,6 +1338,7 @@ piped<content> {
 	algorithm				[@name=Keyword],
 	all						[@name=Keyword],
 	alter					[@name=Keyword],
+	always					[@name=Keyword],
 	analyzer				[@name=Keyword],
 	and						[@name=Keyword],
 	any						[@name=Keyword],

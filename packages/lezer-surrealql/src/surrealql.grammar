@@ -669,9 +669,11 @@ IdiomFunction[since=2_0_0] {
 	FunctionName { rawident !method } ArgumentList 
 }
 
+// Recursion
+
 Recurse[since=2_1_0] {
-	"{" RecurseRange "}"
-	( "(" Path ")" )?
+	"{" RecurseRange RecurseOptions "}"
+	( "(" pathElement+ ")" )?
 }
 
 RecurseRange {
@@ -680,6 +682,14 @@ RecurseRange {
 	number rangeOpOpenRight |
 	rangeOpOpenLeft number |
 	number rangeOp number
+}
+
+RecurseOptions[since=2_2_0] {
+  ("+" recurseOptionName ("=" baseValue)?)*
+}
+
+recurseOptionName[@name=FunctionName] {
+  rawident
 }
 
 // Fields

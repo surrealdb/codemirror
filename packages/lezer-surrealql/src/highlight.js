@@ -20,7 +20,7 @@ export const surqlHighlighting = styleTags({
 	"Closure/Pipe": t.bracket,
 	"TypeName": t.typeName,
 	"SyntaxDescribe": t.typeName,
-	"Distance Filter Tokenizer Literal IndexTypeClause AnalyzerTokenizer TokenType": t.literal,
+	"Distance Filter Tokenizer Literal IndexTypeClause AnalyzerTokenizer TokenType HttpMethod!": t.literal,
 	"RecordTbIdent RecordIdIdent RecordIdString!": t.className,
 	"Operator! RangeOp ArrowLeft ArrowRight ArrowBoth": t.operator,
 	"Regex": t.regexp,

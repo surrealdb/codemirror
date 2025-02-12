@@ -116,7 +116,8 @@ DefineStatement {
 	( param defineParamOptions ) |
 	ScopeDefinition[until=2_0_0] { scope defineScopeOptions } |
 	( table defineTableOptions ) |
-	( config defineConfigOptions )
+	( config defineConfigOptions ) |
+  ( api defineApiOptions )
 	)
 }
 
@@ -253,13 +254,23 @@ defineTableOptions {
 
 defineConfigOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	graphql
+	(
+		graphql defineConfigGraphqlOptions |
+		api defineConfigApiOptions
+	)
+}
+
+defineConfigGraphqlOptions {
 	(
 		none |
 		auto |
 		tables ( none | auto | include commaSep<Ident> | exclude commaSep<Ident> ) |
 		functions ( none | auto )
 	)*
+}
+
+defineConfigApiOptions {
+	ApiOptions
 }
 
 defineTokenOptions {
@@ -276,7 +287,30 @@ defineUserOptions {
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
-  DurationClause?
+	DurationClause?
+}
+
+defineApiOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	String
+	ApiOptions
+	(
+		for
+		(any | commaSep<HttpMethod>)
+		ApiOptions
+		then Block
+	)+
+}
+
+ApiOptions {
+	(
+		PermissionsBasicClause |
+		MiddlewareClause
+	)*
+}
+
+HttpMethod {
+	get | put | post | delete | patch | trace
 }
 
 // Alter statement
@@ -635,11 +669,30 @@ dotPart {
 
 GraphPath {
 	("<-" | "->" | "<->")
-	(Ident | Any | "(" commaSep<GraphPredicate> ")")
+	(Ident | Any | GraphSelection)
+}
+
+GraphSelection {
+	"("
+	GraphFieldSelection[since=2_2_0] {
+		select
+		Fields
+		from
+	}?
+	commaSep<GraphPredicate>
+	(
+		WhereClause |
+		GraphSplitClause[since=2_2_0] { SplitClause } |
+		GraphGroupClause[since=2_2_0] { GroupClause } |
+		GraphOrderClause[since=2_2_0] { OrderClause } |
+		GraphLimitStartComboClause[since=2_2_0] { LimitStartComboClause } |
+		as Ident
+	)*
+	")"
 }
 
 GraphPredicate {
-	(value | Any) WhereClause? (as Ident)?
+	(value | Any)
 }
 
 Destructure[since=2_0_0] {
@@ -650,9 +703,11 @@ IdiomFunction[since=2_0_0] {
 	FunctionName { rawident !method } ArgumentList 
 }
 
+// Recursion
+
 Recurse[since=2_1_0] {
-	"{" RecurseRange "}"
-	( "(" Path ")" )?
+	"{" RecurseRange RecurseOptions "}"
+	( "(" pathElement+ ")" )?
 }
 
 RecurseRange {
@@ -661,6 +716,14 @@ RecurseRange {
 	number rangeOpOpenRight |
 	rangeOpOpenLeft number |
 	number rangeOp number
+}
+
+RecurseOptions[since=2_2_0] {
+  ("+" recurseOptionName ("=" baseValue)?)*
+}
+
+recurseOptionName[@name=FunctionName] {
+  rawident
 }
 
 // Fields
@@ -1079,6 +1142,7 @@ ReadonlyClause[since=1_2_0] {
 
 DefaultClause {
 	default
+	DefaultAlways[since=2_2_0] { always? }
 	value
 }
 
@@ -1107,6 +1171,11 @@ PermissionsForClause {
 PermissionsBasicClause {
 	permissions
 	(none | full | WhereClause)
+}
+
+MiddlewareClause {
+  middleware
+  commaSep<FunctionCall>
 }
 
 CommentClause {
@@ -1337,9 +1406,11 @@ piped<content> {
 	algorithm				[@name=Keyword],
 	all						[@name=Keyword],
 	alter					[@name=Keyword],
+	always					[@name=Keyword],
 	analyzer				[@name=Keyword],
 	and						[@name=Keyword],
 	any						[@name=Keyword],
+	api						[@name=Keyword],
 	as						[@name=Keyword],
 	asc						[@name=Keyword],
 	assert					[@name=Keyword],
@@ -1395,6 +1466,7 @@ piped<content> {
 	for						[@name=Keyword],
 	from					[@name=Keyword],
 	functions				[@name=Keyword],
+	get						[@name=Keyword],
 	graphql					[@name=Keyword],
 	group					[@name=Keyword],
 	highlights				[@name=Keyword],
@@ -1419,6 +1491,7 @@ piped<content> {
 	m						[@name=Keyword],
 	m0						[@name=Keyword],
 	merge					[@name=Keyword],
+	middleware				[@name=Keyword],
 	mtree					[@name=Keyword],
 	mtree_cache				[@name=Keyword],
 	namespace				[@name=Keyword],
@@ -1439,8 +1512,10 @@ piped<content> {
 	password				[@name=Keyword],
 	patch					[@name=Keyword],
 	permissions				[@name=Keyword],
+	post					[@name=Keyword],
 	postings_cache			[@name=Keyword],
 	postings_order			[@name=Keyword],
+	put						[@name=Keyword],
 	readonly				[@name=Keyword],
 	rebuild					[@name=Keyword],
 	record					[@name=Keyword],
@@ -1479,6 +1554,7 @@ piped<content> {
 	to						[@name=Keyword],
 	token					[@name=Keyword],
 	tokenizers				[@name=Keyword],
+	trace					[@name=Keyword],
 	transaction				[@name=Keyword],
 	typeKeyword				[@name=Keyword],
 	unique					[@name=Keyword],

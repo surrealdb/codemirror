@@ -116,7 +116,8 @@ DefineStatement {
 	( param defineParamOptions ) |
 	ScopeDefinition[until=2_0_0] { scope defineScopeOptions } |
 	( table defineTableOptions ) |
-	( config defineConfigOptions )
+	( config defineConfigOptions ) |
+  ( api defineApiOptions )
 	)
 }
 
@@ -253,13 +254,23 @@ defineTableOptions {
 
 defineConfigOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	graphql
+	(
+		graphql defineConfigGraphqlOptions |
+		api defineConfigApiOptions
+	)
+}
+
+defineConfigGraphqlOptions {
 	(
 		none |
 		auto |
 		tables ( none | auto | include commaSep<Ident> | exclude commaSep<Ident> ) |
 		functions ( none | auto )
 	)*
+}
+
+defineConfigApiOptions {
+	ApiOptions
 }
 
 defineTokenOptions {
@@ -276,7 +287,30 @@ defineUserOptions {
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
-  DurationClause?
+	DurationClause?
+}
+
+defineApiOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	String
+	ApiOptions
+	(
+		for
+		(any | commaSep<HttpMethod>)
+		ApiOptions
+		then Block
+	)+
+}
+
+ApiOptions {
+	(
+		PermissionsBasicClause |
+		MiddlewareClause
+	)*
+}
+
+HttpMethod {
+	get | put | post | delete | patch | trace
 }
 
 // Alter statement
@@ -1139,6 +1173,11 @@ PermissionsBasicClause {
 	(none | full | WhereClause)
 }
 
+MiddlewareClause {
+  middleware
+  commaSep<FunctionCall>
+}
+
 CommentClause {
 	comment
 	String
@@ -1371,6 +1410,7 @@ piped<content> {
 	analyzer				[@name=Keyword],
 	and						[@name=Keyword],
 	any						[@name=Keyword],
+	api						[@name=Keyword],
 	as						[@name=Keyword],
 	asc						[@name=Keyword],
 	assert					[@name=Keyword],
@@ -1426,6 +1466,7 @@ piped<content> {
 	for						[@name=Keyword],
 	from					[@name=Keyword],
 	functions				[@name=Keyword],
+	get						[@name=Keyword],
 	graphql					[@name=Keyword],
 	group					[@name=Keyword],
 	highlights				[@name=Keyword],
@@ -1450,6 +1491,7 @@ piped<content> {
 	m						[@name=Keyword],
 	m0						[@name=Keyword],
 	merge					[@name=Keyword],
+	middleware				[@name=Keyword],
 	mtree					[@name=Keyword],
 	mtree_cache				[@name=Keyword],
 	namespace				[@name=Keyword],
@@ -1470,8 +1512,10 @@ piped<content> {
 	password				[@name=Keyword],
 	patch					[@name=Keyword],
 	permissions				[@name=Keyword],
+	post					[@name=Keyword],
 	postings_cache			[@name=Keyword],
 	postings_order			[@name=Keyword],
+	put						[@name=Keyword],
 	readonly				[@name=Keyword],
 	rebuild					[@name=Keyword],
 	record					[@name=Keyword],
@@ -1510,6 +1554,7 @@ piped<content> {
 	to						[@name=Keyword],
 	token					[@name=Keyword],
 	tokenizers				[@name=Keyword],
+	trace					[@name=Keyword],
 	transaction				[@name=Keyword],
 	typeKeyword				[@name=Keyword],
 	unique					[@name=Keyword],

@@ -831,17 +831,15 @@ Interpolation {
 // Function invocation
 
 FunctionCall {
-	( count ArgumentListCount ) |
 	(
-		(FunctionName | customFunctionName | rand)
+		(FunctionName | customFunctionName | rand | count)
 		Version { "<" VersionNumber ">" }?
 		ArgumentList
 	) |
 	RecordId ArgumentList
 }
 
-ArgumentList { "(" commaSep<value>? ")" }
-ArgumentListCount[@name=ArgumentList] { "(" ( commaSep<value>? | statement ) ")" }
+ArgumentList { "(" (commaSep<value>? | subqueryStatement) ")" }
 
 // Assignment
 
@@ -1088,7 +1086,7 @@ GroupClause {
 OrderClause {
 	order
 	by?
-	commaSep<Order>
+	(commaSep<Order> | FunctionCall)
 }
 
 SplitClause {

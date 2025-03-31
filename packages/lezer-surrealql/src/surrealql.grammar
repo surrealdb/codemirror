@@ -1088,8 +1088,7 @@ GroupClause {
 OrderClause {
 	order
 	by?
-	commaSep<Ident>
-	( asc | desc )?
+	commaSep<Order>
 }
 
 SplitClause {
@@ -1203,6 +1202,13 @@ TokenTypeClause {
 
 AnalyzerFilters {
 	Filter ("(" (number "," number | Ident) ")")?
+}
+
+Order {
+	Ident
+	collate?
+	numeric?
+	( asc | desc )?
 }
 
 Predicate {
@@ -1405,6 +1411,8 @@ piped<content> {
 @external prop until from "./version"
 
 @external extend { rawident } tokens from "./tokens" {
+	collate					[@name=Keyword],
+	numeric					[@name=Keyword],
 	access					[@name=Keyword],
 	algorithm				[@name=Keyword],
 	all						[@name=Keyword],

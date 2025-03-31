@@ -556,7 +556,10 @@ LiveSelectStatement {
 
 // Other statements
 LetStatement {
-	let VariableName TypedLetStatement[since=2_0_0] { (":" type)? } "=" (value | subqueryStatement)
+	let LetStatementName { VariableName }
+	LetStatementType[since=2_0_0] { (":" type)? }
+	"="
+	(value | subqueryStatement)
 }
 
 ShowStatement {

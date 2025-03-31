@@ -180,7 +180,8 @@ defineFieldOptions {
 		ValueClause |
 		AssertClause |
 		PermissionsForClause |
-		CommentClause
+		CommentClause |
+		ReferenceClause
 	)*
 }
 
@@ -556,7 +557,10 @@ LiveSelectStatement {
 
 // Other statements
 LetStatement {
-	let VariableName TypedLetStatement[since=2_0_0] { (":" type)? } "=" (value | subqueryStatement)
+	let LetStatementName { VariableName }
+	LetStatementType[since=2_0_0] { (":" type)? }
+	"="
+	(value | subqueryStatement)
 }
 
 ShowStatement {
@@ -828,17 +832,15 @@ Interpolation {
 // Function invocation
 
 FunctionCall {
-	( count ArgumentListCount ) |
 	(
-		(FunctionName | customFunctionName | rand)
+		(FunctionName | customFunctionName | rand | count)
 		Version { "<" VersionNumber ">" }?
 		ArgumentList
 	) |
 	RecordId ArgumentList
 }
 
-ArgumentList { "(" commaSep<value>? ")" }
-ArgumentListCount[@name=ArgumentList] { "(" ( commaSep<value>? | statement ) ")" }
+ArgumentList { "(" (commaSep<value>? | subqueryStatement) ")" }
 
 // Assignment
 
@@ -1085,8 +1087,7 @@ GroupClause {
 OrderClause {
 	order
 	by?
-	commaSep<Ident>
-	( asc | desc )?
+	(commaSep<Order> | FunctionCall)
 }
 
 SplitClause {
@@ -1156,6 +1157,11 @@ AssertClause {
 	value
 }
 
+ReferenceClause {
+	reference
+	(on delete (reject | cascade | ignore | unset | then Block))?
+}
+
 PermissionsForClause {
 	permissions
 	(
@@ -1200,6 +1206,13 @@ TokenTypeClause {
 
 AnalyzerFilters {
 	Filter ("(" (number "," number | Ident) ")")?
+}
+
+Order {
+  Ident
+  collate?
+  numeric?
+  ( asc | desc )?
 }
 
 Predicate {
@@ -1423,8 +1436,10 @@ piped<content> {
 	by						[@name=Keyword],
 	cancel					[@name=Keyword],
 	capacity				[@name=Keyword],
+	cascade					[@name=Keyword],
 	changefeed				[@name=Keyword],
 	changes					[@name=Keyword],
+	collate					[@name=Keyword],
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
@@ -1499,6 +1514,7 @@ piped<content> {
 	normal					[@name=Keyword],
 	not						[@name=Keyword],
 	ns						[@name=Keyword],
+	numeric					[@name=Keyword],
 	omit					[@name=Keyword],
 	on						[@name=Keyword],
 	only					[@name=Keyword],
@@ -1519,6 +1535,8 @@ piped<content> {
 	readonly				[@name=Keyword],
 	rebuild					[@name=Keyword],
 	record					[@name=Keyword],
+	reference				[@name=Keyword],
+	reject					[@name=Keyword],
 	relate					[@name=Keyword],
 	relation				[@name=Keyword],
 	remove					[@name=Keyword],

@@ -832,7 +832,6 @@ Interpolation {
 // Function invocation
 
 FunctionCall {
-	// ( count ArgumentListCount ) |
 	(
 		(FunctionName | customFunctionName | rand | count)
 		Version { "<" VersionNumber ">" }?

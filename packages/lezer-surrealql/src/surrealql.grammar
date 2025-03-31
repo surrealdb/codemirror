@@ -180,7 +180,8 @@ defineFieldOptions {
 		ValueClause |
 		AssertClause |
 		PermissionsForClause |
-		CommentClause
+		CommentClause |
+		ReferenceClause
 	)*
 }
 
@@ -557,9 +558,9 @@ LiveSelectStatement {
 // Other statements
 LetStatement {
 	let LetStatementName { VariableName }
-	LetStatementType[since=2_0_0] { (":" type)? }
-	"="
-	(value | subqueryStatement)
+  LetStatementType[since=2_0_0] { (":" type)? }
+  "="
+  (value | subqueryStatement)
 }
 
 ShowStatement {
@@ -831,6 +832,7 @@ Interpolation {
 // Function invocation
 
 FunctionCall {
+	// ( count ArgumentListCount ) |
 	(
 		(FunctionName | customFunctionName | rand | count)
 		Version { "<" VersionNumber ">" }?
@@ -1156,6 +1158,11 @@ AssertClause {
 	value
 }
 
+ReferenceClause {
+	reference
+	(on delete (reject | cascade | ignore | unset | then Block))?
+}
+
 PermissionsForClause {
 	permissions
 	(
@@ -1203,10 +1210,10 @@ AnalyzerFilters {
 }
 
 Order {
-	Ident
-	collate?
-	numeric?
-	( asc | desc )?
+  Ident
+  collate?
+  numeric?
+  ( asc | desc )?
 }
 
 Predicate {
@@ -1409,6 +1416,9 @@ piped<content> {
 @external prop until from "./version"
 
 @external extend { rawident } tokens from "./tokens" {
+	reference				[@name=Keyword],
+	reject					[@name=Keyword],
+	cascade					[@name=Keyword],
 	collate					[@name=Keyword],
 	numeric					[@name=Keyword],
 	access					[@name=Keyword],

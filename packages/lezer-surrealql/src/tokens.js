@@ -1,6 +1,9 @@
 import { ExternalTokenizer } from "@lezer/lr";
 
 import {
+	reference,
+	reject,
+	cascade,
 	collate,
 	numeric,
 	_break,
@@ -202,6 +205,9 @@ import {
 } from "./parser.terms";
 
 const tokenMap = {
+	reference,
+	reject,
+	cascade,
 	collate,
 	numeric,
 	access,

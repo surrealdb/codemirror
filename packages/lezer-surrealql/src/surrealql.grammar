@@ -1040,7 +1040,8 @@ FunctionCall {
 		Version { "<" VersionNumber ">" }?
 		ArgumentList
 	) |
-	RecordId ArgumentList
+	RecordId ArgumentList |
+	VariableName ArgumentList
 }
 
 ArgumentList { "(" (commaSep<value>? | subqueryStatement) ")" }

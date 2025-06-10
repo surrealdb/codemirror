@@ -497,7 +497,7 @@ HttpMethod {
 AlterStatement[since=2_0_0] {
 	alter
 	(
-		( table alterTableOptions )
+		table alterTableOptions
 	)
 }
 
@@ -926,11 +926,11 @@ RecurseRange {
 }
 
 RecurseOptions[since=2_2_0] {
-  ("+" recurseOptionName ("=" baseValue)?)*
+	("+" recurseOptionName ("=" baseValue)?)*
 }
 
 recurseOptionName[@name=FunctionName] {
-  rawident
+	rawident
 }
 
 // Fields
@@ -1149,9 +1149,18 @@ UniqueClause {
 SearchAnalyzerClause {
 	search analyzer
 	Ident
-    (Bm25Clause | DocIdsOrderClause | DocLenghtsOrderClause | PostingsOrderClause |
-	 TermsOrderClause | DocIdsCacheClause | DocLenghtsCacheClause | PostingsCacheClause |
-	 TermsCacheClause | highlights)*
+	(
+		Bm25Clause |
+		DocIdsOrderClause |
+		DocLenghtsOrderClause |
+		PostingsOrderClause |
+		TermsOrderClause |
+		DocIdsCacheClause |
+		DocLenghtsCacheClause |
+		PostingsCacheClause |
+		TermsCacheClause |
+		highlights
+	)*
 }
 
 Bm25Clause { bm25 ( "(" number "," number ")")? }
@@ -1220,7 +1229,7 @@ SetClause {
 }
 
 OmitClause {
-    omit commaSep<inclusivePredicate>
+	omit commaSep<inclusivePredicate>
 }
 
 UnsetClause {
@@ -1383,8 +1392,8 @@ PermissionsBasicClause {
 }
 
 MiddlewareClause {
-  middleware
-  commaSep<FunctionCall>
+	middleware
+	commaSep<FunctionCall>
 }
 
 CommentClause {
@@ -1424,7 +1433,7 @@ Predicate {
 }
 
 inclusivePredicate {
-  AnyStar | Predicate
+	AnyStar | Predicate
 }
 
 // Types
@@ -1439,18 +1448,18 @@ LiteralType[since=2_0_0] {
 }
 
 singleType {
-    TypeName { rawident } |
-    ParameterizedType { singleType "<" type ">" } |
-    LiteralType
+	TypeName { rawident } |
+	ParameterizedType { singleType "<" type ">" } |
+	LiteralType
 }
 
 type {
-    singleType |
-    UnionType { type (!union "|" type)+ }
+	singleType |
+	UnionType { type (!union "|" type)+ }
 }
 
 safeType {
-  singleType | "<" type ">"
+	singleType | "<" type ">"
 }
 
 ObjectTypeContent {
@@ -1473,7 +1482,7 @@ Ident {
 number { "-"? (Int | Float | Decimal) }
 
 Operator {
-    binaryOperator |
+	binaryOperator |
 	"-" | "=" | ">" | "<" |
 	binaryOperatorKeyword |
 	is | ( is opNot ) |
@@ -1589,7 +1598,7 @@ Operator {
 		"&&" | "||" | "??" | "?:" | "!=" | "==" | "?=" | "*=" | "~" | "!~" | "*~" |
 		"<=" | ">=" | "+" | "+=" | "-=" | "*" | "×" | "/"  | "÷" | "**" |
 		$[∋∌⊇⊃⊅∈∉⊆⊂⊄] | "@@"
-    }
+	}
 
 	assignmentOperator[@name=Operator] {
 		"="  |

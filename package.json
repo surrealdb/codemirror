@@ -3,8 +3,8 @@
 	"workspaces": ["packages/*"],
 	"private": true,
 	"scripts": {
-		"test": "cd packages/lezer-surrealql && pnpm test",
-		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build",
+		"test": "cd packages/lezer-surrealql && bun run test",
+		"build": "cd packages/lezer-surrealql && bun run build && cd ../codemirror-surrealql && bun run build",
 		"dev": "vite",
 		"lint:check": "biome check . --formatter-enabled=false",
 		"lint:apply": "biome check . --formatter-enabled=false --write",

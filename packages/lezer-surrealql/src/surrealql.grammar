@@ -1209,7 +1209,7 @@ AnalyzerFilters {
 }
 
 Order {
-  Ident
+  Path
   collate?
   numeric?
   ( asc | desc )?

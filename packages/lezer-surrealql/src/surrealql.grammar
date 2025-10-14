@@ -863,6 +863,10 @@ Range[since=2_0_0] {
 	value !range rangeOp !range value
 }
 
+Idiom {
+	Ident ( "." Ident )*
+}
+
 Path {
 	baseValue pathElement+ |
 	At ( dotPart pathElement* | pathElement+ ) |
@@ -1306,7 +1310,7 @@ LimitStartComboClause {
 GroupClause {
 	group
 	(
-	    by? commaSep<Ident> |
+	    by? commaSep<Idiom> |
 	    all
 	)
 }
@@ -1320,7 +1324,7 @@ OrderClause {
 SplitClause {
 	split
 	on?
-	Ident
+	Idiom
 }
 
 WhereClause {
@@ -1446,10 +1450,10 @@ AnalyzerFilters {
 }
 
 Order {
-  Path
-  collate?
-  numeric?
-  ( asc | desc )?
+	Idiom
+	collate?
+	numeric?
+	( asc | desc )?
 }
 
 Predicate {

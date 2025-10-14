@@ -45,12 +45,12 @@ expression {
 
 paramDefinition[@name=ParamDefinition] {
 	VariableName
-	(":" type)?
+	(":" Type { type })?
 }
 
 escapedParamDefinition[@name=ParamDefinition] {
 	VariableName
-	(":" safeType)?
+	(":" Type { safeType })?
 }
 
 anyKeyword {

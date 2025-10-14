@@ -8,9 +8,9 @@
 	"module": "dist/index.js",
 	"main": "dist/index.cjs",
 	"exports": {
+		"types": "./dist/typing.d.ts",
 		"import": "./dist/index.js",
-		"require": "./dist/index.cjs",
-		"types": "./dist/typing.d.ts"
+		"require": "./dist/index.cjs"
 	},
 	"scripts": {
 		"build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",

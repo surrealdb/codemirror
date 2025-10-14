@@ -6,7 +6,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "cm-buildhelper src/surrealql.ts",
-		"test": "cm-runtests"
+		"run-tests": "cm-runtests",
+		"deploy": "bun publish --access public"
 	},
 	"main": "dist/index.cjs",
 	"exports": {

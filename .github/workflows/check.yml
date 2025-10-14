@@ -12,20 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.21
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 9
-    
-    - name: Build packages
-      run: pnpm install --frozen-lockfile && pnpm build
+      - name: Build packages
+        run: bun install && bun run build
 
-    - name: Run tests
-      run: pnpm test
+      - name: Run tests
+        run: bun run test

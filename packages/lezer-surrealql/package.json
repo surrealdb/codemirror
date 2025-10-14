@@ -1,6 +1,6 @@
 {
 	"name": "@surrealdb/lezer",
-	"version": "1.0.0-beta.21",
+	"version": "1.0.0-beta.22",
 	"author": "SurrealDB",
 	"description": "SurrealQL grammar for Lezer",
 	"type": "module",
@@ -8,15 +8,15 @@
 	"module": "dist/index.js",
 	"main": "dist/index.cjs",
 	"exports": {
+		"types": "./dist/typing.d.ts",
 		"import": "./dist/index.js",
-		"require": "./dist/index.cjs",
-		"types": "./dist/typing.d.ts"
+		"require": "./dist/index.cjs"
 	},
 	"scripts": {
 		"build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",
 		"build-debug": "lezer-generator src/surrealql.grammar -o src/parser.js --names && rollup -c",
-		"prepack": "pnpm build",
-		"test": "node test/test-surrealql.js"
+		"run-tests": "bun run test/test-surrealql.js",
+		"deploy": "bun publish --access public"
 	},
 	"dependencies": {
 		"@lezer/highlight": "^1.2.1",

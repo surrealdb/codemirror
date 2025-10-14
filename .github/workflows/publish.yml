@@ -3,52 +3,50 @@ name: Publish Packages to npmjs
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 20
-        registry-url: "https://registry.npmjs.org"
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.21
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-          version: 9
+      - name: Extract versions
+        run: |
+          echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          echo "CM_VERSION=$(node -p "require('./packages/codemirror-surrealql/package.json').version")" >> $GITHUB_ENV
+          echo "LZ_VERSION=$(node -p "require('./packages/lezer-surrealql/package.json').version")" >> $GITHUB_ENV
 
-    - name: Extract versions
-      run: |
-        echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
-        echo "CM_VERSION=$(node -p "require('./packages/codemirror-surrealql/package.json').version")" >> $GITHUB_ENV
-        echo "LZ_VERSION=$(node -p "require('./packages/lezer-surrealql/package.json').version")" >> $GITHUB_ENV
+      - name: Assert package versions
+        run: |
+          echo "CM_VERSION=$CM_VERSION"
+          echo "LZ_VERSION=$LZ_VERSION"
+          echo "GIT_TAG=$GIT_TAG"
 
-    - name: Assert package versions
-      run: |
-        echo "CM_VERSION=$CM_VERSION"
-        echo "LZ_VERSION=$LZ_VERSION"
-        echo "GIT_TAG=$GIT_TAG"
+          if [[ "v$CM_VERSION" != "$GIT_TAG" || "v$LZ_VERSION" != "$GIT_TAG" ]]; then
+            echo "Version mismatch! Please correct package versions"
+            exit 1
+          else
+            echo "Version check complete"
+          fi
 
-        if [[ "v$CM_VERSION" != "$GIT_TAG" || "v$LZ_VERSION" != "$GIT_TAG" ]]; then
-          echo "Version mismatch! Please correct package versions"
-          exit 1
-        else
-          echo "Version check complete"
-        fi
+      - name: Build packages
+        run: bun install && bun run build
 
-    - name: Build packages
-      run: pnpm install --frozen-lockfile && pnpm build
+      - name: Run tests
+        run: bun run test
 
-    - name: Run tests
-      run: pnpm test
+      - name: Setup NPM authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-    - name: Publish
-      run: pnpm publish -r --no-git-checks --access public
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish all packages
+        run: bun run deploy
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

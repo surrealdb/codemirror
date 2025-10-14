@@ -3,9 +3,10 @@
 	"workspaces": ["packages/*"],
 	"private": true,
 	"scripts": {
-		"test": "cd packages/lezer-surrealql && pnpm test",
-		"build": "cd packages/lezer-surrealql && pnpm build && cd ../codemirror-surrealql && pnpm build",
+		"test": "turbo run-tests",
+		"build": "turbo build",
 		"dev": "vite",
+		"deploy": "turbo deploy",
 		"lint:check": "biome check . --formatter-enabled=false",
 		"lint:apply": "biome check . --formatter-enabled=false --write",
 		"lint:apply:unsafe": "biome check . --formatter-enabled=false --write --unsafe"
@@ -13,11 +14,13 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"vite": "^5.4.11",
+		"turbo": "^2.5.6",
 		"@codemirror/language": "^6.10.3",
 		"@codemirror/commands": "^6.7.1",
 		"@codemirror/autocomplete": "^6.18.2",
 		"@codemirror/view": "^6.34.2",
 		"@codemirror/state": "^6.4.1",
 		"@lezer/highlight": "^1.2.1"
-	}
+	},
+	"packageManager": "bun@1.2.19"
 }

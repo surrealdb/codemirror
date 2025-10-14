@@ -297,13 +297,14 @@ DefineStatement {
 		ScopeDefinition[until=2_0_0] { scope defineScopeOptions } |
 		( table defineTableOptions ) |
 		( config defineConfigOptions ) |
-		( api defineApiOptions )
+		( api defineApiOptions ) | 
+		( bucket defineBucketOptions )
 	)
 }
 
 defineAccessOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	OnRootNsDbClause
 	(
 		AccessTypeClause |
@@ -315,7 +316,7 @@ defineAccessOptions {
 
 defineAnalyzerOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	(
 		TokenizersClause |
 		FiltersClause |
@@ -326,7 +327,7 @@ defineAnalyzerOptions {
 
 defineEventOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	OnTableClause
 	(
 		WhenClause {
@@ -343,13 +344,13 @@ defineEventOptions {
 
 defineDatabaseOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident on Ident
+	value on value
 	CommentClause?
 }
 
 defineFieldOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	OnTableClause
 	(
 		TypeClause |
@@ -359,7 +360,8 @@ defineFieldOptions {
 		AssertClause |
 		PermissionsForClause |
 		CommentClause |
-		ReferenceClause
+		ReferenceClause |
+		ComputedClause
 	)*
 }
 
@@ -379,7 +381,7 @@ functionKw[@name=Keyword] { function }
 
 defineIndexOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	OnTableClause
 	(
 		FieldsColumnsClause |
@@ -391,7 +393,7 @@ defineIndexOptions {
 
 defineNamespaceOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	CommentClause?
 }
 
@@ -408,7 +410,7 @@ defineParamOptions {
 
 defineScopeOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	(
 		SessionClause |
 		SigninClause |
@@ -419,7 +421,7 @@ defineScopeOptions {
 
 defineTableOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	(
 		drop |
 		(schemafull | schemaless) |
@@ -454,15 +456,15 @@ defineConfigApiOptions {
 
 defineTokenOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
-	( on ( namespace | database | scope Ident ) )
+	value
+	( on ( namespace | database | scope value ) )
 	TokenTypeClause
 	( valueKeyword String )
 }
 
 defineUserOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Ident
+	value
 	OnRootNsDbClause
 	( ( password | passhash ) String )
 	( roles commaSep<Ident> )
@@ -492,6 +494,16 @@ HttpMethod {
 	get | put | post | delete | patch | trace
 }
 
+defineBucketOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	value
+	(
+		BackendClause |
+		PermissionsBasicClause |
+		CommentClause
+	)*
+}
+
 // Alter statement
 
 AlterStatement[since=2_0_0] {
@@ -503,7 +515,7 @@ AlterStatement[since=2_0_0] {
 
 alterTableOptions {
 	IfNotExistsClause?
-	Ident
+	value
 	(
 		drop |
 		(schemafull | schemaless) |
@@ -517,18 +529,20 @@ alterTableOptions {
 RemoveStatement {
 	remove
 	(
-		( namespace IfExistsClause? Ident (and expunge)? ) |
-		( database IfExistsClause? Ident (and expunge)? ) |
-		( user IfExistsClause? Ident on ( root | namespace | database ) ) |
-		( token IfExistsClause? Ident on ( namespace | database | scope ) ) |
-		( event IfExistsClause? Ident on table? Ident ) |
-		( field IfExistsClause? Ident on table? Ident ) |
-		( index IfExistsClause? Ident on table? Ident ) |
-		( analyzer IfExistsClause? Ident ) |
+		( namespace IfExistsClause? value (and expunge)? ) |
+		( database IfExistsClause? value (and expunge)? ) |
+		( user IfExistsClause? value on ( root | namespace | database ) ) |
+		( token IfExistsClause? value on ( namespace | database | scope ) ) |
+		( event IfExistsClause? value OnTableClause ) |
+		( field IfExistsClause? value OnTableClause ) |
+		( index IfExistsClause? value OnTableClause ) |
+		( analyzer IfExistsClause? value ) |
 		( functionKw IfExistsClause? customFunctionName ) |
 		( param IfExistsClause? VariableName ) |
-		( scope IfExistsClause? Ident ) |
-		( table IfExistsClause? Ident (and expunge)? )
+		( scope IfExistsClause? value ) |
+		( table IfExistsClause? value (and expunge)? )
+		( api IfExistsClause? value ) |
+		( bucket IfExistsClause? value )
 	)
 }
 
@@ -852,11 +866,11 @@ Range[since=2_0_0] {
 Path {
 	baseValue pathElement+ |
 	At ( dotPart pathElement* | pathElement+ ) |
-	GraphPath pathElement*
+	Lookup pathElement*
 }
 
 pathElement {
-	GraphPath |
+	Lookup |
 	Subscript {
 		Optional?
 		"."
@@ -874,12 +888,12 @@ dotPart {
 	Recurse
 }
 
-GraphPath {
-	("<-" | "->" | "<->")
-	(Ident | Any | GraphSelection)
+Lookup {
+	("<-" | "->" | "<->" | "<~")
+	(Ident | Any | LookupSelection)
 }
 
-GraphSelection {
+LookupSelection {
 	"("
 	GraphFieldSelection[since=2_2_0] {
 		select
@@ -903,7 +917,7 @@ GraphPredicate {
 }
 
 Destructure[since=2_0_0] {
-	"{" commaSep<((Ident ":")? ( Ident | GraphPath ) pathElement* )> "}"
+	"{" commaSep<((Ident ":")? ( Ident | Lookup ) pathElement* )> "}"
 }
 
 IdiomFunction[since=2_0_0] { 
@@ -1118,7 +1132,7 @@ JwtClause {
 }
 
 OnTableClause {
-	on table? Ident
+	on table? value
 }
 
 OnRootNsDbClause {
@@ -1375,6 +1389,11 @@ ReferenceClause {
 	(on delete (reject | cascade | ignore | unset | then Block))?
 }
 
+ComputedClause {
+	computed
+	value
+}
+
 PermissionsForClause {
 	permissions
 	(
@@ -1413,6 +1432,11 @@ DurationClause[since=2_0_0] {
 TokenTypeClause {
 	typeKeyword
 	TokenType
+}
+
+BackendClause {
+	backend
+	value
 }
 
 // Support
@@ -1480,7 +1504,7 @@ Ident {
 	tickIdent
 }
 
-number { "-"? (Int | Float | Decimal) }
+number { ("-" | "+")? (Int | Float | Decimal) }
 
 Operator {
 	binaryOperator |
@@ -1522,10 +1546,14 @@ Operator {
 	"[" "]"
 	"<" ">"
 	":"[@name=Colon]
-	"->"[@name=ArrowRight]
-	"<-"[@name=ArrowLeft]
-	"<->"[@name=ArrowBoth]
+	"->"[@name=LookupRight]
+	"<-"[@name=LookupLeft]
+	"<~"[@name=LookupLeft]
+	"<->"[@name=LookupBoth]
 	"|"[@name=Pipe]
+	"~"[until=2_4_0]
+	"!~"[until=2_4_0]
+	"*~"[until=2_4_0]
 
 	// Helpers
 	whitespace { $[ \n\r\t] }
@@ -1541,7 +1569,7 @@ Operator {
 	Int { @digit+ }
 	frac { '.' @digit+ }
 	exp { $[eE] $[+\-]? @digit+ }
-	Float { @digit+ (frac exp? | exp) "f"? }
+	Float { (@digit+ (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
 	Decimal { @digit+ frac? exp? "dec" }
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
@@ -1580,16 +1608,16 @@ Operator {
 
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }
+	@precedence { Float Decimal Int rawident }
+	@precedence { DurationPart Int rawident }
 	@precedence { prefixedString numberident rawident }
 	@precedence { customFunctionName FunctionName rawident }
-	@precedence { Float Decimal Int rawident }
-	@precedence { DurationPart rawident }
-	@precedence { DurationPart Int }
-	@precedence { numberident Int rawident }
 	@precedence { "f'" 'f"' rawident }
 	@precedence { "/*" Regex }
-	@precedence { Decimal numberident }
+	@precedence { Float FunctionName }
+	@precedence { Int numberident }
 	@precedence { Float numberident }
+	@precedence { Decimal numberident }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }
@@ -1643,9 +1671,11 @@ piped<content> {
 	at						[@name=Keyword],
 	authenticate			[@name=Keyword],
 	auto					[@name=Keyword],
+	backend					[@name=Keyword],
 	begin					[@name=Keyword],
 	bm25					[@name=Keyword],
 	break					[@name=Keyword],
+	bucket					[@name=Keyword],
 	by						[@name=Keyword],
 	cancel					[@name=Keyword],
 	capacity				[@name=Keyword],
@@ -1656,6 +1686,7 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
+	computed				[@name=Keyword],
 	concurrently			[@name=Keyword],
 	config					[@name=Keyword],
 	content					[@name=Keyword],

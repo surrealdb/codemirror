@@ -22,6 +22,6 @@ export const surqlHighlighting = styleTags({
 	"SyntaxDescribe": t.typeName,
 	"Distance Filter Tokenizer Literal IndexTypeClause AnalyzerTokenizer TokenType HttpMethod!": t.literal,
 	"RecordTbIdent RecordIdIdent RecordIdString!": t.className,
-	"Operator! RangeOp ArrowLeft ArrowRight ArrowBoth": t.operator,
+	"Operator! RangeOp LookupLeft LookupRight LookupBoth": t.operator,
 	"Regex": t.regexp,
 });

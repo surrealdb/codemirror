@@ -826,6 +826,7 @@ baseValue {
 	VariableName |
 	Ident[@dynamicPrecedence=-1] { rawident } |
 	Array |
+	Set |
 	RecordId |
 	FunctionJs |
 	FunctionCall |
@@ -979,7 +980,19 @@ Object {
 
 // Arrays
 
-Array { "[" commaSep<value>? "]"}
+Array {
+	"[" commaSep<value>? "]"
+}
+
+// Sets
+
+Set { 
+	"{" (
+		"," |
+		value "," |
+		value "," value ("," value)*
+	) "}"
+}
 
 // Record Ids
 

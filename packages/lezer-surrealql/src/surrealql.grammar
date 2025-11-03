@@ -981,15 +981,6 @@ Object {
 
 Array { "[" commaSepTrailing<value>? "]"}
 
-// Sets
-Set { 
-  "{" (
-    "," |
-    value "," |
-    value "," value ("," value)* ","?
-  ) "}"
-}
-
 // Record Ids
 
 RecordTbIdent {

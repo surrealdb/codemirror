@@ -84,6 +84,7 @@ anyKeyword {
 	database |
 	db |
 	default |
+	defer |
 	define |
 	delete |
 	desc |
@@ -388,6 +389,7 @@ defineIndexOptions {
 		IndexClause |
 		CommentClause |
 		ConcurrentlyClause[since=2_0_0] { concurrently }
+		DeferClause[since=3_0_0] { defer }
 	)*
 }
 
@@ -1697,6 +1699,7 @@ piped<content> {
 	database				[@name=Keyword],
 	db						[@name=Keyword],
 	default					[@name=Keyword],
+	defer					[@name=Keyword],
 	define					[@name=Keyword],
 	delete					[@name=Keyword],
 	desc					[@name=Keyword],

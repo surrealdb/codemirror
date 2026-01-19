@@ -981,7 +981,7 @@ Object {
 // Arrays
 
 Array {
-	"[" commaSep<value>? "]"
+	"[" commaSepTrailing<value>? "]"
 }
 
 // Sets
@@ -1002,6 +1002,8 @@ RecordTbIdent {
 	bracketIdent
 }
 
+// Ideally we match "number" here, but I cannot for the life of me get it to
+// fall back to numberident after. This will suffice for now.
 RecordIdIdent {
 	numberident |
 	tickIdent |
@@ -1010,7 +1012,6 @@ RecordIdIdent {
 
 recordIdValue {
 	RecordIdIdent |
-	number |
 	Array |
 	Object |
 	RecordIdString { prefixedString }
@@ -1054,8 +1055,8 @@ FunctionJs {
 		"/*" (blockCommentContent | blockCommentNewline)* blockCommentEnd
 	}
 	FormatString {
-		'f"' (formatStringContentDouble | Interpolation)* '"' |
-		"f'" (formatStringContentSingle | Interpolation)* "'"
+		'$"' (formatStringContentDouble | Interpolation)* '"' |
+		"$'" (formatStringContentSingle | Interpolation)* "'"
 	}
 }
 
@@ -1591,7 +1592,7 @@ Operator {
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
-	prefixedString[@name=String] { $[ruds] String }
+	prefixedString[@name=String] { $[rudbf] String }
 
 	formatStringContentDouble { ("\\" _ | !["{\\])+ }
 	formatStringContentSingle { ("\\" _ | !['{\\])+ }
@@ -1607,7 +1608,7 @@ Operator {
 	rawident { (@asciiLetter | "_") (@asciiLetter | @digit | "_")* }
 	numberident {
 		rawident |
-		( @digit+ (@asciiLetter | "_") (@asciiLetter | @digit | "_")* )
+		@digit (@asciiLetter | @digit | "_")*
 	}
 
 	functionNameSegment { (@asciiLetter | "_") (@asciiLetter | "_" | @digit)* }
@@ -1632,9 +1633,6 @@ Operator {
 	@precedence { "f'" 'f"' rawident }
 	@precedence { "/*" Regex }
 	@precedence { Float FunctionName }
-	@precedence { Int numberident }
-	@precedence { Float numberident }
-	@precedence { Decimal numberident }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }

@@ -351,7 +351,7 @@ defineDatabaseOptions {
 
 defineFieldOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	value
+	Idiom
 	OnTableClause
 	(
 		TypeClause |
@@ -1167,7 +1167,7 @@ AccessTypeClause {
 }
 
 FieldsColumnsClause {
-	( fields | columns ) commaSep<Ident>
+	( fields | columns ) commaSep<Idiom>
 }
 
 IndexClause {

@@ -4,6 +4,10 @@
 	"author": "SurrealDB",
 	"description": "SurrealQL language support for CodeMirror",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/surrealdb/codemirror"
+	},
 	"scripts": {
 		"build": "cm-buildhelper src/surrealql.ts",
 		"run-tests": "cm-runtests",

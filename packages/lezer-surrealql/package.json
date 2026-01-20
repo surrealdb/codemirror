@@ -4,6 +4,10 @@
 	"author": "SurrealDB",
 	"description": "SurrealQL grammar for Lezer",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/surrealdb/codemirror"
+	},
 	"types": "dist/typing.d.ts",
 	"module": "dist/index.js",
 	"main": "dist/index.cjs",

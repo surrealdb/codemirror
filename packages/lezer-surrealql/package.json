@@ -1,6 +1,6 @@
 {
 	"name": "@surrealdb/lezer",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"author": "SurrealDB",
 	"description": "SurrealQL grammar for Lezer",
 	"type": "module",
@@ -20,7 +20,7 @@
 		"build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",
 		"build-debug": "lezer-generator src/surrealql.grammar -o src/parser.js --names && rollup -c",
 		"run-tests": "bun run test/test-surrealql.js",
-		"deploy": "bun publish --access public"
+		"deploy": "npm publish $(bun pm pack --quiet) --access public"
 	},
 	"dependencies": {
 		"@lezer/highlight": "^1.2.1",

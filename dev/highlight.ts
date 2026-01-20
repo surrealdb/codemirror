@@ -1,7 +1,7 @@
-import { highlightCode } from "@lezer/highlight";
-import { parser } from "../packages/lezer-surrealql";
-import { tags as t } from "@lezer/highlight";
 import { HighlightStyle } from "@codemirror/language";
+import { highlightCode } from "@lezer/highlight";
+import { tags as t } from "@lezer/highlight";
+import { parser } from "../packages/lezer-surrealql";
 
 const highlighter =  HighlightStyle.define([
 	{ tag: t.string, color: "#00a547" },

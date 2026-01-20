@@ -20,7 +20,7 @@
 		"build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",
 		"build-debug": "lezer-generator src/surrealql.grammar -o src/parser.js --names && rollup -c",
 		"run-tests": "bun run test/test-surrealql.js",
-		"deploy": "npm publish --access public"
+		"deploy": "bun pm pack && npm publish ./surrealdb-lezer-*.tgz --access public"
 	},
 	"dependencies": {
 		"@lezer/highlight": "^1.2.1",

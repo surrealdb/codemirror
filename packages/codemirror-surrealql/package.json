@@ -11,7 +11,7 @@
 	"scripts": {
 		"build": "cm-buildhelper src/surrealql.ts",
 		"run-tests": "cm-runtests",
-		"deploy": "npm publish --access public"
+		"deploy": "bun pm pack && npm publish ./surrealdb-codemirror-*.tgz --access public"
 	},
 	"main": "dist/index.cjs",
 	"exports": {

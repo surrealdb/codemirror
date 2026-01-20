@@ -9,7 +9,8 @@
 		"deploy": "turbo deploy",
 		"lint:check": "biome check . --formatter-enabled=false",
 		"lint:apply": "biome check . --formatter-enabled=false --write",
-		"lint:apply:unsafe": "biome check . --formatter-enabled=false --write --unsafe"
+		"lint:apply:unsafe": "biome check . --formatter-enabled=false --write --unsafe",
+		"postinstall": "bun run scripts/fix-bun-lock-versions.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",

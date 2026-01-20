@@ -1,13 +1,17 @@
 {
 	"name": "@surrealdb/codemirror",
-	"version": "1.0.0-beta.24",
+	"version": "1.0.3",
 	"author": "SurrealDB",
 	"description": "SurrealQL language support for CodeMirror",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/surrealdb/codemirror"
+	},
 	"scripts": {
 		"build": "cm-buildhelper src/surrealql.ts",
 		"run-tests": "cm-runtests",
-		"deploy": "bun publish --access public"
+		"deploy": "npm publish $(bun pm pack --quiet) --access public"
 	},
 	"main": "dist/index.cjs",
 	"exports": {
@@ -21,7 +25,7 @@
 		"@codemirror/lint": "^6.8.2",
 		"@lezer/common": "^1.2.3",
 		"@lezer/javascript": "^1.4.19",
-		"@surrealdb/lezer": "workspace:",
+		"@surrealdb/lezer": "workspace:*",
 		"compare-versions": "^6.1.1"
 	},
 	"devDependencies": {

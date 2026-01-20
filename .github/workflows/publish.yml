@@ -56,3 +56,5 @@ jobs:
 
       - name: Publish all packages
         run: bun run deploy
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,6 +1,6 @@
 {
 	"name": "@surrealdb/codemirror",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"author": "SurrealDB",
 	"description": "SurrealQL language support for CodeMirror",
 	"type": "module",
@@ -11,7 +11,7 @@
 	"scripts": {
 		"build": "cm-buildhelper src/surrealql.ts",
 		"run-tests": "cm-runtests",
-		"deploy": "bun pm pack && npm publish ./surrealdb-codemirror-*.tgz --access public"
+		"deploy": "bun publish --access public"
 	},
 	"main": "dist/index.cjs",
 	"exports": {

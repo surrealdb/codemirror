@@ -130,3 +130,15 @@ SurrealQL(
   Path(At,Subscript(Ident)),
   Path(At,Ident)
 )
+
+# Database definitions
+
+DEFINE DATABASE db;
+DEFINE DATABASE db STRICT;
+
+==>
+
+SurrealQL(
+	DefineStatement(Keyword,Keyword,Ident),
+	DefineStatement(Keyword,Keyword,Ident,Keyword)
+)

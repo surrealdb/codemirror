@@ -345,7 +345,8 @@ defineEventOptions {
 
 defineDatabaseOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	value on value
+	value
+	strict?
 	CommentClause?
 }
 
@@ -1821,6 +1822,7 @@ piped<content> {
 	sleep					[@name=Keyword],
 	split					[@name=Keyword],
 	start					[@name=Keyword],
+	strict					[@name=Keyword],
 	structure				[@name=Keyword],
 	table					[@name=Keyword],
 	tables					[@name=Keyword],

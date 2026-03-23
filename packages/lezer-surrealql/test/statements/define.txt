@@ -1,0 +1,281 @@
+# Define namespace
+
+DEFINE NAMESPACE test
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident))
+
+# Define namespace if not exists
+
+DEFINE NAMESPACE IF NOT EXISTS test
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,IfNotExistsClause(Keyword,Keyword,Keyword),Ident))
+
+# Define namespace overwrite
+
+DEFINE NAMESPACE OVERWRITE test
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,OverwriteClause(Keyword),Ident))
+
+# Define database
+
+DEFINE DATABASE test ON test
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword,Ident))
+
+# Define user
+
+DEFINE USER tobie ON ROOT PASSWORD "secret" ROLES owner
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnRootNsDbClause(Keyword,Keyword),Keyword,String,Keyword,Ident))
+
+# Define event
+
+DEFINE EVENT myevent ON TABLE person WHEN $event = "CREATE" THEN (CREATE log)
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),WhenClause(Keyword,BinaryExpression(VariableName,Operator,String)),ThenClause(Keyword,SubQuery(CreateStatement(Keyword,Ident)))))
+
+# Define field
+
+DEFINE FIELD name ON TABLE person TYPE string
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName)))
+
+# Define field with default
+
+DEFINE FIELD age ON TABLE person TYPE number DEFAULT 0
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),DefaultClause(Keyword,DefaultAlways,Int)))
+
+# Define field with assert
+
+DEFINE FIELD email ON TABLE person TYPE string ASSERT $value != NONE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),AssertClause(Keyword,BinaryExpression(VariableName,Operator,None))))
+
+# Define field readonly
+
+DEFINE FIELD created ON TABLE person TYPE datetime READONLY
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),ReadonlyClause(Keyword)))
+
+# Define field flexible type
+
+DEFINE FIELD data ON TABLE person FLEXIBLE TYPE object
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,Keyword,TypeName)))
+
+# Define field with permissions
+
+DEFINE FIELD secret ON TABLE person TYPE string PERMISSIONS FOR select, create WHERE $auth.admin = true
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),PermissionsForClause(Keyword,Keyword,Keyword,Keyword,WhereClause(Keyword,BinaryExpression(Path(VariableName,Subscript(Ident)),Operator,Bool)))))
+
+# Define field with reference
+
+DEFINE FIELD author ON TABLE post TYPE record REFERENCE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),ReferenceClause(Keyword)))
+
+# Define field with computed
+
+DEFINE FIELD fullname ON TABLE person COMPUTED $value.first + " " + $value.last
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),ComputedClause(Keyword,BinaryExpression(BinaryExpression(Path(VariableName,Subscript(Ident)),Operator,String),Operator,Path(VariableName,Subscript(Ident))))))
+
+# Define index unique
+
+DEFINE INDEX idx_email ON TABLE person FIELDS email UNIQUE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(UniqueClause(Keyword))))
+
+# Define index search analyzer
+
+DEFINE INDEX idx_search ON TABLE person FIELDS name SEARCH ANALYZER my_analyzer BM25
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(SearchAnalyzerClause(Keyword,Keyword,Ident,Bm25Clause(Keyword)))))
+
+# Define index mtree
+
+DEFINE INDEX idx_vec ON TABLE person FIELDS embedding MTREE DIMENSION 3
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(MtreeClause(Keyword,IndexDimensionClause(Keyword,Int)))))
+
+# Define index hnsw
+
+DEFINE INDEX idx_vec ON TABLE person FIELDS embedding HNSW DIMENSION 3
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Int)))))
+
+# Define function
+
+DEFINE FUNCTION fn::greet($name: string) {
+	RETURN "Hello, " + $name + "!";
+}
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,FunctionName,ParamDefinition(VariableName,Colon,Type(TypeName)),Block(BraceOpen,ReturnStatement(Keyword,BinaryExpression(BinaryExpression(String,Operator,VariableName),Operator,String)),BraceClose)))
+
+# Define param
+
+DEFINE PARAM $endpointBase VALUE "https://dummyjson.com"
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,VariableName,Keyword,String))
+
+# Define table
+
+DEFINE TABLE person
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident))
+
+# Define table schemafull
+
+DEFINE TABLE person SCHEMAFULL
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword))
+
+# Define table schemaless
+
+DEFINE TABLE person SCHEMALESS
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword))
+
+# Define table drop
+
+DEFINE TABLE person DROP
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword))
+
+# Define table type relation
+
+DEFINE TABLE knows TYPE RELATION IN person OUT person
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableTypeClause(Keyword,Keyword,Keyword,Ident,Keyword,Ident,EnforcedClause)))
+
+# Define table type normal
+
+DEFINE TABLE person TYPE NORMAL
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableTypeClause(Keyword,Keyword)))
+
+# Define table type any
+
+DEFINE TABLE person TYPE ANY
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableTypeClause(Keyword,Keyword)))
+
+# Define table as view
+
+DEFINE TABLE adult AS SELECT * FROM person WHERE age > 18
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableViewClause(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)))))
+
+# Define table with changefeed
+
+DEFINE TABLE person CHANGEFEED 1d
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,ChangefeedClause(Keyword,Duration(DurationPart))))
+
+# Define table with permissions none
+
+DEFINE TABLE person PERMISSIONS NONE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,PermissionsForClause(Keyword,None)))
+
+# Define table with comment
+
+DEFINE TABLE person COMMENT "People table"
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,CommentClause(Keyword,String)))
+
+# Define access on database
+
+DEFINE ACCESS myaccess ON DATABASE TYPE RECORD SIGNUP (CREATE user SET email = $email) SIGNIN (SELECT * FROM user WHERE email = $email)
+
+==>
+
+SurrealQL(DefineStatement(Keyword,AccessDefinition(Keyword,Ident,OnRootNsDbClause(Keyword,Keyword),AccessTypeClause(Keyword,Keyword,SignupClause(Keyword,SubQuery(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))))),SigninClause(Keyword,SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,VariableName)))))))))
+
+# Define config graphql
+
+DEFINE CONFIG GRAPHQL AUTO
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Keyword,Keyword))
+
+# Define bucket
+
+DEFINE BUCKET mybucket
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident))
+
+# Define scope
+
+DEFINE SCOPE account SESSION 24h SIGNUP (CREATE user SET email = $email) SIGNIN (SELECT * FROM user WHERE email = $email)
+
+==>
+
+SurrealQL(DefineStatement(Keyword,ScopeDefinition(Keyword,Ident,SessionClause(Keyword,Duration(DurationPart)),SignupClause(Keyword,SubQuery(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))))),SigninClause(Keyword,SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,VariableName))))))))

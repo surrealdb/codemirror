@@ -1,0 +1,34 @@
+# JavaScript function with args
+
+function(123, 1d2h) {
+	const number = 123;
+	if (test("{")) {
+		return number.toString();
+	}
+}
+
+==>
+
+SurrealQL(
+  FunctionJs(
+    FunctionName,
+    ArgumentList(Int,Duration(DurationPart,DurationPart)),
+    JavaScriptBlock(BraceOpen,JavaScriptContent,BraceClose)
+  )
+)
+
+# Simple JavaScript function
+
+function() {
+	return 42;
+}
+
+==>
+
+SurrealQL(
+  FunctionJs(
+    FunctionName,
+    ArgumentList,
+    JavaScriptBlock(BraceOpen,JavaScriptContent,BraceClose)
+  )
+)

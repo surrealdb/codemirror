@@ -1,0 +1,41 @@
+# Single duration parts
+
+1ns;
+1us;
+1ms;
+1s;
+1m;
+1h;
+1d;
+1w;
+1y
+
+==>
+
+SurrealQL(
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart),
+  Duration(DurationPart)
+)
+
+# Multi-part duration
+
+1s 1m 1 h
+
+==>
+
+SurrealQL(Duration(DurationPart,DurationPart,DurationPart))
+
+# Complex duration
+
+1d2h30m
+
+==>
+
+SurrealQL(Duration(DurationPart,DurationPart,DurationPart))

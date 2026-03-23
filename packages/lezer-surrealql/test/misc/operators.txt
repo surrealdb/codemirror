@@ -1,0 +1,213 @@
+# Addition
+
+1 + 2
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Subtraction
+
+5 - 3
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Multiplication
+
+2 * 3
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Division
+
+10 / 2
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Power
+
+2 ** 3
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Equality
+
+a == b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Inequality
+
+a != b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Less than
+
+a < b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Greater than
+
+a > b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Less than or equal
+
+a <= b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Greater than or equal
+
+a >= b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Logical AND
+
+a && b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Logical OR
+
+a || b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Null coalescing
+
+a ?? b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Elvis operator
+
+a ?: b
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Unicode containment operators
+
+a ∈ z;
+x ∉ y;
+a ⊆ b
+
+==>
+
+SurrealQL(
+  BinaryExpression(Ident,Operator,Ident),
+  BinaryExpression(Ident,Operator,Ident),
+  BinaryExpression(Ident,Operator,Ident)
+)
+
+# Keyword operator containsnot
+
+x containsnot y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# IS operator
+
+x IS y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# IN keyword operator
+
+x IN y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator(Keyword),Ident))
+
+# Fuzzy match
+
+x ?= y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# All match
+
+x *= y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Ident))
+
+# Unicode multiplication
+
+2 × 3
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Unicode division
+
+10 ÷ 2
+
+==>
+
+SurrealQL(BinaryExpression(Int,Operator,Int))
+
+# Matches operator with distance
+
+x @1@ y
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator(Int),Ident))
+
+# Addition assignment in expression
+
+a += 1
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Int))
+
+# Subtraction assignment in expression
+
+a -= 1
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator,Int))

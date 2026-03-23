@@ -1,0 +1,47 @@
+# Begin
+
+BEGIN
+
+==>
+
+SurrealQL(BeginStatement(Keyword))
+
+# Begin transaction
+
+BEGIN TRANSACTION
+
+==>
+
+SurrealQL(BeginStatement(Keyword,Keyword))
+
+# Cancel
+
+CANCEL
+
+==>
+
+SurrealQL(CancelStatement(Keyword))
+
+# Cancel transaction
+
+CANCEL TRANSACTION
+
+==>
+
+SurrealQL(CancelStatement(Keyword,Keyword))
+
+# Commit
+
+COMMIT
+
+==>
+
+SurrealQL(CommitStatement(Keyword))
+
+# Commit transaction
+
+COMMIT TRANSACTION
+
+==>
+
+SurrealQL(CommitStatement(Keyword,Keyword))

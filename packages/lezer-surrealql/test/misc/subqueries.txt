@@ -1,0 +1,23 @@
+# Subquery with select
+
+(SELECT * FROM test)
+
+==>
+
+SurrealQL(SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident)))
+
+# Subquery with value
+
+(1 + 2)
+
+==>
+
+SurrealQL(SubQuery(BinaryExpression(Int,Operator,Int)))
+
+# Subquery with create
+
+(CREATE test)
+
+==>
+
+SurrealQL(SubQuery(CreateStatement(Keyword,Ident)))

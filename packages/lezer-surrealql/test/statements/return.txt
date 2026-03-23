@@ -1,0 +1,39 @@
+# Return value
+
+RETURN 42
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,Int))
+
+# Return string
+
+RETURN "hello"
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,String))
+
+# Return expression
+
+RETURN 1 + 2
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,BinaryExpression(Int,Operator,Int)))
+
+# Return variable
+
+RETURN $result
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,VariableName))
+
+# Return function call
+
+RETURN fn::greet("Tobie")
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,FunctionCall(FunctionName,ArgumentList(String))))

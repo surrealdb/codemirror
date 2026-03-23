@@ -1,0 +1,47 @@
+# Empty array
+
+[]
+
+==>
+
+SurrealQL(Array("[","]"))
+
+# Single element
+
+[1]
+
+==>
+
+SurrealQL(Array("[",Int,"]"))
+
+# Multiple elements
+
+[1, 2, 3]
+
+==>
+
+SurrealQL(Array("[",Int,Int,Int,"]"))
+
+# Trailing comma
+
+[1, 2, 3,]
+
+==>
+
+SurrealQL(Array("[",Int,Int,Int,"]"))
+
+# Nested arrays
+
+[[1, 2], [3, 4]]
+
+==>
+
+SurrealQL(Array("[",Array("[",Int,Int,"]"),Array("[",Int,Int,"]"),"]"))
+
+# Mixed types
+
+[1, "hello", true, null]
+
+==>
+
+SurrealQL(Array("[",Int,String,Bool,None,"]"))

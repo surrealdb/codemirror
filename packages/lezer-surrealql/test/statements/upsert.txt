@@ -1,0 +1,55 @@
+# Simple upsert
+
+UPSERT person
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident))
+
+# Upsert ONLY
+
+UPSERT ONLY person:tobie
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Upsert with SET
+
+UPSERT person SET name = "Tobie"
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String))))
+
+# Upsert with CONTENT
+
+UPSERT person CONTENT {name: "Tobie"}
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose))))
+
+# Upsert with MERGE
+
+UPSERT person MERGE {age: 31}
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+
+# Upsert with WHERE
+
+UPSERT person SET age = 31 WHERE name = "Tobie"
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
+
+# Upsert with RETURN
+
+UPSERT person SET age = 31 RETURN AFTER
+
+==>
+
+SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ReturnClause(Keyword,Literal)))

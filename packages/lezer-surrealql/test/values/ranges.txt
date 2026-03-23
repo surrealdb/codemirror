@@ -1,0 +1,31 @@
+# Exclusive range
+
+1>..2
+
+==>
+
+SurrealQL(Range(Int,RangeOp,Int))
+
+# Right-open range
+
+-3..
+
+==>
+
+SurrealQL(Range(Int,RangeOp))
+
+# Left-open inclusive range
+
+..='a'
+
+==>
+
+SurrealQL(Range(RangeOp,String))
+
+# Simple range
+
+1..5
+
+==>
+
+SurrealQL(Range(Int,RangeOp,Int))

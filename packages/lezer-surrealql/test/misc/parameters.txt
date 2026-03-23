@@ -1,0 +1,23 @@
+# Simple variable
+
+$name
+
+==>
+
+SurrealQL(VariableName)
+
+# Variable with underscore
+
+$my_var
+
+==>
+
+SurrealQL(VariableName)
+
+# Variable with numbers
+
+$var123
+
+==>
+
+SurrealQL(VariableName)

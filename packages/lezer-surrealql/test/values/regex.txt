@@ -1,0 +1,31 @@
+# Basic regex
+
+/hello/
+
+==>
+
+SurrealQL(Regex)
+
+# Regex with flags
+
+/test/gi
+
+==>
+
+SurrealQL(Regex)
+
+# Regex with character class
+
+/[a-z]+/
+
+==>
+
+SurrealQL(Regex)
+
+# Regex with escape
+
+/foo\.bar/
+
+==>
+
+SurrealQL(Regex)

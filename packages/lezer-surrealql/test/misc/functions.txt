@@ -1,0 +1,63 @@
+# Namespaced function call
+
+a::b()
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList))
+
+# Custom function call
+
+fn::one::two(1, a)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(Int,Ident)))
+
+# Rand function
+
+rand(3)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(Int)))
+
+# Count function
+
+count(x)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(Ident)))
+
+# Versioned function call
+
+some::versioned::function<1.2.3>(a)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,Version("<",VersionNumber,">"),ArgumentList(Ident)))
+
+# No-argument function call
+
+a::b()
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList))
+
+# Multiple argument function call
+
+string::concat("hello", " ", "world")
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(String,String,String)))
+
+# Variable function call
+
+$func(1)
+
+==>
+
+SurrealQL(FunctionCall(VariableName,ArgumentList(Int)))

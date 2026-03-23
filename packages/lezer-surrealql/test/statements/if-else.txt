@@ -1,0 +1,47 @@
+# Modern if
+
+IF $age > 18 { RETURN "adult" }
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Modern(BinaryExpression(VariableName,Operator,Int),Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose))))
+
+# Modern if else
+
+IF $age > 18 { RETURN "adult" } ELSE { RETURN "minor" }
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Modern(BinaryExpression(VariableName,Operator,Int),Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose),Keyword,Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose))))
+
+# Modern if else if else
+
+IF $age > 65 { RETURN "senior" } ELSE IF $age > 18 { RETURN "adult" } ELSE { RETURN "minor" }
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Modern(BinaryExpression(VariableName,Operator,Int),Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose),Keyword,Keyword,BinaryExpression(VariableName,Operator,Int),Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose),Keyword,Block(BraceOpen,ReturnStatement(Keyword,String),BraceClose))))
+
+# Legacy if then end
+
+IF $age > 18 THEN (RETURN "adult") END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator,Int),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword)))
+
+# Legacy if then else end
+
+IF $age > 18 THEN (RETURN "adult") ELSE (RETURN "minor") END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator,Int),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword)))
+
+# Legacy if then else if then else end
+
+IF $age > 65 THEN (RETURN "senior") ELSE IF $age > 18 THEN (RETURN "adult") ELSE (RETURN "minor") END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator,Int),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword,Keyword,BinaryExpression(VariableName,Operator,Int),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword)))

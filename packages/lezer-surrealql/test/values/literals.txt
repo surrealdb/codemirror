@@ -1,0 +1,46 @@
+# Boolean true
+
+true;
+true
+
+==>
+
+SurrealQL(Bool,Bool)
+
+# Boolean false
+
+false;
+false
+
+==>
+
+SurrealQL(Bool,Bool)
+
+# Null
+
+null;
+null
+
+==>
+
+SurrealQL(None,None)
+
+# None
+
+none;
+none
+
+==>
+
+SurrealQL(None,None)
+
+# Mixed literals
+
+true;
+false;
+null;
+none
+
+==>
+
+SurrealQL(Bool,Bool,None,None)

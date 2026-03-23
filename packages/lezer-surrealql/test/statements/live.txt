@@ -1,0 +1,47 @@
+# Live select all
+
+LIVE SELECT * FROM person
+
+==>
+
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident))
+
+# Live select from record ID
+
+LIVE SELECT * FROM person:tobie
+
+==>
+
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Any,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Live select DIFF
+
+LIVE SELECT DIFF FROM person
+
+==>
+
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Literal,Keyword,Ident))
+
+# Live select specific fields
+
+LIVE SELECT name, age FROM person
+
+==>
+
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Predicate(Ident),Predicate(Ident),Keyword,Ident))
+
+# Live select with WHERE
+
+LIVE SELECT * FROM person WHERE age > 18
+
+==>
+
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+
+# Kill statement
+
+KILL "some-uuid-here"
+
+==>
+
+SurrealQL(KillStatement(Keyword,String))

@@ -1,0 +1,228 @@
+# Dot notation path
+
+$variable.ident.ident
+
+==>
+
+SurrealQL(Path(VariableName,Subscript(Ident),Subscript(Ident)))
+
+# Wildcard on record ID
+
+record:id.*
+
+==>
+
+SurrealQL(Path(RecordId(RecordTbIdent,Colon,RecordIdIdent),Subscript(Any)))
+
+# Lookup arrow right with any
+
+ident->?
+
+==>
+
+SurrealQL(Path(Ident,Lookup(LookupRight,Any)))
+
+# Lookup arrow right
+
+ident->ident
+
+==>
+
+SurrealQL(Path(Ident,Lookup(LookupRight,Ident)))
+
+# Multiple lookups
+
+ident->ident<-ident<->ident
+
+==>
+
+SurrealQL(Path(Ident,Lookup(LookupRight,Ident),Lookup(LookupLeft,Ident),Lookup(LookupBoth,Ident)))
+
+# Record ID lookup
+
+record:id->ident
+
+==>
+
+SurrealQL(Path(RecordId(RecordTbIdent,Colon,RecordIdIdent),Lookup(LookupRight,Ident)))
+
+# SELECT with lookup path
+
+SELECT ->ident FROM ident
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(Path(Lookup(LookupRight,Ident)))),Keyword,Ident))
+
+# Method call on number
+
+123.to_string()
+
+==>
+
+SurrealQL(Path(Int,Subscript(IdiomFunction(FunctionName,ArgumentList))))
+
+# Filter with variable key
+
+{}[$variable]
+
+==>
+
+SurrealQL(Path(Object(BraceOpen,BraceClose),Filter("[",VariableName,"]")))
+
+# Filter with ident key
+
+{}[ident]
+
+==>
+
+SurrealQL(Path(Object(BraceOpen,BraceClose),Filter("[",Ident,"]")))
+
+# Filter with string key
+
+{}["string"]
+
+==>
+
+SurrealQL(Path(Object(BraceOpen,BraceClose),Filter("[",String,"]")))
+
+# Record ID filter
+
+record:id[ident]
+
+==>
+
+SurrealQL(Path(RecordId(RecordTbIdent,Colon,RecordIdIdent),Filter("[",Ident,"]")))
+
+# Array index access
+
+[][0]
+
+==>
+
+SurrealQL(Path(Array("[","]"),Filter("[",Int,"]")))
+
+# Array variable access
+
+[][$variable]
+
+==>
+
+SurrealQL(Path(Array("[","]"),Filter("[",VariableName,"]")))
+
+# Array WHERE filter
+
+[][WHERE ident = 123]
+
+==>
+
+SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)),"]")))
+
+# Array question mark filter
+
+[][? ident = 123]
+
+==>
+
+SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(BinaryExpression(Ident,Operator,Int)),"]")))
+
+# Recurse unbounded
+
+person:tobie.{..}->knows->person
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),RecurseOptions,BraceClose)),
+  Lookup(LookupRight,Ident), Lookup(LookupRight,Ident)
+))
+
+# Recurse with path expression
+
+person:tobie.{..}(->knows->person).name
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(
+    Recurse(
+      BraceOpen, RecurseRange(RangeOp), RecurseOptions, BraceClose,
+      Lookup(LookupRight,Ident), Lookup(LookupRight,Ident)
+    )
+  ),
+  Subscript(Ident)
+))
+
+# Recurse with destructure
+
+person:tobie.{..}.{ id, name, knows: ->knows->person.@ }
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),RecurseOptions,BraceClose)),
+  Subscript(Destructure(BraceOpen,Ident,Ident,Ident,Colon,Lookup(LookupRight,Ident),Lookup(LookupRight,Ident),Subscript(At),BraceClose))
+))
+
+# Recurse with fixed depth
+
+a:b.{1}
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(Int),RecurseOptions,BraceClose))
+))
+
+# Recurse with min range
+
+a:b.{1..}
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp),RecurseOptions,BraceClose))
+))
+
+# Recurse with full range
+
+a:b.{1..2}
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp,Int),RecurseOptions,BraceClose))
+))
+
+# Recurse with max range
+
+a:b.{..2}
+
+==>
+
+SurrealQL(Path(
+  RecordId(RecordTbIdent,Colon,RecordIdIdent),
+  Subscript(Recurse(BraceOpen,RecurseRange(RangeOp,Int),RecurseOptions,BraceClose))
+))
+
+# At reference with subscript
+
+@.name
+
+==>
+
+SurrealQL(Path(At,Subscript(Ident)))
+
+# At reference with ident
+
+@name
+
+==>
+
+SurrealQL(Path(At,Ident))

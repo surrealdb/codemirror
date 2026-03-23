@@ -1,0 +1,231 @@
+# Simple select all
+
+SELECT * FROM test
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident))
+
+# Select specific fields
+
+SELECT name, age FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(Ident),Predicate(Ident)),Keyword,Ident))
+
+# Select with alias
+
+SELECT name AS n FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(Ident,Keyword,Ident)),Keyword,Ident))
+
+# Select VALUE
+
+SELECT VALUE name FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Keyword,Predicate(Ident)),Keyword,Ident))
+
+# Select ONLY
+
+SELECT * FROM ONLY person:tobie
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Select with WHERE
+
+SELECT * FROM person WHERE age > 18
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+
+# Select with ORDER BY
+
+SELECT * FROM person ORDER BY name ASC
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,OrderClause(Keyword,Keyword,Order(Idiom(Ident),Keyword))))
+
+# Select with ORDER BY DESC
+
+SELECT * FROM person ORDER BY age DESC
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,OrderClause(Keyword,Keyword,Order(Idiom(Ident),Keyword))))
+
+# Select with GROUP BY
+
+SELECT count() FROM person GROUP BY age
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(FunctionCall(FunctionName,ArgumentList))),Keyword,Ident,GroupClause(Keyword,Keyword,Idiom(Ident))))
+
+# Select with GROUP ALL
+
+SELECT count() FROM person GROUP ALL
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(FunctionCall(FunctionName,ArgumentList))),Keyword,Ident,GroupClause(Keyword,Keyword)))
+
+# Select with LIMIT
+
+SELECT * FROM person LIMIT 10
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Int))))
+
+# Select with LIMIT BY
+
+SELECT * FROM person LIMIT BY 10
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Keyword,Int))))
+
+# Select with START
+
+SELECT * FROM person START 5
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Int))))
+
+# Select with START AT
+
+SELECT * FROM person START AT 5
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Keyword,Int))))
+
+# Select with LIMIT and START
+
+SELECT * FROM person LIMIT 10 START 5
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Int),StartClause(Keyword,Int))))
+
+# Select with FETCH
+
+SELECT * FROM person FETCH posts
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,FetchClause(Keyword,Path(Ident,⚠))))
+
+# Select with SPLIT
+
+SELECT * FROM person SPLIT emails
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,SplitClause(Keyword,Idiom(Ident))))
+
+# Select with OMIT
+
+SELECT * OMIT password FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),OmitClause(Keyword,Predicate(Ident)),Keyword,Ident))
+
+# Select with WITH INDEX
+
+SELECT * FROM person WITH INDEX idx_name
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WithClause(Keyword,Keyword,Ident)))
+
+# Select with WITH NOINDEX
+
+SELECT * FROM person WITH NOINDEX
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WithClause(Keyword,Keyword)))
+
+# Select with EXPLAIN
+
+SELECT * FROM person EXPLAIN
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,ExplainClause(Keyword)))
+
+# Select with EXPLAIN FULL
+
+SELECT * FROM person EXPLAIN FULL
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,ExplainClause(Keyword,Literal)))
+
+# Select with PARALLEL
+
+SELECT * FROM person PARALLEL
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,ParallelClause(Keyword)))
+
+# Select with TEMPFILES
+
+SELECT * FROM person TEMPFILES
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,TempfilesClause(Keyword)))
+
+# Select with TIMEOUT
+
+SELECT * FROM person TIMEOUT 5s
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,TimeoutClause(Keyword,Duration(DurationPart))))
+
+# Select with VERSION
+
+SELECT * FROM person VERSION d'2024-10-10T14:37:08.444Z'
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,VersionClause(Keyword,String)))
+
+# Select with multiple clauses
+
+SELECT * FROM person WHERE age > 18 ORDER BY name LIMIT 10
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)),OrderClause(Keyword,Keyword,Order(Idiom(Ident))),LimitStartComboClause(LimitClause(Keyword,Int))))
+
+# Select from multiple targets
+
+SELECT * FROM person, animal
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,Ident))
+
+# Select from subquery
+
+SELECT * FROM (SELECT * FROM person)
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident))))

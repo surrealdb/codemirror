@@ -1,0 +1,71 @@
+# Simple record ID
+
+test:123
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdIdent))
+
+# Record ID with ident value
+
+test:abc
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdIdent))
+
+# Number followed by ident in record ID
+
+test:123ident
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdIdent))
+
+# Record ID function call
+
+stuff:ulid()
+
+==>
+
+SurrealQL(FunctionCall(RecordId(RecordTbIdent,Colon,RecordIdIdent),ArgumentList))
+
+# Record ID with tick-quoted table
+
+`my table`:abc
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdIdent))
+
+# Record ID with tick-quoted value
+
+test:`my id`
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdIdent))
+
+# Record ID with object value
+
+test:{a: 1}
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose)))
+
+# Record ID with array value
+
+test:[1, 2]
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,Array("[",Int,Int,"]")))
+
+# Record ID with prefixed string value
+
+test:u"my-uuid-here"
+
+==>
+
+SurrealQL(RecordId(RecordTbIdent,Colon,RecordIdString(String)))

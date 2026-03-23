@@ -24,11 +24,11 @@ SurrealQL(DefineStatement(Keyword,Keyword,OverwriteClause(Keyword),Ident))
 
 # Define database
 
-DEFINE DATABASE test ON test
+DEFINE DATABASE test
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword,Ident))
+SurrealQL(DefineStatement(Keyword,Keyword,Ident))
 
 # Define user
 

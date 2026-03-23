@@ -1,0 +1,103 @@
+# Simple create
+
+CREATE person
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident))
+
+# Create ONLY
+
+CREATE ONLY person
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Keyword,Ident))
+
+# Create with SET
+
+CREATE person SET name = "Tobie", age = 30
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String),FieldAssignment(Ident,Operator,Int))))
+
+# Create with CONTENT
+
+CREATE person CONTENT {name: "Tobie", age: 30}
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+
+# Create with RETURN fields
+
+CREATE person SET name = "Tobie" RETURN name
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),ReturnClause(Keyword,Fields(Predicate(Ident)))))
+
+# Create with RETURN AFTER
+
+CREATE person SET name = "Tobie" RETURN AFTER
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),ReturnClause(Keyword,Literal)))
+
+# Create with RETURN BEFORE
+
+CREATE person SET name = "Tobie" RETURN BEFORE
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),ReturnClause(Keyword,Literal)))
+
+# Create with RETURN DIFF
+
+CREATE person SET name = "Tobie" RETURN DIFF
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),ReturnClause(Keyword,Literal)))
+
+# Create with TIMEOUT
+
+CREATE person SET name = "Tobie" TIMEOUT 5s
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),TimeoutClause(Keyword,Duration(DurationPart))))
+
+# Create with PARALLEL
+
+CREATE person SET name = "Tobie" PARALLEL
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String)),ParallelClause(Keyword)))
+
+# Create with record ID target
+
+CREATE person:tobie
+
+==>
+
+SurrealQL(CreateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Create with variable target
+
+CREATE $table
+
+==>
+
+SurrealQL(CreateStatement(Keyword,VariableName))
+
+# Create multiple targets
+
+CREATE person, animal
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,Ident))

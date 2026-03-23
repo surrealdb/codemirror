@@ -1,0 +1,87 @@
+# Simple update
+
+UPDATE person
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident))
+
+# Update ONLY
+
+UPDATE ONLY person:tobie
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Update with SET
+
+UPDATE person SET age = 31
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int))))
+
+# Update with CONTENT
+
+UPDATE person CONTENT {name: "Tobie"}
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose))))
+
+# Update with MERGE
+
+UPDATE person MERGE {age: 31}
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+
+# Update with REPLACE
+
+UPDATE person REPLACE {name: "Tobie"}
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,ReplaceClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose))))
+
+# Update with UNSET
+
+UPDATE person UNSET temp = 0
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,UnsetClause(Keyword,FieldAssignment(Ident,Operator,Int))))
+
+# Update with WHERE
+
+UPDATE person SET age = 31 WHERE name = "Tobie"
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
+
+# Update with RETURN
+
+UPDATE person SET age = 31 RETURN AFTER
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ReturnClause(Keyword,Literal)))
+
+# Update with TIMEOUT
+
+UPDATE person SET age = 31 TIMEOUT 5s
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),TimeoutClause(Keyword,Duration(DurationPart))))
+
+# Update with PARALLEL
+
+UPDATE person SET age = 31 PARALLEL
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ParallelClause(Keyword)))

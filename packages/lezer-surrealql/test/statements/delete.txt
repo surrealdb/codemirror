@@ -1,0 +1,63 @@
+# Simple delete
+
+DELETE person
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident))
+
+# Delete ONLY
+
+DELETE ONLY person:tobie
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Delete with WHERE
+
+DELETE person WHERE age < 18
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+
+# Delete with RETURN BEFORE
+
+DELETE person RETURN BEFORE
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident,ReturnClause(Keyword,Literal)))
+
+# Delete with TIMEOUT
+
+DELETE person TIMEOUT 5s
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident,TimeoutClause(Keyword,Duration(DurationPart))))
+
+# Delete with PARALLEL
+
+DELETE person PARALLEL
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident,ParallelClause(Keyword)))
+
+# Delete record ID
+
+DELETE person:tobie
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Delete with WHERE and RETURN
+
+DELETE person WHERE active = false RETURN DIFF
+
+==>
+
+SurrealQL(DeleteStatement(Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Bool)),ReturnClause(Keyword,Literal)))

@@ -1,0 +1,64 @@
+# Simple object
+
+{a: 10}
+
+==>
+
+SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))
+
+# Object with string keys
+
+{"stringkey": 1, 'single': 2}
+
+==>
+
+SurrealQL(Object(BraceOpen,ObjectContent(
+  ObjectProperty(ObjectKey(String),Colon,Int),
+  ObjectProperty(ObjectKey(String),Colon,Int)
+),BraceClose))
+
+# Empty object
+
+{}
+
+==>
+
+SurrealQL(Object(BraceOpen,BraceClose))
+
+# Empty object with space
+
+{ }
+
+==>
+
+SurrealQL(Object(BraceOpen,BraceClose))
+
+# Block vs Object
+
+{block}
+
+==>
+
+SurrealQL(Block(BraceOpen,Ident,BraceClose))
+
+# Object followed by value
+
+{a: 10};
+123
+
+==>
+
+SurrealQL(
+  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose),
+  Int
+)
+
+# Nested objects
+
+{a: {b: 1}}
+
+==>
+
+SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,
+  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose)
+)),BraceClose))

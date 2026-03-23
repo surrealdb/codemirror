@@ -1,0 +1,23 @@
+# Sleep with seconds
+
+SLEEP 1s
+
+==>
+
+SurrealQL(SleepStatement(Keyword,Duration(DurationPart)))
+
+# Sleep with milliseconds
+
+SLEEP 100ms
+
+==>
+
+SurrealQL(SleepStatement(Keyword,Duration(DurationPart)))
+
+# Sleep with multi-part duration
+
+SLEEP 1m30s
+
+==>
+
+SurrealQL(SleepStatement(Keyword,Duration(DurationPart,DurationPart)))

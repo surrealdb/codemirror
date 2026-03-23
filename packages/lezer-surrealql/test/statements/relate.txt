@@ -1,0 +1,63 @@
+# Simple relate
+
+RELATE person:tobie->knows->person:jaime
+
+==>
+
+SurrealQL(RelateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Relate ONLY
+
+RELATE ONLY person:tobie->knows->person:jaime
+
+==>
+
+SurrealQL(RelateStatement(Keyword,Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Relate with SET
+
+RELATE person:tobie->knows->person:jaime SET since = "2024-01-01"
+
+==>
+
+SurrealQL(RelateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent),SetClause(Keyword,FieldAssignment(Ident,Operator,String))))
+
+# Relate with CONTENT
+
+RELATE person:tobie->knows->person:jaime CONTENT {since: "2024-01-01"}
+
+==>
+
+SurrealQL(RelateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent),ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose))))
+
+# Relate with RETURN
+
+RELATE person:tobie->knows->person:jaime RETURN AFTER
+
+==>
+
+SurrealQL(RelateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent),ReturnClause(Keyword,Literal)))
+
+# Relate with ident subjects
+
+RELATE person->knows->person
+
+==>
+
+SurrealQL(RelateStatement(Keyword,Ident,LookupRight,Ident,LookupRight,Ident))
+
+# Relate with variable subject
+
+RELATE $from->knows->$to
+
+==>
+
+SurrealQL(RelateStatement(Keyword,VariableName,LookupRight,Ident,LookupRight,VariableName))
+
+# Relate with array subject
+
+RELATE [person:tobie]->knows->person:jaime
+
+==>
+
+SurrealQL(RelateStatement(Keyword,Array("[",RecordId(RecordTbIdent,Colon,RecordIdIdent),"]"),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent)))

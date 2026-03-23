@@ -1,0 +1,69 @@
+# Double quoted string
+
+"hello world"
+
+==>
+
+SurrealQL(String)
+
+# Single quoted string
+
+'hello world'
+
+==>
+
+SurrealQL(String)
+
+# Escaped double quotes
+
+"A string with \"double\" quotes"
+
+==>
+
+SurrealQL(String)
+
+# Escaped single quotes
+
+'A string with \'single\' quotes'
+
+==>
+
+SurrealQL(String)
+
+# Mixed quotes
+
+"A string with 'single' quotes";
+'A string with "double" quotes'
+
+==>
+
+SurrealQL(String,String)
+
+# Multiline string
+
+'A string with new \
+line'
+
+==>
+
+SurrealQL(String)
+
+# Empty strings
+
+"";
+''
+
+==>
+
+SurrealQL(String,String)
+
+# Prefixed strings
+
+r"raw string";
+u"uuid";
+d"2024-01-01T00:00:00Z";
+b"base64data"
+
+==>
+
+SurrealQL(String,String,String,String)

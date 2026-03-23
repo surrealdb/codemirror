@@ -1,0 +1,23 @@
+# Throw string
+
+THROW "An error occurred"
+
+==>
+
+SurrealQL(ThrowStatement(Keyword,String))
+
+# Throw variable
+
+THROW $error
+
+==>
+
+SurrealQL(ThrowStatement(Keyword,VariableName))
+
+# Throw expression
+
+THROW "Error: " + $msg
+
+==>
+
+SurrealQL(ThrowStatement(Keyword,BinaryExpression(String,Operator,VariableName)))

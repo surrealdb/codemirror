@@ -1,0 +1,39 @@
+# Empty closure
+
+|| { 1 }
+
+==>
+
+SurrealQL(Closure(Pipe,Pipe,Block(BraceOpen,Int,BraceClose)))
+
+# Closure with param
+
+|$a| { $a }
+
+==>
+
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName),Pipe,Block(BraceOpen,VariableName,BraceClose)))
+
+# Closure with typed param
+
+|$a: number| { $a + 1 }
+
+==>
+
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,Block(BraceOpen,BinaryExpression(VariableName,Operator,Int),BraceClose)))
+
+# Closure with multiple params
+
+|$a, $b| { $a + $b }
+
+==>
+
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName),ParamDefinition(VariableName),Pipe,Block(BraceOpen,BinaryExpression(VariableName,Operator,VariableName),BraceClose)))
+
+# Closure with return type
+
+|$a: number| -> number { $a + 1 }
+
+==>
+
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,LookupRight,TypeName,Block(BraceOpen,BinaryExpression(VariableName,Operator,Int),BraceClose)))

@@ -1,0 +1,15 @@
+# Break statement
+
+BREAK
+
+==>
+
+SurrealQL(BreakStatement(Keyword))
+
+# Continue statement
+
+CONTINUE
+
+==>
+
+SurrealQL(ContinueStatement(Keyword))

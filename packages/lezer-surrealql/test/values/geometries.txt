@@ -1,0 +1,23 @@
+# Point with decimals
+
+(10dec, 20dec)
+
+==>
+
+SurrealQL(Point(Decimal,Decimal))
+
+# Point with integers
+
+(10, 20)
+
+==>
+
+SurrealQL(Point(Int,Int))
+
+# Point with floats
+
+(1.5, 2.5)
+
+==>
+
+SurrealQL(Point(Float,Float))

@@ -1,0 +1,19 @@
+# For loop with array
+
+FOR $item IN [1, 2, 3] {
+	CREATE item SET value = $item;
+}
+
+==>
+
+SurrealQL(ForStatement(Keyword,VariableName,Keyword,Array("[",Int,Int,Int,"]"),Block(BraceOpen,CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))
+
+# For loop with variable
+
+FOR $item IN $list {
+	UPDATE item SET value = $item;
+}
+
+==>
+
+SurrealQL(ForStatement(Keyword,VariableName,Keyword,VariableName,Block(BraceOpen,UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))

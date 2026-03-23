@@ -1,0 +1,95 @@
+# Simple type cast
+
+<string> test
+
+==>
+
+SurrealQL(TypeCast("<",TypeName,">",Ident))
+
+# Union type cast
+
+<string|number> test
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(TypeName,Pipe,TypeName),">",Ident))
+
+# Literal string type cast
+
+<"test"> test
+
+==>
+
+SurrealQL(TypeCast("<",LiteralType(String),">",Ident))
+
+# Literal union type cast
+
+<"test"|number> test
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(LiteralType(String),Pipe,TypeName),">",Ident))
+
+# Literal string union
+
+<"a"|"b"> test
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(LiteralType(String),Pipe,LiteralType(String)),">",Ident))
+
+# Array literal type cast
+
+<["test"]> test
+
+==>
+
+SurrealQL(TypeCast("<",LiteralType(ArrayType("[",LiteralType(String),"]")),">",Ident))
+
+# Array union literal type cast
+
+<["test"|number]> test
+
+==>
+
+SurrealQL(TypeCast("<",LiteralType(ArrayType("[",UnionType(LiteralType(String),Pipe,TypeName),"]")),">",Ident))
+
+# Object type cast
+
+<{ "a": string }> test
+
+==>
+
+SurrealQL(TypeCast("<",LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,TypeName)),BraceClose)),">",Ident))
+
+# Object union type cast
+
+<{ "a": "test"|number }> test
+
+==>
+
+SurrealQL(TypeCast("<",LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(String),Pipe,TypeName))),BraceClose)),">",Ident))
+
+# Complex nested type cast
+
+<{ "a": "test"|[number] }|number> test
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(String),Pipe,LiteralType(ArrayType("[",TypeName,"]"))))),BraceClose)),Pipe,TypeName),">",Ident))
+
+# Parameterized type cast
+
+<record<hello>> test
+
+==>
+
+SurrealQL(TypeCast("<",ParameterizedType(TypeName,"<",TypeName,">"),">",Ident))
+
+# Complex union object type cast
+
+<{ "a": string } | { "b": [record<hello>] | "test" }> test
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,TypeName)),BraceClose)),Pipe,LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(ArrayType("[",ParameterizedType(TypeName,"<",TypeName,">"),"]")),Pipe,LiteralType(String)))),BraceClose))),">",Ident))

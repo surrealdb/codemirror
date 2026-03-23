@@ -1,0 +1,31 @@
+# Set with single trailing comma
+
+{1,}
+
+==>
+
+SurrealQL(Set(BraceOpen,Int,BraceClose))
+
+# Set with lone comma
+
+{,}
+
+==>
+
+SurrealQL(Set(BraceOpen,BraceClose))
+
+# Set with two elements
+
+{1, 2}
+
+==>
+
+SurrealQL(Set(BraceOpen,Int,Int,BraceClose))
+
+# Set with three elements
+
+{1, 2, 3}
+
+==>
+
+SurrealQL(Set(BraceOpen,Int,Int,Int,BraceClose))

@@ -1,0 +1,31 @@
+# Show changes for table
+
+SHOW CHANGES FOR TABLE person
+
+==>
+
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident))
+
+# Show changes with since
+
+SHOW CHANGES FOR TABLE person SINCE "2024-01-01T00:00:00Z"
+
+==>
+
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,String))
+
+# Show changes with limit
+
+SHOW CHANGES FOR TABLE person LIMIT 10
+
+==>
+
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,Int))
+
+# Show changes with since and limit
+
+SHOW CHANGES FOR TABLE person SINCE "2024-01-01T00:00:00Z" LIMIT 10
+
+==>
+
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,String,Keyword,Int))

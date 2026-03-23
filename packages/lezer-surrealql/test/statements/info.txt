@@ -1,0 +1,63 @@
+# Info for root
+
+INFO FOR ROOT
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword))
+
+# Info for namespace
+
+INFO FOR NS
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword))
+
+# Info for namespace long form
+
+INFO FOR NAMESPACE
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword))
+
+# Info for database
+
+INFO FOR DB
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword))
+
+# Info for database long form
+
+INFO FOR DATABASE
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword))
+
+# Info for scope
+
+INFO FOR SCOPE myaccount
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident))
+
+# Info for table
+
+INFO FOR TABLE person
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident))
+
+# Info for table with structure
+
+INFO FOR TABLE person STRUCTURE
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident,Keyword))

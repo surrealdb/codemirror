@@ -1,0 +1,15 @@
+# Rebuild index
+
+REBUILD INDEX idx_email ON TABLE person
+
+==>
+
+SurrealQL(RebuildStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident)))
+
+# Rebuild index if exists
+
+REBUILD INDEX IF EXISTS idx_email ON TABLE person
+
+==>
+
+SurrealQL(RebuildStatement(Keyword,Keyword,IfExistsClause(Keyword,Keyword),Ident,OnTableClause(Keyword,Keyword,Ident)))

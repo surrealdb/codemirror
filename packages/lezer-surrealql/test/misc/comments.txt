@@ -1,0 +1,44 @@
+# Hash comment
+
+# this is a comment
+42
+
+==>
+
+SurrealQL(Comment,Int)
+
+# Dash comment
+
+-- this is a comment
+42
+
+==>
+
+SurrealQL(Comment,Int)
+
+# Slash comment
+
+// this is a comment
+42
+
+==>
+
+SurrealQL(Comment,Int)
+
+# Block comment
+
+1 /* this is
+     a block
+     comment */ + 2
+
+==>
+
+SurrealQL(BinaryExpression(Int,BlockComment,Operator,Int))
+
+# Block comment standalone
+
+/* block */ 42
+
+==>
+
+SurrealQL(BlockComment,Int)

@@ -1,0 +1,47 @@
+# Alter table basic
+
+ALTER TABLE person
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident))
+
+# Alter table drop
+
+ALTER TABLE person DROP
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,Keyword))
+
+# Alter table schemafull
+
+ALTER TABLE person SCHEMAFULL
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,Keyword))
+
+# Alter table schemaless
+
+ALTER TABLE person SCHEMALESS
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,Keyword))
+
+# Alter table with comment
+
+ALTER TABLE person COMMENT "Updated table"
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,CommentClause(Keyword,String)))
+
+# Alter table with permissions none
+
+ALTER TABLE person PERMISSIONS NONE
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,PermissionsForClause(Keyword,None)))

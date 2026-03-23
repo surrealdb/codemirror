@@ -1,0 +1,39 @@
+# Use namespace short
+
+USE NS test
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword,Ident))
+
+# Use namespace long
+
+USE NAMESPACE test
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword,Ident))
+
+# Use database short
+
+USE DB test
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword,Ident))
+
+# Use database long
+
+USE DATABASE test
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword,Ident))
+
+# Use namespace and database
+
+USE NS test DB test
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword,Ident,Keyword,Ident))

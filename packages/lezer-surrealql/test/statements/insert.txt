@@ -1,0 +1,63 @@
+# Insert with object
+
+INSERT INTO person {name: "Tobie"}
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose)))
+
+# Insert with VALUES syntax
+
+INSERT INTO person (name, age) VALUES ("Tobie", 30)
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Ident,Ident,Keyword,String,Int))
+
+# Insert with IGNORE
+
+INSERT IGNORE INTO person {name: "Tobie"}
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose)))
+
+# Insert RELATION
+
+INSERT RELATION INTO knows {in: person:tobie, out: person:jaime}
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,RecordId(RecordTbIdent,Colon,RecordIdIdent)),ObjectProperty(ObjectKey(KeyName),Colon,RecordId(RecordTbIdent,Colon,RecordIdIdent))),BraceClose)))
+
+# Insert bulk array
+
+INSERT INTO person [{name: "Tobie"}, {name: "Jaime"}]
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,BulkInsert("[",Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),"]")))
+
+# Insert with ON DUPLICATE KEY UPDATE
+
+INSERT INTO person {name: "Tobie"} ON DUPLICATE KEY UPDATE age = 31
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),Keyword,Keyword,Keyword,Keyword,FieldAssignment(Ident,Operator,Int)))
+
+# Insert with RETURN
+
+INSERT INTO person {name: "Tobie"} RETURN name
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),ReturnClause(Keyword,Fields(Predicate(Ident)))))
+
+# Insert with variable
+
+INSERT INTO person $data
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,VariableName))

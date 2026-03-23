@@ -1,0 +1,95 @@
+# Remove namespace
+
+REMOVE NAMESPACE test
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove database
+
+REMOVE DATABASE test
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove user
+
+REMOVE USER tobie ON ROOT
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,Keyword,Keyword))
+
+# Remove token
+
+REMOVE TOKEN mytoken ON NAMESPACE
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,Keyword,Keyword))
+
+# Remove event
+
+REMOVE EVENT myevent ON TABLE person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident)))
+
+# Remove field
+
+REMOVE FIELD name ON TABLE person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident)))
+
+# Remove index
+
+REMOVE INDEX idx_email ON TABLE person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident)))
+
+# Remove analyzer
+
+REMOVE ANALYZER my_analyzer
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove function
+
+REMOVE FUNCTION fn::update_author
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,FunctionName))
+
+# Remove param
+
+REMOVE PARAM $endpointBase
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,VariableName))
+
+# Remove scope
+
+REMOVE SCOPE account
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove bucket
+
+REMOVE BUCKET mybucket
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))

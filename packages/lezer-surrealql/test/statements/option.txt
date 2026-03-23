@@ -1,0 +1,23 @@
+# Option without value
+
+OPTION IMPORT
+
+==>
+
+SurrealQL(OptionStatement(Keyword,Ident))
+
+# Option with true
+
+OPTION IMPORT = true
+
+==>
+
+SurrealQL(OptionStatement(Keyword,Ident,Bool))
+
+# Option with false
+
+OPTION IMPORT = false
+
+==>
+
+SurrealQL(OptionStatement(Keyword,Ident,Bool))

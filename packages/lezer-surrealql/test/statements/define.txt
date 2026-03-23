@@ -92,7 +92,7 @@ DEFINE FIELD secret ON TABLE person TYPE string PERMISSIONS FOR select, create W
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),PermissionsForClause(Keyword,Keyword,Keyword,Keyword,WhereClause(Keyword,BinaryExpression(Path(VariableName,Subscript(Ident)),Operator,Bool)))))
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),PermissionsForClause(Keyword,PermissionGroup(Keyword,Keyword,Keyword,WhereClause(Keyword,BinaryExpression(Path(VariableName,Subscript(Ident)),Operator,Bool))))))
 
 # Define field with reference
 

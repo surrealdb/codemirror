@@ -549,6 +549,33 @@ RemoveStatement {
 	)
 }
 
+// Clause groups
+
+modifierClause[@isGroup=ModifierClause] {
+	WithClause |
+	WhereClause |
+	SplitClause |
+	GroupClause |
+	OrderClause |
+	LimitStartComboClause |
+	FetchClause |
+	TimeoutClause |
+	ParallelClause |
+	TempfilesClause |
+	ExplainClause |
+	VersionClause |
+	ReturnClause
+}
+
+dataClause[@isGroup=DataClause] {
+	ContentClause |
+	SetClause |
+	MergeClause |
+	PatchClause |
+	ReplaceClause |
+	UnsetClause
+}
+
 // Data statements
 
 CreateStatement {
@@ -572,20 +599,7 @@ SelectStatement {
 		statement |
 		(
 			commaSep<value>
-			(
-				WithClause |
-				WhereClause |
-				SplitClause |
-				GroupClause |
-				OrderClause |
-				LimitStartComboClause |
-				FetchClause |
-				TimeoutClause |
-				ParallelClause |
-				TempfilesClause |
-				ExplainClause |
-				VersionClause
-			)*
+			modifierClause*
 		)
 	)
 }
@@ -630,7 +644,7 @@ InsertStatement {
 		on duplicate key update
 		commaSep<FieldAssignment>
 	)?
-	InsertReturnClause[since=2_0_0] { ReturnClause? }
+	ReturnClause?
 }
 
 UpdateStatement {
@@ -639,14 +653,7 @@ UpdateStatement {
 		statement |
 		(
 			commaSep<value>
-			(
-				ContentClause |
-				ReplaceClause |
-				MergeClause |
-				PatchClause |
-				SetClause |
-				UnsetClause
-			)?
+			dataClause?
 			updateOptionals {
 				WhereClause?
 				ReturnClause?
@@ -663,14 +670,7 @@ UpsertStatement[since=2_0_0] {
 		statement |
 		(
 			commaSep<value>
-			(
-				ContentClause |
-				ReplaceClause |
-				MergeClause |
-				PatchClause |
-				SetClause |
-				UnsetClause
-			)?
+			dataClause?
 			upsertOptionals {
 				WhereClause?
 				ReturnClause?
@@ -1415,15 +1415,17 @@ ComputedClause {
 	value
 }
 
+PermissionGroup {
+	for
+	commaSep<select | create | update | delete>
+	( WhereClause | none | full )
+}
+
 PermissionsForClause {
 	permissions
 	(
 		none | full |
-		(
-			for
-			commaSep<select | create | update | delete>
-			( WhereClause | none | full )
-		)+
+		PermissionGroup+
 	)
 }
 

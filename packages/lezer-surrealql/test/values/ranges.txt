@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(Range(Int,RangeOp,Int))
+SurrealQL(Range(Number(Int),RangeOp,Number(Int)))
 
 # Right-open range
 
@@ -12,7 +12,7 @@ SurrealQL(Range(Int,RangeOp,Int))
 
 ==>
 
-SurrealQL(Range(Int,RangeOp))
+SurrealQL(Range(Number(Int),RangeOp))
 
 # Left-open inclusive range
 
@@ -28,4 +28,4 @@ SurrealQL(Range(RangeOp,String))
 
 ==>
 
-SurrealQL(Range(Int,RangeOp,Int))
+SurrealQL(Range(Number(Int),RangeOp,Number(Int)))

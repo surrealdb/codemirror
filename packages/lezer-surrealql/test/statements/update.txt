@@ -20,7 +20,7 @@ UPDATE person SET age = 31
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int))))
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int)))))
 
 # Update with CONTENT
 
@@ -36,7 +36,7 @@ UPDATE person MERGE {age: 31}
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+SurrealQL(UpdateStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose))))
 
 # Update with REPLACE
 
@@ -52,7 +52,7 @@ UPDATE person UNSET temp = 0
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,UnsetClause(Keyword,FieldAssignment(Ident,Operator,Int))))
+SurrealQL(UpdateStatement(Keyword,Ident,UnsetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int)))))
 
 # Update with WHERE
 
@@ -60,7 +60,7 @@ UPDATE person SET age = 31 WHERE name = "Tobie"
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
 
 # Update with RETURN
 
@@ -68,7 +68,7 @@ UPDATE person SET age = 31 RETURN AFTER
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ReturnClause(Keyword,Literal)))
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),ReturnClause(Keyword,Literal)))
 
 # Update with TIMEOUT
 
@@ -76,7 +76,7 @@ UPDATE person SET age = 31 TIMEOUT 5s
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),TimeoutClause(Keyword,Duration(DurationPart))))
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),TimeoutClause(Keyword,Duration(DurationPart))))
 
 # Update with PARALLEL
 
@@ -84,4 +84,4 @@ UPDATE person SET age = 31 PARALLEL
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ParallelClause(Keyword)))
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),ParallelClause(Keyword)))

@@ -5,7 +5,7 @@
 
 ==>
 
-SurrealQL(Comment,Int)
+SurrealQL(Comment,Number(Int))
 
 # Dash comment
 
@@ -14,7 +14,7 @@ SurrealQL(Comment,Int)
 
 ==>
 
-SurrealQL(Comment,Int)
+SurrealQL(Comment,Number(Int))
 
 # Slash comment
 
@@ -23,7 +23,7 @@ SurrealQL(Comment,Int)
 
 ==>
 
-SurrealQL(Comment,Int)
+SurrealQL(Comment,Number(Int))
 
 # Block comment
 
@@ -33,7 +33,7 @@ SurrealQL(Comment,Int)
 
 ==>
 
-SurrealQL(BinaryExpression(Int,BlockComment,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),BlockComment,Operator,Number(Int)))
 
 # Block comment standalone
 
@@ -41,4 +41,4 @@ SurrealQL(BinaryExpression(Int,BlockComment,Operator,Int))
 
 ==>
 
-SurrealQL(BlockComment,Int)
+SurrealQL(BlockComment,Number(Int))

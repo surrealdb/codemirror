@@ -12,7 +12,7 @@ SurrealQL(Array("[","]"))
 
 ==>
 
-SurrealQL(Array("[",Int,"]"))
+SurrealQL(Array("[",Number(Int),"]"))
 
 # Multiple elements
 
@@ -20,7 +20,7 @@ SurrealQL(Array("[",Int,"]"))
 
 ==>
 
-SurrealQL(Array("[",Int,Int,Int,"]"))
+SurrealQL(Array("[",Number(Int),Number(Int),Number(Int),"]"))
 
 # Trailing comma
 
@@ -28,7 +28,7 @@ SurrealQL(Array("[",Int,Int,Int,"]"))
 
 ==>
 
-SurrealQL(Array("[",Int,Int,Int,"]"))
+SurrealQL(Array("[",Number(Int),Number(Int),Number(Int),"]"))
 
 # Nested arrays
 
@@ -36,7 +36,7 @@ SurrealQL(Array("[",Int,Int,Int,"]"))
 
 ==>
 
-SurrealQL(Array("[",Array("[",Int,Int,"]"),Array("[",Int,Int,"]"),"]"))
+SurrealQL(Array("[",Array("[",Number(Int),Number(Int),"]"),Array("[",Number(Int),Number(Int),"]"),"]"))
 
 # Mixed types
 
@@ -44,4 +44,4 @@ SurrealQL(Array("[",Array("[",Int,Int,"]"),Array("[",Int,Int,"]"),"]"))
 
 ==>
 
-SurrealQL(Array("[",Int,String,Bool,None,"]"))
+SurrealQL(Array("[",Number(Int),String,Bool,None,"]"))

@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(Point(Decimal,Decimal))
+SurrealQL(Point(Number(Decimal),Number(Decimal)))
 
 # Point with integers
 
@@ -12,7 +12,7 @@ SurrealQL(Point(Decimal,Decimal))
 
 ==>
 
-SurrealQL(Point(Int,Int))
+SurrealQL(Point(Number(Int),Number(Int)))
 
 # Point with floats
 
@@ -20,4 +20,4 @@ SurrealQL(Point(Int,Int))
 
 ==>
 
-SurrealQL(Point(Float,Float))
+SurrealQL(Point(Number(Float),Number(Float)))

@@ -36,7 +36,7 @@ UPSERT person MERGE {age: 31}
 
 ==>
 
-SurrealQL(UpsertStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+SurrealQL(UpsertStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose))))
 
 # Upsert with WHERE
 
@@ -44,7 +44,7 @@ UPSERT person SET age = 31 WHERE name = "Tobie"
 
 ==>
 
-SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
+SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),WhereClause(Keyword,BinaryExpression(Ident,Operator,String))))
 
 # Upsert with RETURN
 
@@ -52,4 +52,4 @@ UPSERT person SET age = 31 RETURN AFTER
 
 ==>
 
-SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Int)),ReturnClause(Keyword,Literal)))
+SurrealQL(UpsertStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),ReturnClause(Keyword,Literal)))

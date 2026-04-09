@@ -36,7 +36,7 @@ LIVE SELECT * FROM person WHERE age > 18
 
 ==>
 
-SurrealQL(LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+SurrealQL(LiveSelectStatement(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int)))))
 
 # Kill statement
 

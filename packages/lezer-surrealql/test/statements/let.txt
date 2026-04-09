@@ -12,7 +12,7 @@ LET $age = 30
 
 ==>
 
-SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),Int))
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),Number(Int)))
 
 # Let with subquery in parens
 
@@ -20,7 +20,7 @@ LET $bla = (SELECT * FROM 123)
 
 ==>
 
-SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Int))))
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Number(Int)))))
 
 # Let with subquery statement
 
@@ -28,7 +28,7 @@ LET $bla = SELECT * FROM 123
 
 ==>
 
-SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),SelectStatement(Keyword,Fields(Any),Keyword,Int)))
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),SelectStatement(Keyword,Fields(Any),Keyword,Number(Int))))
 
 # Let with typed parameter
 

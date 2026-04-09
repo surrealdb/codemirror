@@ -60,7 +60,7 @@ SurrealQL(SelectStatement(Keyword,Fields(Predicate(Path(Lookup(LookupRight,Ident
 
 ==>
 
-SurrealQL(Path(Int,Subscript(IdiomFunction(FunctionName,ArgumentList))))
+SurrealQL(Path(Number(Int),Subscript(IdiomFunction(FunctionName,ArgumentList))))
 
 # Filter with variable key
 
@@ -100,7 +100,7 @@ SurrealQL(Path(RecordId(RecordTbIdent,Colon,RecordIdIdent),Filter("[",Ident,"]")
 
 ==>
 
-SurrealQL(Path(Array("[","]"),Filter("[",Int,"]")))
+SurrealQL(Path(Array("[","]"),Filter("[",Number(Int),"]")))
 
 # Array variable access
 
@@ -116,7 +116,7 @@ SurrealQL(Path(Array("[","]"),Filter("[",VariableName,"]")))
 
 ==>
 
-SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)),"]")))
+SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int))),"]")))
 
 # Array question mark filter
 
@@ -124,7 +124,7 @@ SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(Keyword,BinaryExpression(Id
 
 ==>
 
-SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(BinaryExpression(Ident,Operator,Int)),"]")))
+SurrealQL(Path(Array("[","]"),Filter("[",WhereClause(BinaryExpression(Ident,Operator,Number(Int))),"]")))
 
 # Recurse unbounded
 
@@ -175,7 +175,7 @@ a:b.{1}
 
 SurrealQL(Path(
   RecordId(RecordTbIdent,Colon,RecordIdIdent),
-  Subscript(Recurse(BraceOpen,RecurseRange(Int),RecurseOptions,BraceClose))
+  Subscript(Recurse(BraceOpen,RecurseRange(Number(Int)),RecurseOptions,BraceClose))
 ))
 
 # Recurse with min range
@@ -186,7 +186,7 @@ a:b.{1..}
 
 SurrealQL(Path(
   RecordId(RecordTbIdent,Colon,RecordIdIdent),
-  Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp),RecurseOptions,BraceClose))
+  Subscript(Recurse(BraceOpen,RecurseRange(Number(Int),RangeOp),RecurseOptions,BraceClose))
 ))
 
 # Recurse with full range
@@ -197,7 +197,7 @@ a:b.{1..2}
 
 SurrealQL(Path(
   RecordId(RecordTbIdent,Colon,RecordIdIdent),
-  Subscript(Recurse(BraceOpen,RecurseRange(Int,RangeOp,Int),RecurseOptions,BraceClose))
+  Subscript(Recurse(BraceOpen,RecurseRange(Number(Int),RangeOp,Number(Int)),RecurseOptions,BraceClose))
 ))
 
 # Recurse with max range
@@ -208,7 +208,7 @@ a:b.{..2}
 
 SurrealQL(Path(
   RecordId(RecordTbIdent,Colon,RecordIdIdent),
-  Subscript(Recurse(BraceOpen,RecurseRange(RangeOp,Int),RecurseOptions,BraceClose))
+  Subscript(Recurse(BraceOpen,RecurseRange(RangeOp,Number(Int)),RecurseOptions,BraceClose))
 ))
 
 # At reference with subscript

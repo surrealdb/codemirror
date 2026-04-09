@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(Set(BraceOpen,Int,BraceClose))
+SurrealQL(Set(BraceOpen,Number(Int),BraceClose))
 
 # Set with lone comma
 
@@ -20,7 +20,7 @@ SurrealQL(Set(BraceOpen,BraceClose))
 
 ==>
 
-SurrealQL(Set(BraceOpen,Int,Int,BraceClose))
+SurrealQL(Set(BraceOpen,Number(Int),Number(Int),BraceClose))
 
 # Set with three elements
 
@@ -28,4 +28,4 @@ SurrealQL(Set(BraceOpen,Int,Int,BraceClose))
 
 ==>
 
-SurrealQL(Set(BraceOpen,Int,Int,Int,BraceClose))
+SurrealQL(Set(BraceOpen,Number(Int),Number(Int),Number(Int),BraceClose))

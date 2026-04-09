@@ -12,7 +12,7 @@ fn::one::two(1, a)
 
 ==>
 
-SurrealQL(FunctionCall(FunctionName,ArgumentList(Int,Ident)))
+SurrealQL(FunctionCall(FunctionName,ArgumentList(Number(Int),Ident)))
 
 # Rand function
 
@@ -20,7 +20,7 @@ rand(3)
 
 ==>
 
-SurrealQL(FunctionCall(FunctionName,ArgumentList(Int)))
+SurrealQL(FunctionCall(FunctionName,ArgumentList(Number(Int))))
 
 # Count function
 
@@ -60,4 +60,4 @@ $func(1)
 
 ==>
 
-SurrealQL(FunctionCall(VariableName,ArgumentList(Int)))
+SurrealQL(FunctionCall(VariableName,ArgumentList(Number(Int))))

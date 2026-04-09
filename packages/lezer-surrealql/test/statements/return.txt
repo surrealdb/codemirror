@@ -4,7 +4,7 @@ RETURN 42
 
 ==>
 
-SurrealQL(ReturnStatement(Keyword,Int))
+SurrealQL(ReturnStatement(Keyword,Number(Int)))
 
 # Return string
 
@@ -20,7 +20,7 @@ RETURN 1 + 2
 
 ==>
 
-SurrealQL(ReturnStatement(Keyword,BinaryExpression(Int,Operator,Int)))
+SurrealQL(ReturnStatement(Keyword,BinaryExpression(Number(Int),Operator,Number(Int))))
 
 # Return variable
 

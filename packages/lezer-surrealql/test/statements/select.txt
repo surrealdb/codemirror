@@ -44,7 +44,7 @@ SELECT * FROM person WHERE age > 18
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int)))))
 
 # Select with ORDER BY
 
@@ -84,7 +84,7 @@ SELECT * FROM person LIMIT 10
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Number(Int)))))
 
 # Select with LIMIT BY
 
@@ -92,7 +92,7 @@ SELECT * FROM person LIMIT BY 10
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Keyword,Number(Int)))))
 
 # Select with START
 
@@ -100,7 +100,7 @@ SELECT * FROM person START 5
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Number(Int)))))
 
 # Select with START AT
 
@@ -108,7 +108,7 @@ SELECT * FROM person START AT 5
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(StartClause(Keyword,Keyword,Number(Int)))))
 
 # Select with LIMIT and START
 
@@ -116,7 +116,7 @@ SELECT * FROM person LIMIT 10 START 5
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Int),StartClause(Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,Number(Int)),StartClause(Keyword,Number(Int)))))
 
 # Select with FETCH
 
@@ -124,7 +124,7 @@ SELECT * FROM person FETCH posts
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,FetchClause(Keyword,Path(Ident,⚠))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,FetchClause(Keyword,Idiom(Ident))))
 
 # Select with SPLIT
 
@@ -212,7 +212,7 @@ SELECT * FROM person WHERE age > 18 ORDER BY name LIMIT 10
 
 ==>
 
-SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)),OrderClause(Keyword,Keyword,Order(Idiom(Ident))),LimitStartComboClause(LimitClause(Keyword,Int))))
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int))),OrderClause(Keyword,Keyword,Order(Idiom(Ident))),LimitStartComboClause(LimitClause(Keyword,Number(Int)))))
 
 # Select from multiple targets
 

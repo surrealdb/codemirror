@@ -52,7 +52,7 @@ test:{a: 1}
 
 ==>
 
-SurrealQL(RecordId(RecordTbIdent,Colon,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose)))
+SurrealQL(RecordId(RecordTbIdent,Colon,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose)))
 
 # Record ID with array value
 
@@ -60,7 +60,7 @@ test:[1, 2]
 
 ==>
 
-SurrealQL(RecordId(RecordTbIdent,Colon,Array("[",Int,Int,"]")))
+SurrealQL(RecordId(RecordTbIdent,Colon,Array("[",Number(Int),Number(Int),"]")))
 
 # Record ID with prefixed string value
 

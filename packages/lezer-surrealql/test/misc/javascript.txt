@@ -12,7 +12,7 @@ function(123, 1d2h) {
 SurrealQL(
   FunctionJs(
     FunctionName,
-    ArgumentList(Int,Duration(DurationPart,DurationPart)),
+    ArgumentList(Number(Int),Duration(DurationPart,DurationPart)),
     JavaScriptBlock(BraceOpen,JavaScriptContent,BraceClose)
   )
 )

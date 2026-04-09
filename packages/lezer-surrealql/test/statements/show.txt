@@ -20,7 +20,7 @@ SHOW CHANGES FOR TABLE person LIMIT 10
 
 ==>
 
-SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,Int))
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,Number(Int)))
 
 # Show changes with since and limit
 
@@ -28,4 +28,4 @@ SHOW CHANGES FOR TABLE person SINCE "2024-01-01T00:00:00Z" LIMIT 10
 
 ==>
 
-SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,String,Keyword,Int))
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,String,Keyword,Number(Int)))

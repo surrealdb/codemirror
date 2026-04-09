@@ -6,7 +6,7 @@ FOR $item IN [1, 2, 3] {
 
 ==>
 
-SurrealQL(ForStatement(Keyword,VariableName,Keyword,Array("[",Int,Int,Int,"]"),Block(BraceOpen,CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))
+SurrealQL(ForStatement(Keyword,VariableName,Keyword,Array("[",Number(Int),Number(Int),Number(Int),"]"),Block(BraceOpen,CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))
 
 # For loop with variable
 

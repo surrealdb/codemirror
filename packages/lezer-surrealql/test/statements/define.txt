@@ -60,7 +60,7 @@ DEFINE FIELD age ON TABLE person TYPE number DEFAULT 0
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),DefaultClause(Keyword,DefaultAlways,Int)))
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),DefaultClause(Keyword,DefaultAlways,Number(Int))))
 
 # Define field with assert
 
@@ -132,7 +132,7 @@ DEFINE INDEX idx_vec ON TABLE person FIELDS embedding MTREE DIMENSION 3
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(MtreeClause(Keyword,IndexDimensionClause(Keyword,Int)))))
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(MtreeClause(Keyword,IndexDimensionClause(Keyword,Number(Int))))))
 
 # Define index hnsw
 
@@ -140,7 +140,7 @@ DEFINE INDEX idx_vec ON TABLE person FIELDS embedding HNSW DIMENSION 3
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Int)))))
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Number(Int))))))
 
 # Define function
 
@@ -222,7 +222,7 @@ DEFINE TABLE adult AS SELECT * FROM person WHERE age > 18
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableViewClause(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int)))))
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableViewClause(Keyword,Keyword,Any,Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int))))))
 
 # Define table with changefeed
 

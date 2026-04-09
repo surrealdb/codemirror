@@ -6,7 +6,7 @@
 
 ==>
 
-SurrealQL(Int,Int,Int)
+SurrealQL(Number(Int),Number(Int),Number(Int))
 
 # Float
 
@@ -16,7 +16,7 @@ SurrealQL(Int,Int,Int)
 
 ==>
 
-SurrealQL(Float,Float,Float)
+SurrealQL(Number(Float),Number(Float),Number(Float))
 
 # Float with exponent
 
@@ -27,7 +27,7 @@ SurrealQL(Float,Float,Float)
 
 ==>
 
-SurrealQL(Float,Float,Float,Float)
+SurrealQL(Number(Float),Number(Float),Number(Float),Number(Float))
 
 # Float with f suffix
 
@@ -36,7 +36,7 @@ SurrealQL(Float,Float,Float,Float)
 
 ==>
 
-SurrealQL(Float,Float)
+SurrealQL(Number(Float),Number(Float))
 
 # Float special values
 
@@ -45,7 +45,7 @@ NaN
 
 ==>
 
-SurrealQL(Float,Float)
+SurrealQL(Number(Float),Number(Float))
 
 # Decimal
 
@@ -54,7 +54,7 @@ SurrealQL(Float,Float)
 
 ==>
 
-SurrealQL(Decimal,Decimal)
+SurrealQL(Number(Decimal),Number(Decimal))
 
 # Negative numbers
 
@@ -63,7 +63,7 @@ SurrealQL(Decimal,Decimal)
 
 ==>
 
-SurrealQL(Int,Float)
+SurrealQL(Number(Int),Number(Float))
 
 # Positive explicit sign
 
@@ -72,4 +72,4 @@ SurrealQL(Int,Float)
 
 ==>
 
-SurrealQL(Int,Float)
+SurrealQL(Number(Int),Number(Float))

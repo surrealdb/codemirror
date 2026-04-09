@@ -12,7 +12,7 @@ INSERT INTO person (name, age) VALUES ("Tobie", 30)
 
 ==>
 
-SurrealQL(InsertStatement(Keyword,Keyword,Ident,Ident,Ident,Keyword,String,Int))
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Ident,Ident,Keyword,String,Number(Int)))
 
 # Insert with IGNORE
 
@@ -44,7 +44,7 @@ INSERT INTO person {name: "Tobie"} ON DUPLICATE KEY UPDATE age = 31
 
 ==>
 
-SurrealQL(InsertStatement(Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),Keyword,Keyword,Keyword,Keyword,FieldAssignment(Ident,Operator,Int)))
+SurrealQL(InsertStatement(Keyword,Keyword,Ident,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String)),BraceClose),Keyword,Keyword,Keyword,Keyword,FieldAssignment(Ident,Operator,Number(Int))))
 
 # Insert with RETURN
 

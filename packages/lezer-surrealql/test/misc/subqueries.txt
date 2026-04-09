@@ -12,7 +12,7 @@ SurrealQL(SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident)))
 
 ==>
 
-SurrealQL(SubQuery(BinaryExpression(Int,Operator,Int)))
+SurrealQL(SubQuery(BinaryExpression(Number(Int),Operator,Number(Int))))
 
 # Subquery with create
 

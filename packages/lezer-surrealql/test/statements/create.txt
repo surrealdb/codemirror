@@ -20,7 +20,7 @@ CREATE person SET name = "Tobie", age = 30
 
 ==>
 
-SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String),FieldAssignment(Ident,Operator,Int))))
+SurrealQL(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String),FieldAssignment(Ident,Operator,Number(Int)))))
 
 # Create with CONTENT
 
@@ -28,7 +28,7 @@ CREATE person CONTENT {name: "Tobie", age: 30}
 
 ==>
 
-SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))))
+SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose))))
 
 # Create with RETURN fields
 

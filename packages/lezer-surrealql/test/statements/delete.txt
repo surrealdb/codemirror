@@ -20,7 +20,7 @@ DELETE person WHERE age < 18
 
 ==>
 
-SurrealQL(DeleteStatement(Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Int))))
+SurrealQL(DeleteStatement(Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,Number(Int)))))
 
 # Delete with RETURN BEFORE
 

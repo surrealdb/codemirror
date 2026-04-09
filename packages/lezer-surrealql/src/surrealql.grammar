@@ -778,7 +778,7 @@ ShowStatement {
 	show changes for table
 	Ident
 	( since String )?
-	( limit number )?
+	( limit Number )?
 }
 
 // Sleep statement
@@ -816,30 +816,34 @@ RebuildStatement[since=1_5_0] {
 
 // Values
 
-baseValue {
+computedValue[@isGroup=Value] {
 	String |
 	prefixedString |
-	FormatString |
-	number |
+	Number |
 	true |
 	false |
 	null |
 	none |
-	Regex |
-	VariableName |
-	Ident[@dynamicPrecedence=-1] { rawident } |
 	Array |
 	Set |
 	RecordId |
+	Object |
+	Duration |
+	Point { "(" Number "," Number ")" }
+}
+
+baseValue[@isGroup=Value] {
+	computedValue |
+	FormatString |
+	Regex |
+	VariableName |
+	Ident[@dynamicPrecedence=-1] { rawident } |
 	FunctionJs |
 	FunctionCall |
 	SubQuery |
 	Block |
 	Closure |
-	Object |
-	TypeCast |
-	Duration |
-	Point { "(" number "," number ")" }
+	TypeCast
 }
 
 value[@isGroup=Value] {
@@ -940,11 +944,11 @@ Recurse[since=2_1_0] {
 }
 
 RecurseRange {
-	number |
+	Number |
 	rangeOpOpenBoth |
-	number rangeOpOpenRight |
-	rangeOpOpenLeft number |
-	number rangeOp number
+	Number rangeOpOpenRight |
+	rangeOpOpenLeft Number |
+	Number rangeOp Number
 }
 
 RecurseOptions[since=2_2_0] {
@@ -1005,7 +1009,7 @@ RecordTbIdent {
 	bracketIdent
 }
 
-// Ideally we match "number" here, but I cannot for the life of me get it to
+// Ideally we match "Number" here, but I cannot for the life of me get it to
 // fall back to numberident after. This will suffice for now.
 RecordIdIdent {
 	numberident |
@@ -1199,15 +1203,15 @@ SearchAnalyzerClause {
 	)*
 }
 
-Bm25Clause { bm25 ( "(" number "," number ")")? }
-DocIdsCacheClause { doc_ids_cache number }
-DocIdsOrderClause { doc_ids_order number }
-DocLenghtsCacheClause { doc_lengths_cache number }
-DocLenghtsOrderClause { doc_lengths_order number }
-PostingsCacheClause { postings_cache number }
-PostingsOrderClause { postings_order number }
-TermsCacheClause { terms_cache number }
-TermsOrderClause { terms_order number }
+Bm25Clause { bm25 ( "(" Number "," Number ")")? }
+DocIdsCacheClause { doc_ids_cache Number }
+DocIdsOrderClause { doc_ids_order Number }
+DocLenghtsCacheClause { doc_lengths_cache Number }
+DocLenghtsOrderClause { doc_lengths_order Number }
+PostingsCacheClause { postings_cache Number }
+PostingsOrderClause { postings_order Number }
+TermsCacheClause { terms_cache Number }
+TermsOrderClause { terms_order Number }
 
 MtreeClause[since=1_3_0] {
 	mtree
@@ -1222,7 +1226,7 @@ MtreeClause[since=1_3_0] {
 	)*
 }
 
-MtreeCacheClause { mtree_cache number }
+MtreeCacheClause { mtree_cache Number }
 MtreeDistClause { dist ( Distance ) }
 
 HnswClause[since=1_5_0] {
@@ -1241,14 +1245,14 @@ IndexDimensionClause
 	)*
 }
 
-HnswDistClause { dist ( Distance | ( minkowski number )) }
+HnswDistClause { dist ( Distance | ( minkowski Number )) }
 
-IndexDimensionClause { dimension number }
-IndexCapacityClause { capacity number }
-IndexLmClause { lm number }
-IndexM0Clause { m0 number }
-IndexMClause { m number }
-IndexEfcClause { efc number }
+IndexDimensionClause { dimension Number }
+IndexCapacityClause { capacity Number }
+IndexLmClause { lm Number }
+IndexM0Clause { m0 Number }
+IndexMClause { m Number }
+IndexEfcClause { efc Number }
 IndexExtendCandidatesClause { extend_candidates }
 IndexKeepPrunedConnectionsClause { keep_pruned_connections }
 
@@ -1304,19 +1308,19 @@ TempfilesClause[since=2_0_0] {
 
 FetchClause {
 	fetch
-	commaSep<Path>
+	commaSep<Idiom>
 }
 
 StartClause {
 	start
 	at?
-	(number | VariableName)
+	(Number | VariableName)
 }
 
 LimitClause {
 	limit
 	by?
-	(number | VariableName)
+	(Number | VariableName)
 }
 
 LimitStartComboClause {
@@ -1465,7 +1469,7 @@ BackendClause {
 // Support
 
 AnalyzerFilters {
-	Filter ("(" (number "," number | Ident) ")")?
+	Filter ("(" (Number "," Number | Ident) ")")?
 }
 
 Order {
@@ -1488,11 +1492,11 @@ inclusivePredicate {
 
 LiteralType[since=2_0_0] {
 	String |
-	number |
+	Number |
 	Duration |
 	ArrayType { "[" commaSep<type> "]" } |
 	ObjectType { objectOpen ObjectTypeContent? "}" }
-	// TODO support number and duration types
+	// TODO support Number and duration types
 }
 
 singleType {
@@ -1527,7 +1531,7 @@ Ident {
 	tickIdent
 }
 
-number { ("-" | "+")? (Int | Float | Decimal) }
+Number { ("-" | "+")? (Int | Float | Decimal) }
 
 Operator {
 	binaryOperator |
@@ -1536,11 +1540,11 @@ Operator {
 	is | ( is opNot ) |
 	in | ( opNot opIn ) |
 
-	( "@" number "@" ) |
+	( "@" Number "@" ) |
 	(
 		"<|"
-		number
-		( "," ( number | Distance | ( minkowski number ) ) )
+		Number
+		( "," ( Number | Distance | ( minkowski Number ) ) )
 		"|>"
 	)
 }

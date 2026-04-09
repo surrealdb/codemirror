@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose))
+SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose))
 
 # Object with string keys
 
@@ -13,8 +13,8 @@ SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon
 ==>
 
 SurrealQL(Object(BraceOpen,ObjectContent(
-  ObjectProperty(ObjectKey(String),Colon,Int),
-  ObjectProperty(ObjectKey(String),Colon,Int)
+  ObjectProperty(ObjectKey(String),Colon,Number(Int)),
+  ObjectProperty(ObjectKey(String),Colon,Number(Int))
 ),BraceClose))
 
 # Empty object
@@ -49,8 +49,8 @@ SurrealQL(Block(BraceOpen,Ident,BraceClose))
 ==>
 
 SurrealQL(
-  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose),
-  Int
+  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose),
+  Number(Int)
 )
 
 # Nested objects
@@ -60,5 +60,5 @@ SurrealQL(
 ==>
 
 SurrealQL(Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,
-  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Int)),BraceClose)
+  Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose)
 )),BraceClose))

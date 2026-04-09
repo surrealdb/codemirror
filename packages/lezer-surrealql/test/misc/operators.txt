@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Subtraction
 
@@ -12,7 +12,7 @@ SurrealQL(BinaryExpression(Int,Operator,Int))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Multiplication
 
@@ -20,7 +20,7 @@ SurrealQL(BinaryExpression(Int,Operator,Int))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Division
 
@@ -28,7 +28,7 @@ SurrealQL(BinaryExpression(Int,Operator,Int))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Power
 
@@ -36,7 +36,7 @@ SurrealQL(BinaryExpression(Int,Operator,Int))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Equality
 
@@ -178,7 +178,7 @@ SurrealQL(BinaryExpression(Ident,Operator,Ident))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Unicode division
 
@@ -186,7 +186,7 @@ SurrealQL(BinaryExpression(Int,Operator,Int))
 
 ==>
 
-SurrealQL(BinaryExpression(Int,Operator,Int))
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
 
 # Matches operator with distance
 
@@ -194,7 +194,7 @@ x @1@ y
 
 ==>
 
-SurrealQL(BinaryExpression(Ident,Operator(Int),Ident))
+SurrealQL(BinaryExpression(Ident,Operator(Number(Int)),Ident))
 
 # Addition assignment in expression
 
@@ -202,7 +202,7 @@ a += 1
 
 ==>
 
-SurrealQL(BinaryExpression(Ident,Operator,Int))
+SurrealQL(BinaryExpression(Ident,Operator,Number(Int)))
 
 # Subtraction assignment in expression
 
@@ -210,4 +210,4 @@ a -= 1
 
 ==>
 
-SurrealQL(BinaryExpression(Ident,Operator,Int))
+SurrealQL(BinaryExpression(Ident,Operator,Number(Int)))

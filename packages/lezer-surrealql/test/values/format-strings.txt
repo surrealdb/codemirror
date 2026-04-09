@@ -12,7 +12,7 @@ $"result is {1 + 2 + 3}"
 
 ==>
 
-SurrealQL(FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Int,Operator,Int),Operator,Int),BraceClose)))
+SurrealQL(FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Number(Int),Operator,Number(Int)),Operator,Number(Int)),BraceClose)))
 
 # Escaped quote in format string
 
@@ -20,7 +20,7 @@ $"some \" quote {1 + 2 + 3} and \{ some } brackets"
 
 ==>
 
-SurrealQL(FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Int,Operator,Int),Operator,Int),BraceClose)))
+SurrealQL(FormatString(Interpolation(BraceOpen,BinaryExpression(BinaryExpression(Number(Int),Operator,Number(Int)),Operator,Number(Int)),BraceClose)))
 
 # Nested format strings
 
@@ -28,7 +28,7 @@ $'nested {$"string {22}"}'
 
 ==>
 
-SurrealQL(FormatString(Interpolation(BraceOpen,FormatString(Interpolation(BraceOpen,Int,BraceClose)),BraceClose)))
+SurrealQL(FormatString(Interpolation(BraceOpen,FormatString(Interpolation(BraceOpen,Number(Int),BraceClose)),BraceClose)))
 
 # Single quoted format string
 

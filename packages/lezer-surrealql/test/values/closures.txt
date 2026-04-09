@@ -4,7 +4,7 @@
 
 ==>
 
-SurrealQL(Closure(Pipe,Pipe,Block(BraceOpen,Int,BraceClose)))
+SurrealQL(Closure(Pipe,Pipe,Block(BraceOpen,Number(Int),BraceClose)))
 
 # Closure with param
 
@@ -20,7 +20,7 @@ SurrealQL(Closure(Pipe,ParamDefinition(VariableName),Pipe,Block(BraceOpen,Variab
 
 ==>
 
-SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,Block(BraceOpen,BinaryExpression(VariableName,Operator,Int),BraceClose)))
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,Block(BraceOpen,BinaryExpression(VariableName,Operator,Number(Int)),BraceClose)))
 
 # Closure with multiple params
 
@@ -36,4 +36,4 @@ SurrealQL(Closure(Pipe,ParamDefinition(VariableName),ParamDefinition(VariableNam
 
 ==>
 
-SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,LookupRight,TypeName,Block(BraceOpen,BinaryExpression(VariableName,Operator,Int),BraceClose)))
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,LookupRight,TypeName,Block(BraceOpen,BinaryExpression(VariableName,Operator,Number(Int)),BraceClose)))

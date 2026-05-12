@@ -18,7 +18,7 @@
 		},
 		"packages/codemirror-surrealql": {
 			"name": "@surrealdb/codemirror",
-			"version": "1.0.3",
+			"version": "1.0.5",
 			"dependencies": {
 				"@codemirror/language": "^6.10.3",
 				"@codemirror/lint": "^6.8.2",
@@ -33,7 +33,7 @@
 		},
 		"packages/lezer-surrealql": {
 			"name": "@surrealdb/lezer",
-			"version": "1.0.3",
+			"version": "1.0.5",
 			"dependencies": {
 				"@lezer/common": "^1.2.3",
 				"@lezer/highlight": "^1.2.1",

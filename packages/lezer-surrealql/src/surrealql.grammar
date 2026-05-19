@@ -63,6 +63,7 @@ anyKeyword {
 	asc |
 	assert |
 	at |
+	async |
 	authenticate |
 	auto |
 	begin |
@@ -336,6 +337,7 @@ defineEventOptions {
 			value
 		} |
 		ThenClause {
+			async?
 			then
 			commaSep<(SubQuery | Block)>
 		} |
@@ -1693,6 +1695,7 @@ piped<content> {
 	asc						[@name=Keyword],
 	assert					[@name=Keyword],
 	at						[@name=Keyword],
+	async					[@name=Keyword],
 	authenticate			[@name=Keyword],
 	auto					[@name=Keyword],
 	backend					[@name=Keyword],

@@ -46,6 +46,14 @@ DEFINE EVENT myevent ON TABLE person WHEN $event = "CREATE" THEN (CREATE log)
 
 SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),WhenClause(Keyword,BinaryExpression(VariableName,Operator,String)),ThenClause(Keyword,SubQuery(CreateStatement(Keyword,Ident)))))
 
+# Define event with async
+
+DEFINE EVENT e ON TABLE file WHEN $event = 'DELETE' ASYNC THEN { };
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),WhenClause(Keyword,BinaryExpression(VariableName,Operator,String)),ThenClause(Keyword,Keyword,Block(BraceOpen,BraceClose))))
+
 # Define field
 
 DEFINE FIELD name ON TABLE person TYPE string

@@ -1600,7 +1600,7 @@ Operator {
 	Int { @digit+ }
 	frac { '.' @digit+ }
 	exp { $[eE] $[+\-]? @digit+ }
-	Float { (@digit+ (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
+	Float { (@digit+ "f") | (@digit+ (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
 	Decimal { @digit+ frac? exp? "dec" }
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
@@ -1640,6 +1640,7 @@ Operator {
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }
 	@precedence { Float Decimal Int rawident }
+	@precedence { Float numberident }
 	@precedence { DurationPart Int rawident }
 	@precedence { prefixedString numberident rawident }
 	@precedence { customFunctionName FunctionName rawident }

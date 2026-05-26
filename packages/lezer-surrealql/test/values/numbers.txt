@@ -38,6 +38,22 @@ SurrealQL(Number(Float),Number(Float),Number(Float),Number(Float))
 
 SurrealQL(Number(Float),Number(Float))
 
+# Float with bare f suffix
+
+LET $n = 1f;
+
+==>
+
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),Number(Float)))
+
+# Float with bare f suffix in array literal
+
+CREATE documents CONTENT { text: "foo", embedding: [1f, 2f, 3f, 4f] };
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Array("[",Number(Float),Number(Float),Number(Float),Number(Float),"]"))),BraceClose))))
+
 # Float special values
 
 Infinity;

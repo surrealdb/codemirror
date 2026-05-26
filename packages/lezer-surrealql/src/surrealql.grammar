@@ -1220,7 +1220,7 @@ MtreeClause[since=1_3_0] {
 	IndexDimensionClause
 	(
 	MtreeDistClause |
-	IndexTypeClause |
+	IndexTypeWithKw |
 	IndexCapacityClause |
 	DocIdsOrderClause |
 	DocIdsCacheClause |
@@ -1231,12 +1231,14 @@ MtreeClause[since=1_3_0] {
 MtreeCacheClause { mtree_cache Number }
 MtreeDistClause { dist ( Distance ) }
 
+IndexTypeWithKw { typeKeyword? IndexTypeClause }
+
 HnswClause[since=1_5_0] {
 hnsw
 IndexDimensionClause
 	(
 	HnswDistClause |
-	IndexTypeClause |
+	IndexTypeWithKw |
 	IndexCapacityClause |
 	IndexLmClause |
 	IndexM0Clause |

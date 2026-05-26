@@ -150,6 +150,14 @@ DEFINE INDEX idx_vec ON TABLE person FIELDS embedding HNSW DIMENSION 3
 
 SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Number(Int))))))
 
+# Define index hnsw with type
+
+DEFINE INDEX idx_vec ON TABLE person FIELDS embedding HNSW DIMENSION 4 DIST COSINE TYPE F32
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Number(Int)),HnswDistClause(Keyword,Distance),IndexTypeWithKw(Keyword,IndexTypeClause)))))
+
 # Define function
 
 DEFINE FUNCTION fn::greet($name: string) {

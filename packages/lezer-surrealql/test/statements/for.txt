@@ -17,3 +17,14 @@ FOR $item IN $list {
 ==>
 
 SurrealQL(ForStatement(Keyword,VariableName,Keyword,VariableName,Block(BraceOpen,UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))
+
+# For loop with unparenthesized select
+
+FOR $node IN SELECT * FROM node {
+	LET $next = type::record("node", $node.id.id() + 1);
+	RELATE $node->edge->$next SET read = rand::bool();
+}
+
+==>
+
+SurrealQL(ForStatement(Keyword,VariableName,Keyword,SelectStatement(Keyword,Fields(Any),Keyword,Ident),Block(BraceOpen,LetStatement(Keyword,ParamDefinition(VariableName),FunctionCall(FunctionName,ArgumentList(String,BinaryExpression(Path(VariableName,Subscript(Ident),Subscript(IdiomFunction(FunctionName,ArgumentList))),Operator,Number(Int))))),RelateStatement(Keyword,VariableName,LookupRight,Ident,LookupRight,VariableName,SetClause(Keyword,FieldAssignment(Ident,Operator,FunctionCall(FunctionName,ArgumentList)))),BraceClose)))

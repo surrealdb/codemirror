@@ -559,14 +559,15 @@ function closedRangeAfter(ch) {
 
 export const rangeOperator = new ExternalTokenizer(input => {
 	if (input.next === 46 /* '.' */ && input.peek(1) === 46 ||
-		input.next === 62 /* '>' */ && input.peek(1) === 46 && input.peek(1) === 46) {
+		input.next === 62 /* '>' */ && input.peek(1) === 46 && input.peek(2) === 46) {
 		let inclStart = input.next !== 62
 		let closedBefore = closedRangeBefore(input.peek(-1))
 		if (!inclStart && closedBefore) return
 		input.advance(inclStart ? 2 : 3)
 		let inclEnd = input.next === 61 /* '=' */
 		if (inclEnd) input.advance()
-		let closedAfter = closedRangeAfter(input.next) || input.next < 0
+		let closedAfter = closedRangeAfter(input.next) || input.next < 0 ||
+			input.next === 43 /* '+' */
 		if (inclEnd && closedAfter) return
 		input.acceptToken(closedBefore && closedAfter ? rangeOpOpenBoth
 			: closedBefore ? rangeOpOpenLeft

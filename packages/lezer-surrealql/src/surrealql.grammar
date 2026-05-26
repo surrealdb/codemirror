@@ -582,7 +582,7 @@ dataClause[@isGroup=DataClause] {
 
 CreateStatement {
 	create only?
-	createTargets { commaSep<Ident | VariableName | FunctionCall | RecordId> }
+	createTargets { commaSep<Ident | VariableName | FunctionCall | RecordId | RangeRecordId> }
 	createContent { ContentClause | SetClause | UnsetClause | () }
 	createOptionals {
 		ReturnClause?
@@ -714,7 +714,7 @@ InfoForStatement {
 
 BreakStatement { break }
 ContinueStatement { continue }
-ForStatement { for VariableName in ( Array | VariableName | SubQuery | Block ) Block }
+ForStatement { for VariableName in ( Array | VariableName | SubQuery | subqueryStatement | Block ) Block }
 ReturnStatement { return expression }
 ThrowStatement { throw value }
 
@@ -1037,6 +1037,10 @@ RecordId {
 	RecordTbIdent
 	":"
 	( recordIdValue | RecordIdRange )
+}
+
+RangeRecordId {
+	"|" RecordId "|"
 }
 
 // Durations

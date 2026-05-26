@@ -86,6 +86,14 @@ CREATE person:tobie
 
 SurrealQL(CreateStatement(Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
 
+# Create with range record ID target
+
+CREATE |node:1..10|
+
+==>
+
+SurrealQL(CreateStatement(Keyword,RangeRecordId(Pipe,RecordId(RecordTbIdent,Colon,RecordIdRange(RecordIdIdent,RangeOp,RecordIdIdent)),Pipe)))
+
 # Create with variable target
 
 CREATE $table

@@ -211,6 +211,14 @@ SurrealQL(Path(
   Subscript(Recurse(BraceOpen,RecurseRange(RangeOp,Number(Int)),RecurseOptions,BraceClose))
 ))
 
+# Recurse with collect and inclusive options
+
+RETURN a:1.{..+collect+inclusive}(->edge->a[?bool]);
+
+==>
+
+SurrealQL(ReturnStatement(Keyword,Path(RecordId(RecordTbIdent,Colon,RecordIdIdent),Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),RecurseOptions(FunctionName,FunctionName),BraceClose,Lookup(LookupRight,Ident),Lookup(LookupRight,Ident),Filter("[",WhereClause(Ident),"]"))))))
+
 # At reference with subscript
 
 @.name

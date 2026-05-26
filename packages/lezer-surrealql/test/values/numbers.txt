@@ -36,7 +36,7 @@ SurrealQL(Number(Float),Number(Float),Number(Float),Number(Float))
 
 ==>
 
-SurrealQL(Number(Float),Number(Float))
+SurrealQL(Number(Float,Literal),Number(Float,Literal))
 
 # Float with bare f suffix
 
@@ -44,7 +44,7 @@ LET $n = 1f;
 
 ==>
 
-SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),Number(Float)))
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),Number(Int,Literal)))
 
 # Float with bare f suffix in array literal
 
@@ -52,7 +52,7 @@ CREATE documents CONTENT { text: "foo", embedding: [1f, 2f, 3f, 4f] };
 
 ==>
 
-SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Array("[",Number(Float),Number(Float),Number(Float),Number(Float),"]"))),BraceClose))))
+SurrealQL(CreateStatement(Keyword,Ident,ContentClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,String),ObjectProperty(ObjectKey(KeyName),Colon,Array("[",Number(Int,Literal),Number(Int,Literal),Number(Int,Literal),Number(Int,Literal),"]"))),BraceClose))))
 
 # Float special values
 

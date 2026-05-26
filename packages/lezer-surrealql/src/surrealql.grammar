@@ -1535,7 +1535,7 @@ Ident {
 	tickIdent
 }
 
-Number { ("-" | "+")? (Int | Float | Decimal) }
+Number { ("-" | "+")? (Int floatSuffix? | Float floatSuffix? | Decimal) }
 
 Operator {
 	binaryOperator |
@@ -1600,7 +1600,8 @@ Operator {
 	Int { @digit+ }
 	frac { '.' @digit+ }
 	exp { $[eE] $[+\-]? @digit+ }
-	Float { (@digit+ "f") | (@digit+ (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
+	Float { (@digit+ (frac exp? | exp)) | "Infinity" | "NaN" }
+	floatSuffix[@name=Literal] { "f" }
 	Decimal { @digit+ frac? exp? "dec" }
 	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
 
@@ -1640,7 +1641,7 @@ Operator {
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }
 	@precedence { Float Decimal Int rawident }
-	@precedence { Float numberident }
+	@precedence { floatSuffix rawident }
 	@precedence { DurationPart Int rawident }
 	@precedence { prefixedString numberident rawident }
 	@precedence { customFunctionName FunctionName rawident }

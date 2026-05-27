@@ -1,0 +1,36 @@
+{
+	"name": "@surrealdb/codemirror-surrealql-tree-sitter",
+	"version": "0.1.0",
+	"author": "SurrealDB",
+	"description": "SurrealQL language support for CodeMirror via tree-sitter",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/surrealdb/codemirror"
+	},
+	"scripts": {
+		"build": "tsc",
+		"run-tests": "bun test",
+		"test:report": "bun test test/tier2-tree-loose.test.ts -- --report",
+		"test:update-baselines": "UPDATE_BASELINES=1 bun test test/tier2-tree-loose.test.ts"
+	},
+	"exports": {
+		"import": "./dist/index.js",
+		"types": "./dist/index.d.ts"
+	},
+	"dependencies": {
+		"@codemirror/language": "^6.10.3",
+		"@lezer/common": "^1.2.3",
+		"@lezer/highlight": "^1.2.1",
+		"@surrealdb/tree-sitter-lezer": "file:../../../tree-sitter-lezer",
+		"web-tree-sitter": "^0.26.8"
+	},
+	"devDependencies": {
+		"@codemirror/state": "^6.4.1",
+		"@codemirror/view": "^6.34.2",
+		"@lezer/generator": "^1.7.1",
+		"@surrealdb/lezer": "workspace:*",
+		"@types/bun": "latest",
+		"typescript": "^5.9.3"
+	}
+}

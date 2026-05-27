@@ -1,0 +1,1418 @@
+{
+  "statements/alter.txt#Alter table basic": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/alter.txt#Alter table drop": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/alter.txt#Alter table schemafull": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/alter.txt#Alter table schemaless": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/alter.txt#Alter table with comment": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/alter.txt#Alter table with permissions none": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/break-continue.txt#Break statement": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/break-continue.txt#Continue statement": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Simple create": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create ONLY": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with SET": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with CONTENT": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with RETURN fields": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with RETURN AFTER": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with RETURN BEFORE": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with RETURN DIFF": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with TIMEOUT": {
+    "kindJaccard": 0.7692307692307693,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with PARALLEL": {
+    "kindJaccard": 0.6363636363636364,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with record ID target": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create with variable target": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/create.txt#Create multiple targets": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define namespace": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define namespace if not exists": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define namespace overwrite": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define database": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define user": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define event": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field with default": {
+    "kindJaccard": 0.6923076923076923,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field with assert": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field readonly": {
+    "kindJaccard": 0.6363636363636364,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field flexible type": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field with permissions": {
+    "kindJaccard": 0.65,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field with reference": {
+    "kindJaccard": 0.6363636363636364,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define field with computed": {
+    "kindJaccard": 0.6875,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define index unique": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define index search analyzer": {
+    "kindJaccard": 0.6363636363636364,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define index mtree": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define index hnsw": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define function": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define param": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table schemafull": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table schemaless": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table drop": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table type relation": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table type normal": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table type any": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table as view": {
+    "kindJaccard": 0.6923076923076923,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table with changefeed": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table with permissions none": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define table with comment": {
+    "kindJaccard": 0.7142857142857143,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define access on database": {
+    "kindJaccard": 0.44,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define config graphql": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define bucket": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/define.txt#Define scope": {
+    "kindJaccard": 0.6538461538461539,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Simple delete": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete ONLY": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete with WHERE": {
+    "kindJaccard": 0.9,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete with RETURN BEFORE": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete with TIMEOUT": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete with PARALLEL": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete record ID": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/delete.txt#Delete with WHERE and RETURN": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/for.txt#For loop with array": {
+    "kindJaccard": 0.631578947368421,
+    "spanOverlap": 1
+  },
+  "statements/for.txt#For loop with variable": {
+    "kindJaccard": 0.6923076923076923,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Modern if": {
+    "kindJaccard": 0.5882352941176471,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Modern if else": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Modern if else if else": {
+    "kindJaccard": 0.5263157894736842,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Legacy if then end": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Legacy if then else end": {
+    "kindJaccard": 0.5882352941176471,
+    "spanOverlap": 1
+  },
+  "statements/if-else.txt#Legacy if then else if then else end": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for root": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for namespace": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for namespace long form": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for database": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for database long form": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for scope": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for table": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "statements/info.txt#Info for table with structure": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with object": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with VALUES syntax": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with IGNORE": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert RELATION": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert bulk array": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with ON DUPLICATE KEY UPDATE": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with RETURN": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/insert.txt#Insert with variable": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/let.txt#Let with value": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/let.txt#Let with number": {
+    "kindJaccard": 0.8571428571428571,
+    "spanOverlap": 1
+  },
+  "statements/let.txt#Let with subquery in parens": {
+    "kindJaccard": 0.6153846153846154,
+    "spanOverlap": 1
+  },
+  "statements/let.txt#Let with subquery statement": {
+    "kindJaccard": 0.5833333333333334,
+    "spanOverlap": 1
+  },
+  "statements/let.txt#Let with typed parameter": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Live select all": {
+    "kindJaccard": 0.4444444444444444,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Live select from record ID": {
+    "kindJaccard": 0.38461538461538464,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Live select DIFF": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Live select specific fields": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Live select with WHERE": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/live.txt#Kill statement": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/option.txt#Option without value": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/option.txt#Option with true": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/option.txt#Option with false": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/rebuild.txt#Rebuild index": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/rebuild.txt#Rebuild index if exists": {
+    "kindJaccard": 0.7142857142857143,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Simple relate": {
+    "kindJaccard": 0.5454545454545454,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate ONLY": {
+    "kindJaccard": 0.5454545454545454,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with SET": {
+    "kindJaccard": 0.5625,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with CONTENT": {
+    "kindJaccard": 0.631578947368421,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with RETURN": {
+    "kindJaccard": 0.5384615384615384,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with ident subjects": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with variable subject": {
+    "kindJaccard": 0.7142857142857143,
+    "spanOverlap": 1
+  },
+  "statements/relate.txt#Relate with array subject": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove namespace": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove database": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove user": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove token": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove event": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove field": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove index": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove analyzer": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove function": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove param": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove scope": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/remove.txt#Remove bucket": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/return.txt#Return value": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/return.txt#Return string": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/return.txt#Return expression": {
+    "kindJaccard": 0.7777777777777778,
+    "spanOverlap": 1
+  },
+  "statements/return.txt#Return variable": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/return.txt#Return function call": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Simple select all": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select specific fields": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with alias": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select VALUE": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select ONLY": {
+    "kindJaccard": 0.4166666666666667,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with WHERE": {
+    "kindJaccard": 0.6428571428571429,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with ORDER BY": {
+    "kindJaccard": 0.4166666666666667,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with ORDER BY DESC": {
+    "kindJaccard": 0.4166666666666667,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with GROUP BY": {
+    "kindJaccard": 0.46153846153846156,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with GROUP ALL": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with LIMIT": {
+    "kindJaccard": 0.5833333333333334,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with LIMIT BY": {
+    "kindJaccard": 0.5833333333333334,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with START": {
+    "kindJaccard": 0.5833333333333334,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with START AT": {
+    "kindJaccard": 0.5833333333333334,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with LIMIT and START": {
+    "kindJaccard": 0.6153846153846154,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with FETCH": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with SPLIT": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with OMIT": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with WITH INDEX": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with WITH NOINDEX": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with EXPLAIN": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with EXPLAIN FULL": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with PARALLEL": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with TEMPFILES": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with TIMEOUT": {
+    "kindJaccard": 0.6363636363636364,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with VERSION": {
+    "kindJaccard": 0.45454545454545453,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select with multiple clauses": {
+    "kindJaccard": 0.55,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select from multiple targets": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "statements/select.txt#Select from subquery": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "statements/show.txt#Show changes for table": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/show.txt#Show changes with since": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/show.txt#Show changes with limit": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/show.txt#Show changes with since and limit": {
+    "kindJaccard": 0.875,
+    "spanOverlap": 1
+  },
+  "statements/sleep.txt#Sleep with seconds": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/sleep.txt#Sleep with milliseconds": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/sleep.txt#Sleep with multi-part duration": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "statements/throw.txt#Throw string": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/throw.txt#Throw variable": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/throw.txt#Throw expression": {
+    "kindJaccard": 0.7777777777777778,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Begin": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Begin transaction": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Cancel": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Cancel transaction": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Commit": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/transactions.txt#Commit transaction": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Simple update": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update ONLY": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with SET": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with CONTENT": {
+    "kindJaccard": 0.7692307692307693,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with MERGE": {
+    "kindJaccard": 0.7857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with REPLACE": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with UNSET": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with WHERE": {
+    "kindJaccard": 0.9230769230769231,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with RETURN": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with TIMEOUT": {
+    "kindJaccard": 0.8461538461538461,
+    "spanOverlap": 1
+  },
+  "statements/update.txt#Update with PARALLEL": {
+    "kindJaccard": 0.8181818181818182,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Simple upsert": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert ONLY": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert with SET": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert with CONTENT": {
+    "kindJaccard": 0.7692307692307693,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert with MERGE": {
+    "kindJaccard": 0.7857142857142857,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert with WHERE": {
+    "kindJaccard": 0.8461538461538461,
+    "spanOverlap": 1
+  },
+  "statements/upsert.txt#Upsert with RETURN": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/use.txt#Use namespace short": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/use.txt#Use namespace long": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/use.txt#Use database short": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "statements/use.txt#Use database long": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "statements/use.txt#Use namespace and database": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Empty array": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Single element": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Multiple elements": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Trailing comma": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Nested arrays": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "values/arrays.txt#Mixed types": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Simple type cast": {
+    "kindJaccard": 0.42857142857142855,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Union type cast": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Literal string type cast": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Literal union type cast": {
+    "kindJaccard": 0.4,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Literal string union": {
+    "kindJaccard": 0.3,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Array literal type cast": {
+    "kindJaccard": 0.23076923076923078,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Array union literal type cast": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Object type cast": {
+    "kindJaccard": 0.15789473684210525,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Object union type cast": {
+    "kindJaccard": 0.15,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Complex nested type cast": {
+    "kindJaccard": 0.11538461538461539,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Parameterized type cast": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "values/casting.txt#Complex union object type cast": {
+    "kindJaccard": 0.12,
+    "spanOverlap": 1
+  },
+  "values/closures.txt#Empty closure": {
+    "kindJaccard": 0.125,
+    "spanOverlap": 1
+  },
+  "values/closures.txt#Closure with param": {
+    "kindJaccard": 0.25,
+    "spanOverlap": 1
+  },
+  "values/closures.txt#Closure with typed param": {
+    "kindJaccard": 0.13333333333333333,
+    "spanOverlap": 1
+  },
+  "values/closures.txt#Closure with multiple params": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "values/closures.txt#Closure with return type": {
+    "kindJaccard": 0.3157894736842105,
+    "spanOverlap": 1
+  },
+  "values/durations.txt#Single duration parts": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/durations.txt#Multi-part duration": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/durations.txt#Complex duration": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/format-strings.txt#Basic format string": {
+    "kindJaccard": 0.14285714285714285,
+    "spanOverlap": 1
+  },
+  "values/format-strings.txt#Format string with expression": {
+    "kindJaccard": 0.1,
+    "spanOverlap": 1
+  },
+  "values/format-strings.txt#Escaped quote in format string": {
+    "kindJaccard": 0.1,
+    "spanOverlap": 1
+  },
+  "values/format-strings.txt#Nested format strings": {
+    "kindJaccard": 0.125,
+    "spanOverlap": 1
+  },
+  "values/format-strings.txt#Single quoted format string": {
+    "kindJaccard": 0.14285714285714285,
+    "spanOverlap": 1
+  },
+  "values/geometries.txt#Point with decimals": {
+    "kindJaccard": 0.14285714285714285,
+    "spanOverlap": 1
+  },
+  "values/geometries.txt#Point with integers": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "values/geometries.txt#Point with floats": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Dot notation path": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Wildcard on record ID": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Lookup arrow right with any": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Lookup arrow right": {
+    "kindJaccard": 0.42857142857142855,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Multiple lookups": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Record ID lookup": {
+    "kindJaccard": 0.4166666666666667,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#SELECT with lookup path": {
+    "kindJaccard": 0.45454545454545453,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Method call on number": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Filter with variable key": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Filter with ident key": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Filter with string key": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Record ID filter": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Array index access": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Array variable access": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Array WHERE filter": {
+    "kindJaccard": 0.7857142857142857,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Array question mark filter": {
+    "kindJaccard": 0.6923076923076923,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse unbounded": {
+    "kindJaccard": 0.2777777777777778,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with path expression": {
+    "kindJaccard": 0.3157894736842105,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with destructure": {
+    "kindJaccard": 0.3,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with fixed depth": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with min range": {
+    "kindJaccard": 0.26666666666666666,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with full range": {
+    "kindJaccard": 0.26666666666666666,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#Recurse with max range": {
+    "kindJaccard": 0.26666666666666666,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#At reference with subscript": {
+    "kindJaccard": 0.4,
+    "spanOverlap": 1
+  },
+  "values/idioms.txt#At reference with ident": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/literals.txt#Boolean true": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/literals.txt#Boolean false": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/literals.txt#Null": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/literals.txt#None": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/literals.txt#Mixed literals": {
+    "kindJaccard": 0.25,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Integer": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Float": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Float with exponent": {
+    "kindJaccard": 0.375,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Float with f suffix": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Float special values": {
+    "kindJaccard": 0.25,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Decimal": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Negative numbers": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/numbers.txt#Positive explicit sign": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Simple object": {
+    "kindJaccard": 0.7,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Object with string keys": {
+    "kindJaccard": 0.7,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Empty object": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Empty object with space": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Block vs Object": {
+    "kindJaccard": 0.14285714285714285,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Object followed by value": {
+    "kindJaccard": 0.7,
+    "spanOverlap": 1
+  },
+  "values/objects.txt#Nested objects": {
+    "kindJaccard": 0.7,
+    "spanOverlap": 1
+  },
+  "values/ranges.txt#Exclusive range": {
+    "kindJaccard": 0.42857142857142855,
+    "spanOverlap": 1
+  },
+  "values/ranges.txt#Right-open range": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "values/ranges.txt#Left-open inclusive range": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/ranges.txt#Simple range": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Simple record ID": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with ident value": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Number followed by ident in record ID": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID function call": {
+    "kindJaccard": 0.4444444444444444,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with tick-quoted table": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with tick-quoted value": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with object value": {
+    "kindJaccard": 0.6153846153846154,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with array value": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/record-ids.txt#Record ID with prefixed string value": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/regex.txt#Basic regex": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/regex.txt#Regex with flags": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/regex.txt#Regex with character class": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/regex.txt#Regex with escape": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/sets.txt#Set with single trailing comma": {
+    "kindJaccard": 0.2857142857142857,
+    "spanOverlap": 1
+  },
+  "values/sets.txt#Set with lone comma": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "values/sets.txt#Set with two elements": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/sets.txt#Set with three elements": {
+    "kindJaccard": 0.5,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Double quoted string": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Single quoted string": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Escaped double quotes": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Escaped single quotes": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Mixed quotes": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Multiline string": {
+    "kindJaccard": 0.3333333333333333,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Empty strings": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "values/strings.txt#Prefixed strings": {
+    "kindJaccard": 0.4,
+    "spanOverlap": 1
+  },
+  "misc/comments.txt#Hash comment": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/comments.txt#Dash comment": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/comments.txt#Slash comment": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/comments.txt#Block comment": {
+    "kindJaccard": 0.625,
+    "spanOverlap": 1
+  },
+  "misc/comments.txt#Block comment standalone": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Namespaced function call": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Custom function call": {
+    "kindJaccard": 0.75,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Rand function": {
+    "kindJaccard": 0.7142857142857143,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Count function": {
+    "kindJaccard": 0.42857142857142855,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Versioned function call": {
+    "kindJaccard": 0.7777777777777778,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#No-argument function call": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Multiple argument function call": {
+    "kindJaccard": 0.6666666666666666,
+    "spanOverlap": 1
+  },
+  "misc/functions.txt#Variable function call": {
+    "kindJaccard": 0.5714285714285714,
+    "spanOverlap": 1
+  },
+  "misc/identifiers.txt#Raw identifiers": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/identifiers.txt#Keywords used as identifiers in field position": {
+    "kindJaccard": 0.6,
+    "spanOverlap": 1
+  },
+  "misc/javascript.txt#JavaScript function with args": {
+    "kindJaccard": 0.2,
+    "spanOverlap": 1
+  },
+  "misc/javascript.txt#Simple JavaScript function": {
+    "kindJaccard": 0.09090909090909091,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Addition": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Subtraction": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Multiplication": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Division": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Power": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Equality": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Inequality": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Less than": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Greater than": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Less than or equal": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Greater than or equal": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Logical AND": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Logical OR": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Null coalescing": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Elvis operator": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Unicode containment operators": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Keyword operator containsnot": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#IS operator": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#IN keyword operator": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Fuzzy match": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#All match": {
+    "kindJaccard": 0.8,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Unicode multiplication": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Unicode division": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Matches operator with distance": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Addition assignment in expression": {
+    "kindJaccard": 0.8571428571428571,
+    "spanOverlap": 1
+  },
+  "misc/operators.txt#Subtraction assignment in expression": {
+    "kindJaccard": 0.8571428571428571,
+    "spanOverlap": 1
+  },
+  "misc/parameters.txt#Simple variable": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/parameters.txt#Variable with underscore": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/parameters.txt#Variable with numbers": {
+    "kindJaccard": 1,
+    "spanOverlap": 1
+  },
+  "misc/subqueries.txt#Subquery with select": {
+    "kindJaccard": 0.5555555555555556,
+    "spanOverlap": 1
+  },
+  "misc/subqueries.txt#Subquery with value": {
+    "kindJaccard": 0.8571428571428571,
+    "spanOverlap": 1
+  },
+  "misc/subqueries.txt#Subquery with create": {
+    "kindJaccard": 0.8333333333333334,
+    "spanOverlap": 1
+  }
+}

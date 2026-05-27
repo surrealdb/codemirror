@@ -1,0 +1,6 @@
+{
+	"patterns": [],
+	"reasons": {
+		"fragment-tops": "PermissionInput, IndexInput, CombinedResults, Syntax not in tree-sitter grammar v1"
+	}
+}

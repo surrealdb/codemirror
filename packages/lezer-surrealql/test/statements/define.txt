@@ -94,6 +94,22 @@ DEFINE FIELD data ON TABLE person FLEXIBLE TYPE object
 
 SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,Keyword,TypeName)))
 
+# Define field with flexible after type clause
+
+DEFINE FIELD metadata ON TABLE user TYPE object FLEXIBLE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName,Keyword)))
+
+# Define field flexible after parameterized object type
+
+DEFINE FIELD alternatives ON file TYPE option<object> FLEXIBLE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,ParameterizedType(TypeName,"<",TypeName,">"),Keyword)))
+
 # Define field with permissions
 
 DEFINE FIELD secret ON TABLE person TYPE string PERMISSIONS FOR select, create WHERE $auth.admin = true

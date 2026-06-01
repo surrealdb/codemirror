@@ -32,6 +32,7 @@
 	filter
 	for
 	clause
+	flexibleAfter
 }
 
 expressions {
@@ -1098,7 +1099,7 @@ FieldAssignment {
 // Clauses
 
 MergeClause {
-	merge Object
+	merge value
 }
 
 PatchClause {
@@ -1386,9 +1387,9 @@ FunctionClause {
 }
 
 TypeClause {
-	flexible?
-	typeKeyword
-	type
+	( flexible typeKeyword type ) |
+	( typeKeyword type !flexibleAfter flexible ) |
+	( typeKeyword type )
 }
 
 ReadonlyClause[since=1_2_0] {
@@ -1595,12 +1596,13 @@ Operator {
 	CommentResult[@name=Comment,closedBy=CommentResultClose] { "-------- Query" ![\n]* }
 
 	// Numbers
-	Int { @digit+ }
-	frac { '.' @digit+ }
-	exp { $[eE] $[+\-]? @digit+ }
-	Float { (@digit+ (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
-	Decimal { @digit+ frac? exp? "dec" }
-	VersionNumber { @digit+ ("." @digit+ ("." @digit+)?)? }
+	digitSeq { @digit+ ("_" @digit+)* }
+	Int { digitSeq }
+	frac { '.' digitSeq }
+	exp { $[eE] $[+\-]? digitSeq }
+	Float { (digitSeq "f") | (digitSeq (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
+	Decimal { digitSeq frac? exp? "dec" }
+	VersionNumber { digitSeq ("." digitSeq ("." digitSeq)?)? }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
 	prefixedString[@name=String] { $[rudbf] String }
@@ -1633,7 +1635,7 @@ Operator {
 	Regex { "/" (![/\\\n[] | "\\" ![\n] | "[" (![\n\\\]] | "\\" ![\n])* "]")+ ("/" $[dgimsuvy]*)? }
 
 	durationUnit { "ns" | "us" | "µs" | "ms" | "s" | "m" | "h" | "d" | "w" | "y"}
-	DurationPart { @digit+ " "* durationUnit }
+	DurationPart { digitSeq " "* durationUnit }
 
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }

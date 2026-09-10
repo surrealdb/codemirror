@@ -134,6 +134,30 @@ DEFINE FIELD fullname ON TABLE person COMPUTED $value.first + " " + $value.last
 
 SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Keyword,Ident),ComputedClause(Keyword,BinaryExpression(BinaryExpression(Path(VariableName,Subscript(Ident)),Operator,String),Operator,Path(VariableName,Subscript(Ident))))))
 
+# Define field on array items
+
+DEFINE FIELD children.* ON parent TYPE record<child> PERMISSIONS FULL
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident,Any),OnTableClause(Keyword,Ident),TypeClause(Keyword,ParameterizedType(TypeName,"<",TypeName,">")),PermissionsForClause(Keyword,Literal)))
+
+# Define field on array items with bracket wildcard
+
+DEFINE FIELD tags[*] ON TABLE person TYPE string
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident,"[",Any,"]"),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName)))
+
+# Define field nested below array items
+
+DEFINE FIELD comments.*.title ON TABLE post TYPE string
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident,Any,Ident),OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName)))
+
 # Define index unique
 
 DEFINE INDEX idx_email ON TABLE person FIELDS email UNIQUE
@@ -141,6 +165,14 @@ DEFINE INDEX idx_email ON TABLE person FIELDS email UNIQUE
 ==>
 
 SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(UniqueClause(Keyword))))
+
+# Define index on array items
+
+DEFINE INDEX idx_tags ON TABLE person FIELDS tags.* UNIQUE
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident,Any)),IndexClause(UniqueClause(Keyword))))
 
 # Define index search analyzer
 

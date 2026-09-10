@@ -33,7 +33,7 @@
 		},
 		"packages/lezer-surrealql": {
 			"name": "@surrealdb/lezer",
-			"version": "1.0.5",
+			"version": "1.0.8",
 			"dependencies": {
 				"@lezer/common": "^1.2.3",
 				"@lezer/highlight": "^1.2.1",

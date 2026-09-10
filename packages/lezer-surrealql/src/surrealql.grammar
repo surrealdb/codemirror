@@ -875,7 +875,12 @@ Range[since=2_0_0] {
 }
 
 Idiom {
-	Ident ( "." Ident )*
+	Ident idiomPart*
+}
+
+idiomPart {
+	"." ( Ident | AnyStar ) |
+	"[" AnyStar "]"
 }
 
 Path {

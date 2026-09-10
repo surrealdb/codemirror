@@ -32,11 +32,23 @@ SurrealQL(Number(Float),Number(Float),Number(Float),Number(Float))
 # Float with f suffix
 
 2e4f;
-3.14f
+3.14f;
+100f
 
 ==>
 
-SurrealQL(Number(Float),Number(Float))
+SurrealQL(Number(Float),Number(Float),Number(Float))
+
+# Underscore separators
+
+1_000_000;
+1_000_000.99;
+1_000.5f;
+2_000_000dec
+
+==>
+
+SurrealQL(Number(Int),Number(Float),Number(Float),Number(Decimal))
 
 # Float special values
 

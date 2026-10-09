@@ -45,3 +45,67 @@ IF $age > 65 THEN (RETURN "senior") ELSE IF $age > 18 THEN (RETURN "adult") ELSE
 ==>
 
 SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator,Number(Int)),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword,Keyword,BinaryExpression(VariableName,Operator,Number(Int)),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword,SubQuery(ReturnStatement(Keyword,String)),Keyword)))
+
+# Legacy if with plain values
+
+IF $age > 18 THEN 'adult' ELSE 'minor' END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator(">"),Number(Int)),Keyword,String,Keyword,String,Keyword)))
+
+# Legacy if with plain values and else if
+
+IF $age > 65 THEN 'senior' ELSE IF $age > 18 THEN 'adult' ELSE 'minor' END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator(">"),Number(Int)),Keyword,String,Keyword,Keyword,BinaryExpression(VariableName,Operator(">"),Number(Int)),Keyword,String,Keyword,String,Keyword)))
+
+# Legacy if as a field
+
+SELECT IF age > 18 THEN 'adult' ELSE 'minor' END AS category FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(IfElseStatement(Keyword,Legacy(BinaryExpression(Ident,Operator(">"),Number(Int)),Keyword,String,Keyword,String,Keyword)),Keyword,Ident)),Keyword,Ident))
+
+# Modern if as a field
+
+SELECT IF age > 18 { 'adult' } ELSE { 'minor' } AS category FROM person
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(IfElseStatement(Keyword,Modern(BinaryExpression(Ident,Operator(">"),Number(Int)),Block(BraceOpen,String,BraceClose),Keyword,Block(BraceOpen,String,BraceClose))),Keyword,Ident)),Keyword,Ident))
+
+# If as a let value
+
+LET $category = IF $age > 18 THEN 'adult' END
+
+==>
+
+SurrealQL(LetStatement(Keyword,ParamDefinition(VariableName),IfElseStatement(Keyword,Legacy(BinaryExpression(VariableName,Operator(">"),Number(Int)),Keyword,String,Keyword))))
+
+# If as an argument
+
+string::uppercase(IF $a THEN 'x' ELSE 'y' END)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(IfElseStatement(Keyword,Legacy(VariableName,Keyword,String,Keyword,String,Keyword)))))
+
+# Modern if nested in legacy if
+
+IF $a THEN IF $b { 1 } ELSE { 2 } END
+
+==>
+
+SurrealQL(IfElseStatement(Keyword,Legacy(VariableName,Keyword,IfElseStatement(Keyword,Modern(VariableName,Block(BraceOpen,Number(Int),BraceClose),Keyword,Block(BraceOpen,Number(Int),BraceClose))),Keyword)))
+
+# If expression with closure and not operator
+
+SELECT *, IF (questions ?? []).filter(|$q| !$q.answer).len() > 0 THEN state || 'questions' ELSE state END AS state FROM task
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any,Predicate(IfElseStatement(Keyword,Legacy(BinaryExpression(Path(SubQuery(BinaryExpression(Ident,Operator,Array("[","]"))),Subscript(IdiomFunction(FunctionName,ArgumentList(Closure(Pipe,ParamDefinition(VariableName),Pipe,UnaryExpression(Operator,Path(VariableName,Subscript(Ident))))))),Subscript(IdiomFunction(FunctionName,ArgumentList))),Operator(">"),Number(Int)),Keyword,BinaryExpression(Ident,Operator,String),Keyword,Ident,Keyword)),Keyword,Ident)),Keyword,Ident))

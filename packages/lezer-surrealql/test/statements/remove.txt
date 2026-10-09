@@ -93,3 +93,19 @@ REMOVE BUCKET mybucket
 ==>
 
 SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove table
+
+REMOVE TABLE person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove table if exists
+
+REMOVE TABLE IF EXISTS person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,IfExistsClause(Keyword,Keyword),Ident))

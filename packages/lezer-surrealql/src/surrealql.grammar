@@ -25,6 +25,8 @@
 }
 
 @precedence {
+	prefix
+	ifElse
 	range @left
 	method
 	binary @left
@@ -33,6 +35,7 @@
 	for
 	clause
 	flexibleAfter
+	closure
 }
 
 expressions {
@@ -237,11 +240,10 @@ Block {
 }
 
 Closure[since=2_0_0] {
-	"|" commaSep<escapedParamDefinition>? "|" ("->" type)? Block
+	"|" commaSep<escapedParamDefinition>? "|" (("->" type Block) | value !closure)
 }
 
 subqueryStatement {
-	IfElseStatement |
 	LetStatement |
 	DeleteStatement |
 	CreateStatement |
@@ -546,7 +548,7 @@ RemoveStatement {
 		( functionKw IfExistsClause? customFunctionName ) |
 		( param IfExistsClause? VariableName ) |
 		( scope IfExistsClause? value ) |
-		( table IfExistsClause? value (and expunge)? )
+		( table IfExistsClause? value (and expunge)? ) |
 		( api IfExistsClause? value ) |
 		( bucket IfExistsClause? value )
 	)
@@ -719,36 +721,32 @@ ForStatement { for VariableName in ( Array | VariableName | SubQuery | Block ) B
 ReturnStatement { return expression }
 ThrowStatement { throw value }
 
-IfElseStatement {
+IfElseStatement[group="Statement Value"] {
 	if
 	(
 		Legacy {
 			value
 			then
-			( Block | SubQuery)
-			(
-				else if
-				value
-				then
-				( Block | SubQuery)
-			)*
-			(
-				else
-				( Block | SubQuery)
-			)?
-			end
+			value
+			legacyElse
 		} |
 		Modern {
 			value Block
 			(
-				else if
+				!ifElse else if
 				value Block
 			)*
 			(
-				else Block
+				!ifElse else Block
 			)?
 		}
 	)
+}
+
+legacyElse {
+	end |
+	!ifElse else if value then value legacyElse |
+	!ifElse else value end
 }
 
 // Live statements
@@ -845,12 +843,14 @@ baseValue[@isGroup=Value] {
 	FunctionCall |
 	SubQuery |
 	Block |
-	Closure |
 	TypeCast
 }
 
 value[@isGroup=Value] {
 	baseValue |
+	IfElseStatement |
+	Closure |
+	UnaryExpression |
 	BinaryExpression |
 	Range |
 	Path
@@ -861,7 +861,11 @@ AnyStar[@name=Any] { "*" }
 At[since=2_1_0] { "@" }
 Optional[since=2_0_0] { "?" }
 
-// Binary expressions
+// Unary and binary expressions
+
+UnaryExpression {
+	"!" !prefix value
+}
 
 BinaryExpression {
 	value !binary Operator value
@@ -1508,7 +1512,7 @@ LiteralType[since=2_0_0] {
 }
 
 singleType {
-	TypeName { rawident } |
+	TypeName { rawident ~closureArrow } |
 	ParameterizedType { singleType "<" type ">" } |
 	LiteralType
 }
@@ -1535,7 +1539,7 @@ TypeCast {
 }
 
 Ident {
-	rawident |
+	rawident ~closureArrow |
 	tickIdent
 }
 
@@ -1545,8 +1549,8 @@ Operator {
 	binaryOperator |
 	"-" | "=" | ">" | "<" |
 	binaryOperatorKeyword |
-	is | ( is opNot ) |
-	in | ( opNot opIn ) |
+	is | ( is not ) |
+	in | ( not in ) |
 
 	( "@" Number "@" ) |
 	(
@@ -1586,6 +1590,7 @@ Operator {
 	"<~"[@name=LookupLeft]
 	"<->"[@name=LookupBoth]
 	"|"[@name=Pipe]
+	"!"[@name=Operator]
 	"~"[until=2_4_0]
 	"!~"[until=2_4_0]
 	"*~"[until=2_4_0]
@@ -1885,8 +1890,6 @@ piped<content> {
 	// Operators
 	binaryOperatorKeyword,
 	is,
-	opIn,
-	opNot,
 
 	Distance,
 	minkowski				[@name=Distance],

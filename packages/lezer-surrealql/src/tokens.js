@@ -193,8 +193,6 @@ import {
 	TokenType,
 	is,
 	binaryOperatorKeyword,
-	opIn,
-	opNot,
 	Distance,
 	minkowski,
 	Filter,

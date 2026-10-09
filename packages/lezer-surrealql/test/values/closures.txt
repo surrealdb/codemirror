@@ -37,3 +37,27 @@ SurrealQL(Closure(Pipe,ParamDefinition(VariableName),ParamDefinition(VariableNam
 ==>
 
 SurrealQL(Closure(Pipe,ParamDefinition(VariableName,Colon,Type(TypeName)),Pipe,LookupRight,TypeName,Block(BraceOpen,BinaryExpression(VariableName,Operator,Number(Int)),BraceClose)))
+
+# Closure with expression body
+
+|$a| $a + 1
+
+==>
+
+SurrealQL(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator,Number(Int))))
+
+# Closure with expression body as argument
+
+array::map($items, |$item| $item.name)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,ArgumentList(VariableName,Closure(Pipe,ParamDefinition(VariableName),Pipe,Path(VariableName,Subscript(Ident))))))
+
+# Chained closures with expression bodies
+
+[1, 2].map(|$x| $x * 2).filter(|$y| $y > 1)
+
+==>
+
+SurrealQL(Path(Array("[",Number(Int),Number(Int),"]"),Subscript(IdiomFunction(FunctionName,ArgumentList(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator,Number(Int)))))),Subscript(IdiomFunction(FunctionName,ArgumentList(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator(">"),Number(Int))))))))

@@ -211,3 +211,51 @@ a -= 1
 ==>
 
 SurrealQL(BinaryExpression(Ident,Operator,Number(Int)))
+
+# Not operator
+
+!$active
+
+==>
+
+SurrealQL(UnaryExpression(Operator,VariableName))
+
+# Not operator on a path
+
+!$q.answer
+
+==>
+
+SurrealQL(UnaryExpression(Operator,Path(VariableName,Subscript(Ident))))
+
+# Double not operator
+
+!!$active
+
+==>
+
+SurrealQL(UnaryExpression(Operator,UnaryExpression(Operator,VariableName)))
+
+# Not operator binds tighter than binary operators
+
+!$a > 0
+
+==>
+
+SurrealQL(BinaryExpression(UnaryExpression(Operator,VariableName),Operator(">"),Number(Int)))
+
+# Is not operator
+
+$email IS NOT NONE
+
+==>
+
+SurrealQL(BinaryExpression(VariableName,Operator(Keyword),None))
+
+# Not in operator
+
+$a NOT IN [1, 2]
+
+==>
+
+SurrealQL(BinaryExpression(VariableName,Operator(Keyword,Keyword),Array("[",Number(Int),Number(Int),"]")))

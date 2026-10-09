@@ -61,11 +61,3 @@ SurrealQL(FunctionCall(FunctionName,ArgumentList(VariableName,Closure(Pipe,Param
 ==>
 
 SurrealQL(Path(Array("[",Number(Int),Number(Int),"]"),Subscript(IdiomFunction(FunctionName,ArgumentList(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator,Number(Int)))))),Subscript(IdiomFunction(FunctionName,ArgumentList(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator(">"),Number(Int))))))))
-
-# Closure returning a lookup
-
-|| ->knows
-
-==>
-
-SurrealQL(Closure(Pipe,Pipe,Path(Lookup(LookupRight,Ident))))

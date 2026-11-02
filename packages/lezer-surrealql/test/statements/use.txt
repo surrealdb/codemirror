@@ -37,3 +37,11 @@ USE NS test DB test
 ==>
 
 SurrealQL(UseStatement(Keyword,Keyword,Ident,Keyword,Ident))
+
+# Use default
+
+USE DEFAULT
+
+==>
+
+SurrealQL(UseStatement(Keyword,Keyword))

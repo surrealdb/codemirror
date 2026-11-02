@@ -1,0 +1,7 @@
+# Explain analyze
+
+EXPLAIN ANALYZE FORMAT JSON SELECT * FROM person
+
+==>
+
+SurrealQL(ExplainStatement(Keyword,Keyword,Keyword,Ident,SelectStatement(Keyword,Fields(Any),Keyword,Ident)))

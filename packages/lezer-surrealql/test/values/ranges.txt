@@ -29,3 +29,11 @@ SurrealQL(Range(RangeOp,String))
 ==>
 
 SurrealQL(Range(Number(Int),RangeOp,Number(Int)))
+
+# Exclusive range
+
+1>..5
+
+==>
+
+SurrealQL(Range(Number(Int),RangeOp,Number(Int)))

@@ -52,7 +52,7 @@ DEFINE EVENT e ON TABLE file WHEN $event = 'DELETE' ASYNC THEN { };
 
 ==>
 
-SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),WhenClause(Keyword,BinaryExpression(VariableName,Operator,String)),ThenClause(Keyword,Keyword,Block(BraceOpen,BraceClose))))
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Keyword,Ident),WhenClause(Keyword,BinaryExpression(VariableName,Operator,String)),AsyncClause(Keyword),ThenClause(Keyword,Object(BraceOpen,BraceClose))))
 
 # Define field
 
@@ -335,3 +335,187 @@ DEFINE SCOPE account SESSION 24h SIGNUP (CREATE user SET email = $email) SIGNIN 
 ==>
 
 SurrealQL(DefineStatement(Keyword,ScopeDefinition(Keyword,Ident,SessionClause(Keyword,Duration(DurationPart)),SignupClause(Keyword,SubQuery(CreateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))))),SigninClause(Keyword,SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator,VariableName))))))))
+
+# Define type refined scalar
+
+DEFINE TYPE positive_int AS int ASSERT $value > 0 DEFAULT 1
+
+==>
+
+SurrealQL(DefineStatement(Keyword,TypeDefinition(Keyword,Ident,Keyword,TypeName,AssertClause(Keyword,BinaryExpression(VariableName,Operator(">"),Number(Int))),DefaultClause(Keyword,DefaultAlways,Number(Int)))))
+
+# Define type object shape
+
+DEFINE TYPE IF NOT EXISTS address AS { street: string, zip: option<string> }
+
+==>
+
+SurrealQL(DefineStatement(Keyword,TypeDefinition(Keyword,IfNotExistsClause(Keyword,Keyword,Keyword),Ident,Keyword,LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(KeyName),Colon,TypeName),ObjectTypeProperty(ObjectKey(KeyName),Colon,ParameterizedType(TypeName,"<",TypeName,">"))),BraceClose)))))
+
+# Define type literal union with SQL type
+
+DEFINE TYPE OVERWRITE mood AS 'sad' | 'ok' | 'happy' SQL TYPE POSTGRESQL 'mood' COMMENT 'feelings'
+
+==>
+
+SurrealQL(DefineStatement(Keyword,TypeDefinition(Keyword,OverwriteClause(Keyword),Ident,Keyword,UnionType(LiteralType(String),Pipe,LiteralType(String),Pipe,LiteralType(String)),SqlTypeClause(Keyword,Keyword,Ident,String),CommentClause(Keyword,String))))
+
+# Define sequence
+
+DEFINE SEQUENCE seq BATCH 100 START 1 TIMEOUT 5s
+
+==>
+
+SurrealQL(DefineStatement(Keyword,SequenceDefinition(Keyword,Ident,BatchClause(Keyword,Number(Int)),StartClause(Keyword,Number(Int)),TimeoutClause(Keyword,Duration(DurationPart)))))
+
+# Define extension
+
+DEFINE EXTENSION ext::demo FROM silo::org::pkg<1.2.3> UNSIGNED CAPABILITIES { allow_net: true }
+
+==>
+
+SurrealQL(DefineStatement(Keyword,ExtensionDefinition(Keyword,ExtensionName(FunctionName),Keyword,ExtensionSource(ExtensionName(FunctionName,Version)),Keyword,CapabilitiesClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Bool)),BraceClose)))))
+
+# Define field 4.0 clauses
+
+DEFINE FIELD score ON likes TYPE number INLINE GRAPHQL_ALIAS 'Score' SQL TYPE MYSQL 'INT'
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,TypeName),Keyword,GraphqlClause(Keyword,String),SqlTypeClause(Keyword,Keyword,Ident,String)))
+
+# Define field materialize
+
+DEFINE FIELD author ON post TYPE record<author> REFERENCE MATERIALIZE INTO author.posts
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,ParameterizedType(TypeName,"<",TypeName,">")),ReferenceClause(Keyword),MaterializeClause(Keyword,Keyword,Idiom(Ident,Ident))))
+
+# Define field migrate
+
+DEFINE FIELD n ON t TYPE int MIGRATE EXISTING ROWS AS row USING <int> row.n FALLBACK 0
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,TypeName),MigrateClause(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,Path(TypeCast("<",TypeName,">",Ident),Subscript(Ident)),Keyword,Number(Int))))
+
+# Define field named tuple id
+
+DEFINE FIELD id ON reading TYPE [city: string, time: datetime]
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,LiteralType(ArrayType("[",ObjectTypeProperty(ObjectKey(KeyName),Colon,TypeName),ObjectTypeProperty(ObjectKey(KeyName),Colon,TypeName),"]")))))
+
+# Define table lightweight relation
+
+DEFINE TABLE knows TYPE RELATION IN person OUT person LIGHTWEIGHT INLINE EDGES 16
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TableTypeClause(Keyword,Keyword,Keyword,Ident,Keyword,Ident,EnforcedClause,LightweightClause(Keyword)),InlineClause(Keyword,Keyword,Number(Int))))
+
+# Define table changefeed include original
+
+DEFINE TABLE t SCHEMAFUL CHANGEFEED 1h INCLUDE ORIGINAL
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword,ChangefeedClause(Keyword,Duration(DurationPart),IncludeOriginal(Keyword,Keyword))))
+
+# Define event retry
+
+DEFINE EVENT e ON t WHEN true ASYNC RETRY 3 MAXDEPTH 2 THEN { CREATE log }
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),WhenClause(Keyword,Bool),AsyncClause(Keyword),RetryClause(Keyword,Number(Int)),MaxdepthClause(Keyword,Number(Int)),ThenClause(Keyword,Block(BraceOpen,CreateStatement(Keyword,Ident),BraceClose))))
+
+# Define index fulltext
+
+DEFINE INDEX ft ON blog FIELDS content FULLTEXT ANALYZER simple BM25(1.2,0.75) HIGHLIGHTS
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(FulltextClause(Keyword,Keyword,Ident,Bm25Clause(Keyword,Number(Float),Number(Float)),Keyword))))
+
+# Define index hnsw typed
+
+DEFINE INDEX hn ON pts FIELDS point HNSW DIMENSION 4 DISTANCE COSINE_NORMALIZED TYPE F32 EFC 500 M 12
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(HnswClause(Keyword,IndexDimensionClause(Keyword,Number(Int)),HnswDistClause(Keyword,Distance),IndexVectorTypeClause(Keyword,IndexTypeClause),IndexEfcClause(Keyword,Number(Int)),IndexMClause(Keyword,Number(Int))))))
+
+# Define index diskann
+
+DEFINE INDEX dk ON pts FIELDS point DISKANN DIMENSION 4 DIST EUCLIDEAN DEGREE 64 L_BUILD 100 ALPHA 1.2
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(DiskannClause(Keyword,IndexDimensionClause(Keyword,Number(Int)),HnswDistClause(Keyword,Distance),Keyword,Number(Int),Keyword,Number(Int),Keyword,Number(Float)))))
+
+# Define index count
+
+DEFINE INDEX c ON t COUNT WHERE active
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),IndexClause(CountClause(FunctionName,WhereClause(Keyword,Ident)))))
+
+# Define index unique nulls not distinct
+
+DEFINE INDEX u ON t FIELDS email UNIQUE NULLS NOT DISTINCT
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),FieldsColumnsClause(Keyword,Idiom(Ident)),IndexClause(UniqueClause(Keyword,NullsNotDistinct(Keyword,Keyword,Keyword)))))
+
+# Define analyzer lowercase
+
+DEFINE ANALYZER simple TOKENIZERS blank, class FILTERS lowercase, mapper('map.txt')
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,TokenizersClause(Keyword,AnalyzerTokenizer,AnalyzerTokenizer),FiltersClause(Keyword,AnalyzerFilters(Filter),AnalyzerFilters(Filter,String))))
+
+# Define access bearer
+
+DEFINE ACCESS api ON DATABASE TYPE BEARER FOR USER DURATION FOR GRANT 30d, FOR SESSION 1h
+
+==>
+
+SurrealQL(DefineStatement(Keyword,AccessDefinition(Keyword,Ident,OnRootNsDbClause(Keyword,Keyword),AccessTypeClause(Keyword,BearerAccess(Keyword,Keyword,Keyword)),DurationClause(Keyword,DurationValue(Keyword,Keyword,Duration(DurationPart)),DurationValue(Keyword,Keyword,Duration(DurationPart))))))
+
+# Define api security
+
+DEFINE API "/hello" FOR get THEN { RETURN 1 } SECURITY DEFINER
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,String,ApiOptions,ApiMethodClause(Keyword,HttpMethod(Keyword),ApiOptions,Keyword,Block(BraceOpen,ReturnStatement(Keyword,Number(Int)),BraceClose)),SecurityClause(Keyword,Keyword)))
+
+# Define config default
+
+DEFINE CONFIG DEFAULT NAMESPACE 'app' DATABASE 'main'
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,ConfigDefaultClause(Keyword,Keyword,String,Keyword,String)))
+
+# Define database compatibility
+
+DEFINE DATABASE app STRICT COMPATIBILITY 3
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,Keyword,CompatibilityClause(Keyword,Number(Int))))
+
+# Define user passscram
+
+DEFINE USER u ON DATABASE PASSSCRAM 'x' ROLES viewer COMMENT 'reader'
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Ident,OnRootNsDbClause(Keyword,Keyword),Keyword,String,Keyword,Ident,CommentClause(Keyword,String)))

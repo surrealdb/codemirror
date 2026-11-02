@@ -36,7 +36,7 @@ some::versioned::function<1.2.3>(a)
 
 ==>
 
-SurrealQL(FunctionCall(FunctionName,Version("<",VersionNumber,">"),ArgumentList(Ident)))
+SurrealQL(FunctionCall(FunctionName,Version,ArgumentList(Ident)))
 
 # No-argument function call
 
@@ -61,3 +61,35 @@ $func(1)
 ==>
 
 SurrealQL(FunctionCall(VariableName,ArgumentList(Number(Int))))
+
+# Extension call
+
+silo::org::pkg<1.2.3>::run(1)
+
+==>
+
+SurrealQL(FunctionCall(FunctionName,Version,"::",FunctionName,ArgumentList(Number(Int))))
+
+# Constant path
+
+math::pi * 2
+
+==>
+
+SurrealQL(BinaryExpression(Constant(FunctionName),Operator,Number(Int)))
+
+# Call on expression
+
+(|$x| $x + 1)(1)
+
+==>
+
+SurrealQL(FunctionCall(SubQuery(Closure(Pipe,ParamDefinition(VariableName),Pipe,BinaryExpression(VariableName,Operator,Number(Int)))),ArgumentList(Number(Int))))
+
+# Constant followed by a keyword
+
+SELECT math::pi FROM x WHERE a = math::e AND b
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Predicate(Constant(FunctionName))),Keyword,Ident,WhereClause(Keyword,BinaryExpression(BinaryExpression(Ident,Operator,Constant(FunctionName)),Operator,Ident))))

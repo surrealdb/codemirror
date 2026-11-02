@@ -21,3 +21,11 @@ THROW "Error: " + $msg
 ==>
 
 SurrealQL(ThrowStatement(Keyword,BinaryExpression(String,Operator,VariableName)))
+
+# Throw in where
+
+SELECT * FROM t WHERE THROW 'no'
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,ThrowStatement(Keyword,String))))

@@ -59,31 +59,43 @@ escapedParamDefinition[@name=ParamDefinition] {
 
 anyKeyword {
 	access |
+	add |
 	algorithm |
+	alpha |
 	alter |
+	analyze |
 	analyzer |
 	any |
 	as |
 	asc |
+	ascending |
 	assert |
-	at |
 	async |
+	at |
+	audience |
 	authenticate |
 	auto |
+	batch |
+	bearer |
 	begin |
 	bm25 |
 	break |
 	by |
 	cancel |
+	capabilities |
 	capacity |
 	changefeed |
 	changes |
 	columns |
 	comment |
 	commit |
+	compact |
+	compatibility |
+	complexity |
 	concurrently |
 	config |
 	content |
+	context |
 	continue |
 	create |
 	database |
@@ -91,10 +103,18 @@ anyKeyword {
 	default |
 	defer |
 	define |
+	definer |
+	degree |
 	delete |
+	depth |
 	desc |
+	descending |
+	digest |
 	dimension |
+	diskann |
 	dist |
+	distance |
+	distinct |
 	doc_ids_cache |
 	doc_ids_order |
 	doc_lengths_cache |
@@ -102,24 +122,35 @@ anyKeyword {
 	drop |
 	duplicate |
 	duration |
+	edges |
 	efc |
 	else |
 	end |
 	event |
 	exclude |
+	existing |
 	exists |
+	expired |
 	explain |
 	extend_candidates |
+	extension |
+	fallback |
 	fetch |
 	field |
 	fields |
 	filters |
 	flexible |
 	for |
+	format |
 	from |
+	fulltext |
 	functions |
+	grant |
 	graphql |
+	graphql_alias |
+	graphql_deprecated |
 	group |
+	hashed_vector |
 	highlights |
 	hnsw |
 	if |
@@ -128,66 +159,103 @@ anyKeyword {
 	include |
 	index |
 	info |
+	inline |
 	insert |
 	into |
+	introspection |
+	invoker |
+	isolation |
 	issuer |
 	jwt |
 	keep_pruned_connections |
 	key |
 	kill |
+	kv |
+	l_build |
 	let |
+	level |
+	lightweight |
 	limit |
 	live |
 	lm |
 	m |
 	m0 |
+	materialize |
+	max |
+	maxdepth |
 	merge |
+	migrate |
+	module |
 	mtree |
 	mtree_cache |
 	namespace |
+	no |
 	noindex |
 	normal |
 	not |
 	ns |
+	nulls |
 	on |
 	only |
 	option |
 	order |
+	original |
 	out |
 	overwrite |
 	parallel |
 	param |
 	passhash |
+	passscram |
 	password |
 	patch |
 	permissions |
 	postings_cache |
 	postings_order |
+	prepare |
+	purge |
+	query_timeout |
+	read |
 	readonly |
 	rebuild |
 	record |
+	references |
+	refresh |
 	relate |
 	relation |
 	remove |
+	rename |
+	retry |
 	return |
+	revoke |
+	revoked |
 	roles |
 	root |
+	rows |
 	sc |
+	schemaful |
 	schemafull |
 	schemaless |
 	scope |
 	search |
+	security |
 	select |
+	sequence |
 	session |
 	set |
 	show |
+	signatures |
+	signer |
 	signin |
 	signup |
 	since |
 	sleep |
+	spatial |
 	split |
+	sql |
+	staleness |
 	start |
 	structure |
+	system |
 	table |
 	tables |
 	tb |
@@ -202,13 +270,16 @@ anyKeyword {
 	tokenizers |
 	transaction |
 	typeKeyword |
+	undeclared |
 	unique |
 	unset |
+	unsigned |
 	update |
 	upsert |
 	url |
 	use |
 	user |
+	using |
 	valueKeyword |
 	values |
 	when |
@@ -243,6 +314,10 @@ Closure[since=2_0_0] {
 	"|" commaSep<escapedParamDefinition>? "|" (("->" type Block) | value !closure)
 }
 
+MockRecord[since=4_0_0] {
+	"|" RecordId "|"
+}
+
 subqueryStatement {
 	LetStatement |
 	DeleteStatement |
@@ -256,14 +331,16 @@ subqueryStatement {
 	AlterStatement |
 	DefineStatement |
 	RebuildStatement |
-	InsertStatement
+	InsertStatement |
+	InfoForStatement |
+	ExplainStatement
 }
 
 statement[@isGroup=Statement] {
+	AccessStatement |
 	BeginStatement |
 	CancelStatement |
 	CommitStatement |
-	InfoForStatement |
 	KillStatement |
 	LiveSelectStatement |
 	ShowStatement |
@@ -273,15 +350,45 @@ statement[@isGroup=Statement] {
 	BreakStatement |
 	ContinueStatement |
 	ForStatement |
-	ThrowStatement |
 	subqueryStatement
 }
 
 // Transaction statements
 
-BeginStatement { begin transaction? }
+BeginStatement {
+	begin transaction?
+	(
+		ReadOnlyClause[since=4_0_0] {
+			read only
+			( max staleness ( Duration | VariableName ) strict? )?
+		} |
+		IsolationClause[since=4_0_0] { isolation level Ident }
+	)*
+}
 CancelStatement { cancel transaction? }
 CommitStatement { commit transaction? }
+
+// Access statement
+
+AccessStatement[since=4_0_0] {
+	access
+	Ident
+	OnRootNsDbClause?
+	(
+		grant for ( user Ident | record value ) |
+		( show | revoke ) ( all | grant Ident | WhereClause ) |
+		purge ( expired | revoked ) ( ","? ( expired | revoked ) )? ( for Duration )?
+	)
+}
+
+// Explain statement
+
+ExplainStatement[since=4_0_0] {
+	explain
+	analyze?
+	( format Ident )?
+	expression
+}
 
 // Define statements
 
@@ -292,7 +399,7 @@ DefineStatement {
 		( namespace defineNamespaceOptions ) |
 		( database defineDatabaseOptions ) |
 		( user defineUserOptions ) |
-		( token defineTokenOptions ) |
+		TokenDefinition[until=4_0_0] { token defineTokenOptions } |
 		( event defineEventOptions ) |
 		( field defineFieldOptions ) |
 		( index defineIndexOptions ) |
@@ -302,9 +409,60 @@ DefineStatement {
 		ScopeDefinition[until=2_0_0] { scope defineScopeOptions } |
 		( table defineTableOptions ) |
 		( config defineConfigOptions ) |
-		( api defineApiOptions ) | 
-		( bucket defineBucketOptions )
+		( api defineApiOptions ) |
+		( bucket defineBucketOptions ) |
+		SequenceDefinition[since=4_0_0] { sequence defineSequenceOptions } |
+		ExtensionDefinition[since=4_0_0] { ( extension | module ) defineExtensionOptions } |
+		TypeDefinition[since=4_0_0] { typeKeyword defineTypeOptions }
 	)
+}
+
+defineSequenceOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	value
+	(
+		BatchClause { batch value } |
+		StartClause |
+		TimeoutClause
+	)*
+}
+
+defineExtensionOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	ExtensionName
+	( from | as )
+	ExtensionSource
+	(
+		unsigned |
+		SignerClause { signer value } |
+		DigestClause { digest String } |
+		CapabilitiesClause { capabilities value } |
+		PermissionsBasicClause |
+		CommentClause
+	)*
+}
+
+ExtensionName {
+	FunctionName Version?
+}
+
+ExtensionSource {
+	ExtensionName |
+	prefixedString
+}
+
+defineTypeOptions {
+	(IfNotExistsClause | OverwriteClause)?
+	Ident
+	as
+	type
+	(
+		AssertClause |
+		DefaultClause |
+		SqlTypeClause |
+		PermissionsBasicClause |
+		CommentClause
+	)*
 }
 
 defineAccessOptions {
@@ -314,6 +472,7 @@ defineAccessOptions {
 	(
 		AccessTypeClause |
 		AuthenticateClause |
+		ContextClause |
 		DurationClause |
 		CommentClause
 	)*
@@ -335,29 +494,48 @@ defineEventOptions {
 	value
 	OnTableClause
 	(
-		WhenClause {
-			when
-			value
-		} |
-		ThenClause {
-			async?
-			then
-			commaSep<(SubQuery | Block)>
-		} |
+		WhenClause |
+		ThenClause |
+		AsyncClause |
+		RetryClause |
+		MaxdepthClause |
 		CommentClause
 	)*
 }
 
+WhenClause {
+	when
+	value
+}
+
+ThenClause {
+	then
+	commaSep<value>
+}
+
+AsyncClause { async }
+RetryClause[since=4_0_0] { retry Number }
+MaxdepthClause[since=4_0_0] { maxdepth Number }
+
 defineDatabaseOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	value
-	strict?
-	CommentClause?
+	(
+		strict |
+		ChangefeedClause |
+		CompatibilityClause |
+		CommentClause
+	)*
+}
+
+CompatibilityClause[since=4_0_0] {
+	compatibility
+	Number
 }
 
 defineFieldOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	Idiom
+	( Idiom | VariableName )
 	OnTableClause
 	(
 		TypeClause |
@@ -368,21 +546,29 @@ defineFieldOptions {
 		PermissionsForClause |
 		CommentClause |
 		ReferenceClause |
-		ComputedClause
+		ComputedClause |
+		inline |
+		MaterializeClause |
+		MigrateClause |
+		SqlTypeClause |
+		GraphqlClause
 	)*
 }
 
 defineFunctionOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	customFunctionName
-	params { "(" commaSep<paramDefinition>? ")" }
+	params
 	("->" type)?
 	Block
 	(
 		PermissionsBasicClause |
-		CommentClause
+		CommentClause |
+		GraphqlClause
 	)*
 }
+
+params { "(" commaSepTrailing<paramDefinition>? ")" }
 
 functionKw[@name=Keyword] { function }
 
@@ -394,23 +580,22 @@ defineIndexOptions {
 		FieldsColumnsClause |
 		IndexClause |
 		CommentClause |
-		ConcurrentlyClause[since=2_0_0] { concurrently }
-		DeferClause[since=3_0_0] { defer }
+		ConcurrentlyClause[since=2_0_0] { concurrently } |
+		DeferClause[since=3_0_0,until=4_0_0] { defer }
 	)*
 }
 
 defineNamespaceOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	value
-	CommentClause?
+	CommentClause*
 }
 
 defineParamOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	VariableName
-	valueKeyword
-	value
 	(
+		( valueKeyword value ) |
 		PermissionsBasicClause |
 		CommentClause
 	)*
@@ -432,21 +617,29 @@ defineTableOptions {
 	value
 	(
 		drop |
-		(schemafull | schemaless) |
+		(schemafull | schemaful | schemaless) |
 		TableTypeClause |
 		TableViewClause |
 		ChangefeedClause |
 		PermissionsForClause |
-		CommentClause
+		CommentClause |
+		InlineClause |
+		GraphqlClause
 	)*
 }
 
 defineConfigOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	(
-		graphql defineConfigGraphqlOptions |
-		api defineConfigApiOptions
-	)
+	configTarget
+}
+
+configTarget {
+	graphql defineConfigGraphqlOptions |
+	api defineConfigApiOptions |
+	ConfigDefaultClause[since=4_0_0] {
+		default
+		( ( namespace | ns | database | db ) value )+
+	}
 }
 
 defineConfigGraphqlOptions {
@@ -454,7 +647,9 @@ defineConfigGraphqlOptions {
 		none |
 		auto |
 		tables ( none | auto | include commaSep<Ident> | exclude commaSep<Ident> ) |
-		functions ( none | auto )
+		functions ( none | auto | include commaSep<customFunctionName> | exclude commaSep<customFunctionName> ) |
+		( depth | complexity ) Number |
+		introspection ( none | auto )
 	)*
 }
 
@@ -474,21 +669,35 @@ defineUserOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	value
 	OnRootNsDbClause
-	( ( password | passhash ) String )
-	( roles commaSep<Ident> )
-	DurationClause?
+	(
+		( ( password | passhash | passscram ) String ) |
+		( roles commaSep<Ident> ) |
+		DurationClause |
+		CommentClause
+	)*
 }
 
 defineApiOptions {
 	(IfNotExistsClause | OverwriteClause)?
-	String
+	value
 	ApiOptions
 	(
-		for
-		(any | commaSep<HttpMethod>)
-		ApiOptions
-		then Block
-	)+
+		ApiMethodClause |
+		SecurityClause |
+		CommentClause
+	)*
+}
+
+ApiMethodClause {
+	for
+	(any | commaSep<HttpMethod>)
+	ApiOptions
+	( then value )?
+}
+
+SecurityClause[since=4_0_0] {
+	security
+	( definer | invoker )
 }
 
 ApiOptions {
@@ -505,9 +714,11 @@ HttpMethod {
 defineBucketOptions {
 	(IfNotExistsClause | OverwriteClause)?
 	value
+	OnRootNsDbClause?
 	(
 		BackendClause |
 		PermissionsBasicClause |
+		readonly |
 		CommentClause
 	)*
 }
@@ -517,19 +728,102 @@ defineBucketOptions {
 AlterStatement[since=2_0_0] {
 	alter
 	(
-		table alterTableOptions
+		( ( table | tb ) alterTableOptions ) |
+		AlterSystem[since=4_0_0] { system alterSystemClause+ } |
+		AlterNamespace[since=4_0_0] { ( namespace | ns ) compact } |
+		AlterDatabase[since=4_0_0] { ( database | db ) value? alterSystemClause+ } |
+		AlterDefinition[since=4_0_0] { alterKind IfExistsClause? alterTarget alterClause* } |
+		AlterFunction[since=4_0_0] {
+			functionKw IfExistsClause? customFunctionName
+			( params ( "->" type )? Block )?
+			alterClause*
+		} |
+		AlterParam[since=4_0_0] { param IfExistsClause? VariableName alterClause* } |
+		AlterApi[since=4_0_0] {
+			api IfExistsClause? value
+			( ApiMethodClause | SecurityClause | DropClause | CommentClause )*
+		} |
+		AlterConfig[since=4_0_0] { config configTarget ( DropClause | CommentClause )* }
 	)
 }
 
 alterTableOptions {
-	IfNotExistsClause?
+	(IfNotExistsClause | IfExistsClause)?
 	value
 	(
-		drop |
-		(schemafull | schemaless) |
+		DropClause |
+		DropFlag[until=4_0_0] { drop ~dropTarget } |
+		(schemafull | schemaful | schemaless) |
+		TableTypeClause |
 		PermissionsForClause |
+		ChangefeedClause |
+		InlineClause |
+		MigrateClause |
+		compact |
 		CommentClause
 	)*
+}
+
+alterSystemClause {
+	compact |
+	CompatibilityClause |
+	QueryTimeoutClause { query_timeout value } |
+	DropClause
+}
+
+alterKind {
+	event | field | index | sequence | bucket | analyzer |
+	user | access | extension | module | typeKeyword
+}
+
+alterTarget {
+	value ( OnTableClause | OnRootNsDbClause )?
+}
+
+alterClause {
+	WhenClause |
+	ThenClause |
+	AsyncClause |
+	RetryClause |
+	MaxdepthClause |
+	TypeClause |
+	readonly |
+	inline |
+	ValueClause |
+	AssertClause |
+	DefaultClause |
+	ReferenceClause |
+	MaterializeClause |
+	MigrateClause |
+	SqlTypeClause |
+	PermissionsForClause |
+	TokenizersClause |
+	FiltersClause |
+	FunctionClause |
+	( ( password | passhash | passscram ) String ) |
+	( roles commaSep<Ident> ) |
+	DurationClause |
+	AuthenticateClause |
+	ContextClause |
+	TimeoutClause |
+	BackendClause |
+	( revoke signatures ) |
+	PrepareClause { prepare remove? } |
+	( as type ) |
+	TypeValueClause { add valueKeyword IfNotExistsClause? String ( ( before | after ) String )? } |
+	TypeRenameClause { rename valueKeyword String to String } |
+	DropClause |
+	CommentClause
+}
+
+DropClause {
+	drop ~dropTarget
+	(
+		comment | changefeed | inline ( edges | references )? | when | then | async |
+		typeKeyword | flexible | readonly | valueKeyword | assert | default | reference |
+		sql typeKeyword | functionKw | tokenizers | filters | authenticate | context |
+		query_timeout | backend
+	)
 }
 
 // Remove statement
@@ -537,22 +831,29 @@ alterTableOptions {
 RemoveStatement {
 	remove
 	(
-		( namespace IfExistsClause? value (and expunge)? ) |
-		( database IfExistsClause? value (and expunge)? ) |
-		( user IfExistsClause? value on ( root | namespace | database ) ) |
-		( token IfExistsClause? value on ( namespace | database | scope ) ) |
+		( ( namespace | ns ) expungeClause? IfExistsClause? value ) |
+		( ( database | db ) expungeClause? IfExistsClause? value ) |
+		( user IfExistsClause? value OnRootNsDbClause ) |
+		TokenRemoval[until=4_0_0] { token IfExistsClause? value on ( namespace | database | scope ) } |
 		( event IfExistsClause? value OnTableClause ) |
 		( field IfExistsClause? value OnTableClause ) |
 		( index IfExistsClause? value OnTableClause ) |
 		( analyzer IfExistsClause? value ) |
-		( functionKw IfExistsClause? customFunctionName ) |
+		( functionKw IfExistsClause? customFunctionName ( "(" ")" )? ) |
 		( param IfExistsClause? VariableName ) |
-		( scope IfExistsClause? value ) |
-		( table IfExistsClause? value (and expunge)? ) |
+		ScopeRemoval[until=2_0_0] { scope IfExistsClause? value } |
+		( ( table | tb ) expungeClause? IfExistsClause? value ) |
 		( api IfExistsClause? value ) |
-		( bucket IfExistsClause? value )
+		( bucket IfExistsClause? value OnRootNsDbClause? ) |
+		( access IfExistsClause? value OnRootNsDbClause ) |
+		( sequence IfExistsClause? value ) |
+		( ( extension | module ) IfExistsClause? ExtensionName ( "(" ")" )? ) |
+		( config IfExistsClause? ( graphql | api | default ) ) |
+		( typeKeyword IfExistsClause? Ident )
 	)
 }
+
+expungeClause { binaryOperatorKeyword expunge }
 
 // Clause groups
 
@@ -569,6 +870,7 @@ modifierClause[@isGroup=ModifierClause] {
 	TempfilesClause |
 	ExplainClause |
 	VersionClause |
+	ForUpdateClause |
 	ReturnClause
 }
 
@@ -585,10 +887,11 @@ dataClause[@isGroup=DataClause] {
 
 CreateStatement {
 	create only?
-	createTargets { commaSep<Ident | VariableName | FunctionCall | RecordId> }
-	createContent { ContentClause | SetClause | UnsetClause | () }
+	createTargets { commaSep<Ident | VariableName | FunctionCall | RecordId | MockRecord> }
+	dataClause?
 	createOptionals {
 		ReturnClause?
+		VersionClause?
 		TimeoutClause?
 		ParallelClause?
 	}
@@ -610,16 +913,18 @@ SelectStatement {
 }
 
 DeleteStatement {
-	delete only?
+	delete from? only?
 	(
 		statement |
 		(
 			commaSep<value>
 			(
+				WithClause |
 				WhereClause |
 				ReturnClause |
 				TimeoutClause |
-				ParallelClause
+				ParallelClause |
+				ExplainClause
 			)*
 		)
 	)
@@ -628,9 +933,8 @@ DeleteStatement {
 InsertStatement {
 	insert
 	insertOptionals {
-		ignore?
-		relation?
-		(into Ident)?
+		(ignore | relation)*
+		(into (Ident | VariableName))?
 	}
 	(
 		// TODO this should be value, but cannot easily union with VALUES syntax
@@ -650,6 +954,8 @@ InsertStatement {
 		commaSep<FieldAssignment>
 	)?
 	ReturnClause?
+	VersionClause?
+	TimeoutClause?
 }
 
 UpdateStatement {
@@ -658,12 +964,14 @@ UpdateStatement {
 		statement |
 		(
 			commaSep<value>
+			WithClause?
 			dataClause?
 			updateOptionals {
 				WhereClause?
 				ReturnClause?
 				TimeoutClause?
 				ParallelClause?
+				ExplainClause?
 			}
 		)
 	)
@@ -675,23 +983,27 @@ UpsertStatement[since=2_0_0] {
 		statement |
 		(
 			commaSep<value>
+			WithClause?
 			dataClause?
 			upsertOptionals {
 				WhereClause?
 				ReturnClause?
 				TimeoutClause?
 				ParallelClause?
+				ExplainClause?
 			}
 		)
 	)
 }
 
-relateSubject { Array | Ident | FunctionCall | VariableName | RecordId }
+relateSubject { Array | Ident | FunctionCall | VariableName | RecordId | SubQuery }
 
 RelateStatement {
 	relate only?
+	OrUpdateClause[since=4_0_0] { binaryOperatorKeyword update }?
 	relateSubject ("->" | "<-") relateSubject ("->" | "<-") relateSubject
-	( ContentClause | SetClause )?
+	unique?
+	dataClause?
 	relateOptionals {
 		ReturnClause?
 		TimeoutClause?
@@ -704,12 +1016,15 @@ RelateStatement {
 InfoForStatement {
 	info for
 	(
-		root |
+		root | kv |
 		ns | namespace |
 		db | database |
-		( sc Ident | scope Ident) |
-		( tb Ident | table Ident)
+		InfoForScope[until=2_0_0] { ( sc | scope ) Ident } |
+		( ( tb | table ) value ) |
+		( user value OnRootNsDbClause? ) |
+		( index value OnTableClause )
 	)
+	VersionClause?
 	structure?
 }
 
@@ -717,9 +1032,9 @@ InfoForStatement {
 
 BreakStatement { break }
 ContinueStatement { continue }
-ForStatement { for VariableName in ( Array | VariableName | SubQuery | Block ) Block }
+ForStatement { for VariableName in value Block }
 ReturnStatement { return expression }
-ThrowStatement { throw value }
+ThrowStatement[group="Statement Value"] { throw value !closure }
 
 IfElseStatement[group="Statement Value"] {
 	if
@@ -751,7 +1066,7 @@ legacyElse {
 
 // Live statements
 
-KillStatement { kill String }
+KillStatement { kill ( String | prefixedString | VariableName ) }
 LiveSelectStatement {
 	live select
 	(
@@ -759,7 +1074,7 @@ LiveSelectStatement {
 		valueKeyword Predicate |
 		commaSep<inclusivePredicate>
 	)
-	from commaSep<( Ident | RecordId )>
+	from commaSep<value>
 	WhereClause?
 	FetchClause?
 }
@@ -776,9 +1091,9 @@ LetStatement {
 // Show statement
 
 ShowStatement {
-	show changes for table
-	Ident
-	( since String )?
+	show changes for
+	( ( table | tb ) Ident | database )
+	( since ( Number | String | prefixedString ) )?
 	( limit Number )?
 }
 
@@ -790,12 +1105,12 @@ SleepStatement {
 
 // Use statement
 
-useNs { ( ns | namespace ) Ident }
-useDb { ( db | database ) Ident }
+useNs { ( ns | namespace ) ( Ident | VariableName ) }
+useDb { ( db | database ) ( Ident | VariableName ) }
 
 UseStatement {
 	use
-	( useNs | useDb | ( useNs useDb ) )
+	( useNs | useDb | ( useNs useDb ) | default )
 }
 
 // Option statement
@@ -813,6 +1128,7 @@ RebuildStatement[since=1_5_0] {
 	IfExistsClause?
 	Ident
 	OnTableClause
+	concurrently?
 }
 
 // Values
@@ -838,9 +1154,10 @@ baseValue[@isGroup=Value] {
 	FormatString |
 	Regex |
 	VariableName |
-	Ident[@dynamicPrecedence=-1] { rawident } |
+	Ident[@dynamicPrecedence=-1] { rawident | tickIdent | bracketIdent } |
 	FunctionJs |
 	FunctionCall |
+	Constant[since=2_0_0] { FunctionName } |
 	SubQuery |
 	Block |
 	TypeCast
@@ -849,7 +1166,9 @@ baseValue[@isGroup=Value] {
 value[@isGroup=Value] {
 	baseValue |
 	IfElseStatement |
+	ThrowStatement |
 	Closure |
+	MockRecord |
 	UnaryExpression |
 	BinaryExpression |
 	Range |
@@ -859,7 +1178,7 @@ value[@isGroup=Value] {
 Any { "?" }
 AnyStar[@name=Any] { "*" }
 At[since=2_1_0] { "@" }
-Optional[since=2_0_0] { "?" }
+Optional[since=2_0_0,until=4_0_0] { "?" }
 
 // Unary and binary expressions
 
@@ -884,7 +1203,7 @@ Idiom {
 
 idiomPart {
 	"." ( Ident | AnyStar ) |
-	"[" AnyStar "]"
+	"[" ( AnyStar | Number | "$" ) "]"
 }
 
 Path {
@@ -900,6 +1219,10 @@ pathElement {
 		"."
 		dotPart
 	} |
+	OptionalPart[since=4_0_0] { "." "?" } |
+	LastIndex[since=4_0_0] { !filter "[" "$" "]" } |
+	AllElements { !filter "[" AnyStar "]" } |
+	Flatten[since=4_0_0] { flattenOp } |
 	Filter { !filter "[" (WhereClause | WhereClause { "?" value } | expression) "]" }
 }
 
@@ -914,7 +1237,7 @@ dotPart {
 
 Lookup {
 	("<-" | "->" | "<->" | "<~")
-	(Ident | Any | LookupSelection)
+	(Ident | RecordId | Any | LookupSelection)
 }
 
 LookupSelection {
@@ -923,6 +1246,7 @@ LookupSelection {
 		select
 		Fields
 		from
+		only?
 	}?
 	commaSep<GraphPredicate>
 	(
@@ -938,10 +1262,11 @@ LookupSelection {
 
 GraphPredicate {
 	(value | Any)
+	LookupField[since=4_0_0] { field Ident }?
 }
 
 Destructure[since=2_0_0] {
-	"{" commaSep<((Ident ":")? ( Ident | Lookup ) pathElement* )> "}"
+	"{" commaSepTrailing<((Ident ":" value) | (( Ident | Lookup ) pathElement* ) | flattenOp)> "}"
 }
 
 IdiomFunction[since=2_0_0] { 
@@ -1073,7 +1398,7 @@ FunctionJs {
 	BlockComment {
 		"/*" (blockCommentContent | blockCommentNewline)* blockCommentEnd
 	}
-	FormatString {
+	FormatString[until=4_0_0] {
 		'$"' (formatStringContentDouble | Interpolation)* '"' |
 		"$'" (formatStringContentSingle | Interpolation)* "'"
 	}
@@ -1088,19 +1413,22 @@ Interpolation {
 FunctionCall {
 	(
 		(FunctionName | customFunctionName | rand | count)
-		Version { "<" VersionNumber ">" }?
+		( Version ( "::" ( FunctionName | customFunctionName | extFunctionName ) )? )?
 		ArgumentList
 	) |
 	RecordId ArgumentList |
-	VariableName ArgumentList
+	VariableName ArgumentList |
+	SubQuery ArgumentList
 }
 
-ArgumentList { "(" (commaSep<value>? | subqueryStatement) ")" }
+extFunctionName[@name=FunctionName] { rawident }
+
+ArgumentList { "(" (commaSepTrailing<value>? | subqueryStatement) ")" }
 
 // Assignment
 
 FieldAssignment {
-	Ident
+	Ident idiomPart*
 	assignmentOperator
 	value
 }
@@ -1112,7 +1440,7 @@ MergeClause {
 }
 
 PatchClause {
-	patch Array
+	patch value
 }
 
 TableTypeClause[since=1_4_0] {
@@ -1125,14 +1453,19 @@ TableTypeClause[since=1_4_0] {
 			( ( in | from ) piped<Ident> )?
 			( ( out | to ) piped<Ident> )?
 			EnforcedClause[since=2_0_0] { enforced? }
+			LightweightClause[since=4_0_0] { lightweight }?
 		)
 	)
 }
 
 TableViewClause {
 	as
+	( tableView | "(" tableView ")" )
+}
+
+tableView {
 	select
-	commaSep<inclusivePredicate>
+	( valueKeyword Predicate | commaSep<inclusivePredicate> )
 	from
 	commaSep<value>
 	WhereClause?
@@ -1142,6 +1475,43 @@ TableViewClause {
 ChangefeedClause {
 	changefeed
 	Duration
+	IncludeOriginal[since=4_0_0] { include original }?
+}
+
+InlineClause[since=4_0_0] {
+	inline
+	( edges | references )
+	Number
+}
+
+MaterializeClause[since=4_0_0] {
+	materialize into
+	Idiom
+	WhereClause?
+}
+
+MigrateClause[since=4_0_0] {
+	migrate existing rows as Ident
+	(
+		using value ( fallback value )? |
+		remove undeclared fields
+	)
+}
+
+SqlTypeClause[since=4_0_0] {
+	sql typeKeyword
+	Ident
+	String
+}
+
+GraphqlClause[since=4_0_0] {
+	( graphql_alias | graphql_deprecated )
+	String
+}
+
+ContextClause[since=4_0_0] {
+	context
+	value
 }
 
 SessionClause {
@@ -1165,40 +1535,80 @@ AuthenticateClause {
 }
 
 JwtClause {
-	algorithm Ident key Ident | url String
+	( algorithm jwtAlgorithm key value | url value )
+	JwtAudience[since=4_0_0] { audience commaSep<value> }?
+	JwtIssuer { ~jwtWith with issuer ( algorithm jwtAlgorithm | key value )+ }?
+	~jwtWith
 }
 
+jwtAlgorithm { TokenType | Ident }
+
 OnTableClause {
-	on table? value
+	on ( table | tb )? value
 }
 
 OnRootNsDbClause {
-	on ( root | namespace | database )
+	on ( root | kv | namespace | ns | database | db )
 }
 
 AccessTypeClause {
 	typeKeyword (
 		( jwt JwtClause ) |
-		( record (SignupClause | SigninClause)* ( with jwt JwtClause ( with issuer key Ident )? )? )
+		( record (SignupClause | SigninClause)* ( ~jwtWith with ( jwt JwtClause | refresh ) )* ) |
+		BearerAccess[since=4_0_0] { bearer for ( user | record ) ( with jwt JwtClause )? }
 	)
 }
 
 FieldsColumnsClause {
-	( fields | columns ) commaSep<Idiom>
+	( fields | columns ) commaSep<(Idiom | FunctionCall)>
 }
 
 IndexClause {
 	UniqueClause |
 	SearchAnalyzerClause |
 	MtreeClause |
-	HnswClause
+	HnswClause |
+	FulltextClause |
+	DiskannClause |
+	CountClause |
+	SpatialClause
 }
 
 UniqueClause {
 	unique
+	NullsNotDistinct[since=4_0_0] { nulls not distinct }?
 }
 
-SearchAnalyzerClause {
+CountClause[since=4_0_0] {
+	count
+	WhereClause?
+}
+
+SpatialClause[since=4_0_0] {
+	spatial
+}
+
+FulltextClause[since=4_0_0] {
+	fulltext
+	(
+		( analyzer Ident ) |
+		Bm25Clause |
+		highlights
+	)*
+}
+
+DiskannClause[since=4_0_0] {
+	diskann
+	IndexDimensionClause
+	(
+		HnswDistClause |
+		IndexVectorTypeClause |
+		hashed_vector |
+		( ( degree | l_build | alpha ) Number )
+	)*
+}
+
+SearchAnalyzerClause[until=4_0_0] {
 	search analyzer
 	Ident
 	(
@@ -1225,7 +1635,7 @@ PostingsOrderClause { postings_order Number }
 TermsCacheClause { terms_cache Number }
 TermsOrderClause { terms_order Number }
 
-MtreeClause[since=1_3_0] {
+MtreeClause[since=1_3_0,until=4_0_0] {
 	mtree
 	IndexDimensionClause
 	(
@@ -1247,17 +1657,21 @@ IndexDimensionClause
 	(
 	HnswDistClause |
 	IndexTypeClause |
+	IndexVectorTypeClause |
 	IndexCapacityClause |
 	IndexLmClause |
 	IndexM0Clause |
 	IndexMClause |
 	IndexEfcClause |
 	IndexExtendCandidatesClause |
-	IndexKeepPrunedConnectionsClause
+	IndexKeepPrunedConnectionsClause |
+	hashed_vector
 	)*
 }
 
-HnswDistClause { dist ( Distance | ( minkowski Number )) }
+HnswDistClause { ( dist | distance ) ( Distance | ( minkowski Number )) }
+
+IndexVectorTypeClause { typeKeyword IndexTypeClause }
 
 IndexDimensionClause { dimension Number }
 IndexCapacityClause { capacity Number }
@@ -1269,11 +1683,11 @@ IndexExtendCandidatesClause { extend_candidates }
 IndexKeepPrunedConnectionsClause { keep_pruned_connections }
 
 ContentClause {
-	content Object
+	content value
 }
 
 ReplaceClause {
-	replace Object
+	replace value
 }
 
 SetClause {
@@ -1285,7 +1699,7 @@ OmitClause {
 }
 
 UnsetClause {
-unset commaSep<FieldAssignment>
+	unset commaSep<Idiom>
 }
 
 IfNotExistsClause[since=1_3_0] {
@@ -1307,11 +1721,15 @@ ReturnClause {
 
 TimeoutClause {
 	timeout
-	Duration
+	clauseValue
 }
 
-ParallelClause {
+ParallelClause[until=4_0_0] {
 	parallel
+}
+
+ForUpdateClause[since=4_0_0] {
+	for update
 }
 
 TempfilesClause[since=2_0_0] {
@@ -1326,13 +1744,13 @@ FetchClause {
 StartClause {
 	start
 	at?
-	(Number | VariableName)
+	clauseValue
 }
 
 LimitClause {
 	limit
 	by?
-	(Number | VariableName)
+	clauseValue
 }
 
 LimitStartComboClause {
@@ -1357,7 +1775,7 @@ OrderClause {
 SplitClause {
 	split
 	on?
-	Idiom
+	commaSep<Idiom>
 }
 
 WhereClause {
@@ -1369,6 +1787,7 @@ WithClause {
 	with
 	(
 		noindex |
+		( no index ) |
 		index commaSep<Ident>
 	)
 }
@@ -1380,10 +1799,12 @@ ExplainClause {
 
 VersionClause[since=2_0_0] {
 	version
-	prefixedString
+	clauseValue
 }
 
-TokenizersClause { tokenizers commaSep<AnalyzerTokenizer> }
+TokenizersClause { tokenizers commaSep<analyzerTokenizerItem> }
+
+analyzerTokenizerItem { AnalyzerTokenizer ( "(" Ident ")" )? }
 
 FiltersClause {
 	filters
@@ -1392,7 +1813,7 @@ FiltersClause {
 
 FunctionClause {
 	functionKw
-	customFunctionName
+	( customFunctionName | FunctionName )
 }
 
 TypeClause {
@@ -1423,7 +1844,7 @@ AssertClause {
 
 ReferenceClause {
 	reference
-	(on delete (reject | cascade | ignore | unset | then Block))?
+	(on delete (reject | cascade | ignore | unset | then value))?
 }
 
 ComputedClause {
@@ -1440,8 +1861,8 @@ PermissionGroup {
 PermissionsForClause {
 	permissions
 	(
-		none | full |
-		PermissionGroup+
+		none | full | WhereClause |
+		PermissionGroup ( ","? PermissionGroup )*
 	)
 }
 
@@ -1457,15 +1878,15 @@ MiddlewareClause {
 
 CommentClause {
 	comment
-	String
+	( String | VariableName )
 }
 
 DurationValue {
-	(for token Duration) | (for session Duration)
+	for ( token | session | grant ) ( Duration | none )
 }
 
 DurationClause[since=2_0_0] {
-	duration (for session)? commaSep<DurationValue>
+	duration DurationValue ( ","? DurationValue )*
 }
 
 TokenTypeClause {
@@ -1480,15 +1901,17 @@ BackendClause {
 
 // Support
 
+clauseValue { Number | Duration | VariableName | prefixedString | FunctionCall | SubQuery | none }
+
 AnalyzerFilters {
-	Filter ("(" (Number "," Number | Ident) ")")?
+	Filter ("(" (Number "," Number | Ident | String) ")")?
 }
 
 Order {
 	Idiom
 	collate?
 	numeric?
-	( asc | desc )?
+	( asc | desc | ascending | descending )?
 }
 
 Predicate {
@@ -1504,16 +1927,18 @@ inclusivePredicate {
 
 LiteralType[since=2_0_0] {
 	String |
+	prefixedString |
 	Number |
 	Duration |
-	ArrayType { "[" commaSep<type> "]" } |
+	true |
+	false |
+	ArrayType { "[" commaSepTrailing<(ObjectTypeProperty | type)>? "]" } |
 	ObjectType { objectOpen ObjectTypeContent? "}" }
-	// TODO support Number and duration types
 }
 
 singleType {
 	TypeName { rawident ~closureArrow } |
-	ParameterizedType { singleType "<" type ">" } |
+	ParameterizedType { singleType "<" commaSep<type> ">" } |
 	LiteralType
 }
 
@@ -1527,7 +1952,7 @@ safeType {
 }
 
 ObjectTypeContent {
-	commaSep<ObjectTypeProperty>
+	commaSepTrailing<ObjectTypeProperty>
 }
 
 ObjectTypeProperty {
@@ -1552,7 +1977,7 @@ Operator {
 	is | ( is not ) |
 	in | ( not in ) |
 
-	( "@" Number "@" ) |
+	( "@" ( Number ( "," binaryOperatorKeyword )? | binaryOperatorKeyword ) "@" ) |
 	(
 		"<|"
 		Number
@@ -1569,6 +1994,10 @@ Operator {
 
 @external tokens objectToken from "./tokens" {
 	objectOpen[@name=BraceOpen]
+}
+
+@external tokens versionToken from "./tokens" {
+	Version
 }
 
 @external tokens rangeOperator from "./tokens" {
@@ -1607,15 +2036,16 @@ Operator {
 
 	// Numbers
 	digitSeq { @digit+ ("_" @digit+)* }
-	Int { digitSeq }
+	intSuffix { $[iu] ("8" | "16" | "32" | "64") }
+	floatSuffix { "f" ("16" | "32" | "64")? }
+	Int { digitSeq intSuffix? }
 	frac { '.' digitSeq }
 	exp { $[eE] $[+\-]? digitSeq }
-	Float { (digitSeq "f") | (digitSeq (frac exp? | exp) "f"?) | "Infinity" | "NaN" }
-	Decimal { digitSeq frac? exp? "dec" }
-	VersionNumber { digitSeq ("." digitSeq ("." digitSeq)?)? }
+	Float { (digitSeq floatSuffix) | (digitSeq (frac exp? | exp) floatSuffix?) | "Infinity" | "NaN" }
+	Decimal { digitSeq frac? exp? ("dec" | "bigdec") }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
-	prefixedString[@name=String] { $[rudbf] String }
+	prefixedString[@name=String] { ($[rudbfs] | "date" | "time" | "timestamp" | "interval") String }
 
 	formatStringContentDouble { ("\\" _ | !["{\\])+ }
 	formatStringContentSingle { ("\\" _ | !['{\\])+ }
@@ -1635,11 +2065,13 @@ Operator {
 	}
 
 	functionNameSegment { (@asciiLetter | "_") (@asciiLetter | "_" | @digit)* }
+	// A trailing "::" belongs to the name so that "::" never needs to be
+	// lexed after a function name, where it would conflict with ":".
 	FunctionName {
-		functionNameSegment ("::" functionNameSegment)+
+		functionNameSegment ("::" functionNameSegment)+ "::"?
 	}
 	customFunctionName[@name=FunctionName] {
-		"fn" ("::" functionNameSegment)*
+		"fn" ("::" functionNameSegment)* "::"?
 	}
 
 	Regex { "/" (![/\\\n[] | "\\" ![\n] | "[" (![\n\\\]] | "\\" ![\n])* "]")+ ("/" $[dgimsuvy]*)? }
@@ -1649,13 +2081,14 @@ Operator {
 
 	@precedence { CommentResult Comment Int "-" }
 	@precedence { Comment binaryOperator }
-	@precedence { Float Decimal Int rawident }
+	@precedence { Decimal Float Int rawident }
 	@precedence { DurationPart Int rawident }
 	@precedence { prefixedString numberident rawident }
 	@precedence { customFunctionName FunctionName rawident }
 	@precedence { "f'" 'f"' rawident }
 	@precedence { "/*" Regex }
 	@precedence { Float FunctionName }
+	@precedence { VariableName "$" }
 
 	javaScriptContent { "\n" | ![{}\n'"]+ "\n"? | String }
 	javaScriptBraceOpen { "{" }
@@ -1663,15 +2096,20 @@ Operator {
 
 	binaryOperator {
 		"&&" | "||" | "??" | "?:" | "!=" | "==" | "?=" | "*=" | "~" | "!~" | "*~" |
-		"<=" | ">=" | "+" | "+=" | "-=" | "*" | "×" | "/"  | "÷" | "**" |
+		"<=" | ">=" | "+" | "+=" | "-=" | "*" | "×" | "∙" | "/"  | "÷" | "%" | "**" |
 		$[∋∌⊇⊃⊅∈∉⊆⊂⊄] | "@@"
 	}
 
 	assignmentOperator[@name=Operator] {
 		"="  |
 		"+=" |
-		"-="
+		"-=" |
+		"+?="
 	}
+
+	flattenOp[@name=Operator] { "..." | "…" }
+
+	"::" "$"
 }
 
 commaSep<content> {
@@ -1695,28 +2133,36 @@ piped<content> {
 
 @external extend { rawident } tokens from "./tokens" {
 	access					[@name=Keyword],
+	add						[@name=Keyword],
 	algorithm				[@name=Keyword],
 	all						[@name=Keyword],
+	alpha					[@name=Keyword],
 	alter					[@name=Keyword],
 	always					[@name=Keyword],
+	analyze					[@name=Keyword],
 	analyzer				[@name=Keyword],
 	and						[@name=Keyword],
 	any						[@name=Keyword],
 	api						[@name=Keyword],
 	as						[@name=Keyword],
 	asc						[@name=Keyword],
+	ascending				[@name=Keyword],
 	assert					[@name=Keyword],
-	at						[@name=Keyword],
 	async					[@name=Keyword],
+	at						[@name=Keyword],
+	audience				[@name=Keyword],
 	authenticate			[@name=Keyword],
 	auto					[@name=Keyword],
 	backend					[@name=Keyword],
+	batch					[@name=Keyword],
+	bearer					[@name=Keyword],
 	begin					[@name=Keyword],
 	bm25					[@name=Keyword],
 	break					[@name=Keyword],
 	bucket					[@name=Keyword],
 	by						[@name=Keyword],
 	cancel					[@name=Keyword],
+	capabilities			[@name=Keyword],
 	capacity				[@name=Keyword],
 	cascade					[@name=Keyword],
 	changefeed				[@name=Keyword],
@@ -1725,10 +2171,14 @@ piped<content> {
 	columns					[@name=Keyword],
 	comment					[@name=Keyword],
 	commit					[@name=Keyword],
+	compact					[@name=Keyword],
+	compatibility			[@name=Keyword],
+	complexity				[@name=Keyword],
 	computed				[@name=Keyword],
 	concurrently			[@name=Keyword],
 	config					[@name=Keyword],
 	content					[@name=Keyword],
+	context					[@name=Keyword],
 	continue				[@name=Keyword],
 	create					[@name=Keyword],
 	database				[@name=Keyword],
@@ -1736,10 +2186,18 @@ piped<content> {
 	default					[@name=Keyword],
 	defer					[@name=Keyword],
 	define					[@name=Keyword],
+	definer					[@name=Keyword],
+	degree					[@name=Keyword],
 	delete					[@name=Keyword],
+	depth					[@name=Keyword],
 	desc					[@name=Keyword],
+	descending				[@name=Keyword],
+	digest					[@name=Keyword],
 	dimension				[@name=Keyword],
+	diskann					[@name=Keyword],
 	dist					[@name=Keyword],
+	distance				[@name=Keyword],
+	distinct				[@name=Keyword],
 	doc_ids_cache			[@name=Keyword],
 	doc_ids_order			[@name=Keyword],
 	doc_lengths_cache		[@name=Keyword],
@@ -1747,27 +2205,38 @@ piped<content> {
 	drop					[@name=Keyword],
 	duplicate				[@name=Keyword],
 	duration				[@name=Keyword],
+	edges					[@name=Keyword],
 	efc						[@name=Keyword],
 	else					[@name=Keyword],
 	end						[@name=Keyword],
 	enforced				[@name=Keyword],
 	event					[@name=Keyword],
 	exclude					[@name=Keyword],
+	existing				[@name=Keyword],
 	exists					[@name=Keyword],
+	expired					[@name=Keyword],
 	explain					[@name=Keyword],
 	expunge					[@name=Keyword],
 	extend_candidates		[@name=Keyword],
+	extension				[@name=Keyword],
+	fallback				[@name=Keyword],
 	fetch					[@name=Keyword],
 	field					[@name=Keyword],
 	fields					[@name=Keyword],
 	filters					[@name=Keyword],
 	flexible				[@name=Keyword],
 	for						[@name=Keyword],
+	format					[@name=Keyword],
 	from					[@name=Keyword],
+	fulltext				[@name=Keyword],
 	functions				[@name=Keyword],
 	get						[@name=Keyword],
+	grant					[@name=Keyword],
 	graphql					[@name=Keyword],
+	graphql_alias			[@name=Keyword],
+	graphql_deprecated		[@name=Keyword],
 	group					[@name=Keyword],
+	hashed_vector			[@name=Keyword],
 	highlights				[@name=Keyword],
 	hnsw					[@name=Keyword],
 	if						[@name=Keyword],
@@ -1776,75 +2245,112 @@ piped<content> {
 	include					[@name=Keyword],
 	index					[@name=Keyword],
 	info					[@name=Keyword],
+	inline					[@name=Keyword],
 	insert					[@name=Keyword],
 	into					[@name=Keyword],
+	introspection			[@name=Keyword],
+	invoker					[@name=Keyword],
+	isolation				[@name=Keyword],
 	issuer					[@name=Keyword],
 	jwt						[@name=Keyword],
 	keep_pruned_connections	[@name=Keyword],
 	key						[@name=Keyword],
 	kill					[@name=Keyword],
+	kv						[@name=Keyword],
+	l_build					[@name=Keyword],
 	let						[@name=Keyword],
+	level					[@name=Keyword],
+	lightweight				[@name=Keyword],
 	limit					[@name=Keyword],
 	live					[@name=Keyword],
 	lm						[@name=Keyword],
 	m						[@name=Keyword],
 	m0						[@name=Keyword],
+	materialize				[@name=Keyword],
+	max						[@name=Keyword],
+	maxdepth				[@name=Keyword],
 	merge					[@name=Keyword],
 	middleware				[@name=Keyword],
+	migrate					[@name=Keyword],
+	module					[@name=Keyword],
 	mtree					[@name=Keyword],
 	mtree_cache				[@name=Keyword],
 	namespace				[@name=Keyword],
+	no						[@name=Keyword],
 	noindex					[@name=Keyword],
 	normal					[@name=Keyword],
 	not						[@name=Keyword],
 	ns						[@name=Keyword],
+	nulls					[@name=Keyword],
 	numeric					[@name=Keyword],
 	omit					[@name=Keyword],
 	on						[@name=Keyword],
 	only					[@name=Keyword],
 	option					[@name=Keyword],
 	order					[@name=Keyword],
+	original				[@name=Keyword],
 	out						[@name=Keyword],
 	overwrite				[@name=Keyword],
 	parallel				[@name=Keyword],
 	param					[@name=Keyword],
 	passhash				[@name=Keyword],
+	passscram				[@name=Keyword],
 	password				[@name=Keyword],
 	patch					[@name=Keyword],
 	permissions				[@name=Keyword],
 	post					[@name=Keyword],
 	postings_cache			[@name=Keyword],
 	postings_order			[@name=Keyword],
+	prepare					[@name=Keyword],
+	purge					[@name=Keyword],
 	put						[@name=Keyword],
+	query_timeout			[@name=Keyword],
+	read					[@name=Keyword],
 	readonly				[@name=Keyword],
 	rebuild					[@name=Keyword],
 	record					[@name=Keyword],
 	reference				[@name=Keyword],
+	references				[@name=Keyword],
+	refresh					[@name=Keyword],
 	reject					[@name=Keyword],
 	relate					[@name=Keyword],
 	relation				[@name=Keyword],
 	remove					[@name=Keyword],
+	rename					[@name=Keyword],
 	replace					[@name=Keyword],
+	retry					[@name=Keyword],
 	return					[@name=Keyword],
+	revoke					[@name=Keyword],
+	revoked					[@name=Keyword],
 	roles					[@name=Keyword],
 	root					[@name=Keyword],
+	rows					[@name=Keyword],
 	sc						[@name=Keyword],
+	schemaful				[@name=Keyword],
 	schemafull				[@name=Keyword],
 	schemaless				[@name=Keyword],
 	scope					[@name=Keyword],
 	search					[@name=Keyword],
+	security				[@name=Keyword],
 	select					[@name=Keyword],
+	sequence				[@name=Keyword],
 	session					[@name=Keyword],
 	set						[@name=Keyword],
 	show					[@name=Keyword],
+	signatures				[@name=Keyword],
+	signer					[@name=Keyword],
 	signin					[@name=Keyword],
 	signup					[@name=Keyword],
 	since					[@name=Keyword],
 	sleep					[@name=Keyword],
+	spatial					[@name=Keyword],
 	split					[@name=Keyword],
+	sql						[@name=Keyword],
+	staleness				[@name=Keyword],
 	start					[@name=Keyword],
 	strict					[@name=Keyword],
 	structure				[@name=Keyword],
+	system					[@name=Keyword],
 	table					[@name=Keyword],
 	tables					[@name=Keyword],
 	tb						[@name=Keyword],
@@ -1860,13 +2366,16 @@ piped<content> {
 	trace					[@name=Keyword],
 	transaction				[@name=Keyword],
 	typeKeyword				[@name=Keyword],
+	undeclared				[@name=Keyword],
 	unique					[@name=Keyword],
 	unset					[@name=Keyword],
+	unsigned				[@name=Keyword],
 	update					[@name=Keyword],
 	upsert					[@name=Keyword],
 	url						[@name=Keyword],
 	use						[@name=Keyword],
 	user					[@name=Keyword],
+	using					[@name=Keyword],
 	valueKeyword			[@name=Keyword],
 	values					[@name=Keyword],
 	version					[@name=Keyword],

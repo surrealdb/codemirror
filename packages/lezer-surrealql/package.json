@@ -1,6 +1,6 @@
 {
 	"name": "@surrealdb/lezer",
-	"version": "1.0.9",
+	"version": "1.1.0",
 	"author": "SurrealDB",
 	"description": "SurrealQL grammar for Lezer",
 	"type": "module",
@@ -17,8 +17,8 @@
 		"require": "./dist/index.cjs"
 	},
 	"scripts": {
-		"build": "lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",
-		"build-debug": "lezer-generator src/surrealql.grammar -o src/parser.js --names && rollup -c",
+		"build": "NODE_OPTIONS=--max-old-space-size=8192 lezer-generator src/surrealql.grammar -o src/parser.js && rollup -c",
+		"build-debug": "NODE_OPTIONS=--max-old-space-size=8192 lezer-generator src/surrealql.grammar -o src/parser.js --names && rollup -c",
 		"run-tests": "bun run test/test-surrealql.js",
 		"deploy": "npm publish $(bun pm pack --quiet) --access public"
 	},

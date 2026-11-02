@@ -20,7 +20,7 @@ REMOVE USER tobie ON ROOT
 
 ==>
 
-SurrealQL(RemoveStatement(Keyword,Keyword,Ident,Keyword,Keyword))
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident,OnRootNsDbClause(Keyword,Keyword)))
 
 # Remove token
 
@@ -28,7 +28,7 @@ REMOVE TOKEN mytoken ON NAMESPACE
 
 ==>
 
-SurrealQL(RemoveStatement(Keyword,Keyword,Ident,Keyword,Keyword))
+SurrealQL(RemoveStatement(Keyword,TokenRemoval(Keyword,Ident,Keyword,Keyword)))
 
 # Remove event
 
@@ -84,7 +84,7 @@ REMOVE SCOPE account
 
 ==>
 
-SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+SurrealQL(RemoveStatement(Keyword,ScopeRemoval(Keyword,Ident)))
 
 # Remove bucket
 
@@ -109,3 +109,43 @@ REMOVE TABLE IF EXISTS person
 ==>
 
 SurrealQL(RemoveStatement(Keyword,Keyword,IfExistsClause(Keyword,Keyword),Ident))
+
+# Remove table and expunge
+
+REMOVE TABLE AND EXPUNGE IF EXISTS person
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Keyword,IfExistsClause(Keyword,Keyword),Ident))
+
+# Remove type
+
+REMOVE TYPE IF EXISTS mood
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,IfExistsClause(Keyword,Keyword),Ident))
+
+# Remove sequence
+
+REMOVE SEQUENCE seq
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Ident))
+
+# Remove config
+
+REMOVE CONFIG GRAPHQL
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,Keyword))
+
+# Remove function with parentheses
+
+REMOVE FUNCTION fn::greet()
+
+==>
+
+SurrealQL(RemoveStatement(Keyword,Keyword,FunctionName))

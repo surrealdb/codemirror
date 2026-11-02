@@ -85,3 +85,11 @@ SurrealQL(Number(Int),Number(Float))
 ==>
 
 SurrealQL(Number(Int),Number(Float))
+
+# Number suffixes
+
+[1i64, 2u8, 3f32, 4bigdec]
+
+==>
+
+SurrealQL(Array("[",Number(Int),Number(Int),Number(Float),Number(Decimal),"]"))

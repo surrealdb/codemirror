@@ -61,3 +61,11 @@ RELATE [person:tobie]->knows->person:jaime
 ==>
 
 SurrealQL(RelateStatement(Keyword,Array("[",RecordId(RecordTbIdent,Colon,RecordIdIdent),"]"),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent)))
+
+# Relate or update unique
+
+RELATE OR UPDATE person:a->knows->person:b UNIQUE SET since = 1
+
+==>
+
+SurrealQL(RelateStatement(Keyword,OrUpdateClause(Keyword),RecordId(RecordTbIdent,Colon,RecordIdIdent),LookupRight,Ident,LookupRight,RecordId(RecordTbIdent,Colon,RecordIdIdent),Keyword,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int)))))

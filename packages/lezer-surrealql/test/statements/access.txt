@@ -1,0 +1,15 @@
+# Access grant
+
+ACCESS api ON DATABASE GRANT FOR USER tobie
+
+==>
+
+SurrealQL(AccessStatement(Keyword,Ident,OnRootNsDbClause(Keyword,Keyword),Keyword,Keyword,Keyword,Ident))
+
+# Access purge
+
+ACCESS api PURGE EXPIRED, REVOKED FOR 1d
+
+==>
+
+SurrealQL(AccessStatement(Keyword,Ident,Keyword,Keyword,Keyword,Keyword,Duration(DurationPart)))

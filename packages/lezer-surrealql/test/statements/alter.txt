@@ -12,7 +12,7 @@ ALTER TABLE person DROP
 
 ==>
 
-SurrealQL(AlterStatement(Keyword,Keyword,Ident,Keyword))
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,DropFlag(Keyword)))
 
 # Alter table schemafull
 
@@ -45,3 +45,67 @@ ALTER TABLE person PERMISSIONS NONE
 ==>
 
 SurrealQL(AlterStatement(Keyword,Keyword,Ident,PermissionsForClause(Keyword,None)))
+
+# Alter system
+
+ALTER SYSTEM COMPACT QUERY_TIMEOUT 5s
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterSystem(Keyword,Keyword,QueryTimeoutClause(Keyword,Duration(DurationPart)))))
+
+# Alter field
+
+ALTER FIELD IF EXISTS name ON TABLE person TYPE string READONLY DROP DEFAULT
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterDefinition(Keyword,IfExistsClause(Keyword,Keyword),Ident,OnTableClause(Keyword,Keyword,Ident),TypeClause(Keyword,TypeName),Keyword,DropClause(Keyword,Keyword))))
+
+# Alter type add value
+
+ALTER TYPE mood ADD VALUE 'meh' BEFORE 'ok'
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterDefinition(Keyword,Ident,TypeValueClause(Keyword,Keyword,String,Literal,String))))
+
+# Alter type rename value
+
+ALTER TYPE mood RENAME VALUE 'meh' TO 'fine'
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterDefinition(Keyword,Ident,TypeRenameClause(Keyword,Keyword,String,Keyword,String))))
+
+# Alter index prepare
+
+ALTER INDEX idx ON t PREPARE REMOVE
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterDefinition(Keyword,Ident,OnTableClause(Keyword,Ident),PrepareClause(Keyword,Keyword))))
+
+# Alter table drop comment
+
+ALTER TABLE person DROP COMMENT
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,DropClause(Keyword,Keyword)))
+
+# Alter table compact
+
+ALTER TABLE person COMPACT
+
+==>
+
+SurrealQL(AlterStatement(Keyword,Keyword,Ident,Keyword))
+
+# Alter api
+
+ALTER API "/hello" FOR get DROP THEN
+
+==>
+
+SurrealQL(AlterStatement(Keyword,AlterApi(Keyword,String,ApiMethodClause(Keyword,HttpMethod(Keyword),ApiOptions),DropClause(Keyword,Keyword))))

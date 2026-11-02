@@ -29,3 +29,11 @@ SHOW CHANGES FOR TABLE person SINCE "2024-01-01T00:00:00Z" LIMIT 10
 ==>
 
 SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Ident,Keyword,String,Keyword,Number(Int)))
+
+# Show changes for database
+
+SHOW CHANGES FOR DATABASE SINCE 1 LIMIT 10
+
+==>
+
+SurrealQL(ShowStatement(Keyword,Keyword,Keyword,Keyword,Keyword,Number(Int),Keyword,Number(Int)))

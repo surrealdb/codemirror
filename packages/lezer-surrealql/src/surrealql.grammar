@@ -110,6 +110,8 @@ anyKeyword {
 	desc |
 	descending |
 	digest |
+	bindings |
+	constraint |
 	dimension |
 	diskann |
 	dist |
@@ -436,6 +438,7 @@ defineExtensionOptions {
 		unsigned |
 		SignerClause { signer value } |
 		DigestClause { digest String } |
+		BindingsClause { bindings value } |
 		CapabilitiesClause { capabilities value } |
 		PermissionsBasicClause |
 		CommentClause
@@ -458,6 +461,7 @@ defineTypeOptions {
 	type
 	(
 		AssertClause |
+		ConstraintClause { constraint Ident assert value } |
 		DefaultClause |
 		SqlTypeClause |
 		PermissionsBasicClause |
@@ -1937,7 +1941,7 @@ LiteralType[since=2_0_0] {
 }
 
 singleType {
-	TypeName { rawident ~closureArrow } |
+	TypeName { (rawident | tickIdent | bracketIdent) ~closureArrow } |
 	ParameterizedType { singleType "<" commaSep<type> ">" } |
 	LiteralType
 }
@@ -1964,8 +1968,7 @@ TypeCast {
 }
 
 Ident {
-	rawident ~closureArrow |
-	tickIdent
+	(rawident | tickIdent) ~closureArrow
 }
 
 Number { ("-" | "+")? (Int | Float | Decimal) }
@@ -2045,7 +2048,7 @@ Operator {
 	Decimal { digitSeq frac? exp? ("dec" | "bigdec") }
 
 	String { "'" (!['\\] | "\\" _)* "'" | '"' (!["\\] | "\\" _)* '"' }
-	prefixedString[@name=String] { ($[rudbfs] | "date" | "time" | "timestamp" | "interval") String }
+	prefixedString[@name=String] { ($[rudbfs] | "pd" | "pt" | "ts" | "ivl") String }
 
 	formatStringContentDouble { ("\\" _ | !["{\\])+ }
 	formatStringContentSingle { ("\\" _ | !['{\\])+ }
@@ -2193,6 +2196,8 @@ piped<content> {
 	desc					[@name=Keyword],
 	descending				[@name=Keyword],
 	digest					[@name=Keyword],
+	bindings				[@name=Keyword],
+	constraint				[@name=Keyword],
 	dimension				[@name=Keyword],
 	diskann					[@name=Keyword],
 	dist					[@name=Keyword],

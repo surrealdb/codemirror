@@ -360,6 +360,22 @@ DEFINE TYPE OVERWRITE mood AS 'sad' | 'ok' | 'happy' SQL TYPE POSTGRESQL 'mood' 
 
 SurrealQL(DefineStatement(Keyword,TypeDefinition(Keyword,OverwriteClause(Keyword),Ident,Keyword,UnionType(LiteralType(String),Pipe,LiteralType(String),Pipe,LiteralType(String)),SqlTypeClause(Keyword,Keyword,Ident,String),CommentClause(Keyword,String))))
 
+# Define type named constraint
+
+DEFINE TYPE port AS int CONSTRAINT in_range ASSERT $value > 0 PERMISSIONS FULL
+
+==>
+
+SurrealQL(DefineStatement(Keyword,TypeDefinition(Keyword,Ident,Keyword,TypeName,ConstraintClause(Keyword,Ident,Keyword,BinaryExpression(VariableName,Operator(">"),Number(Int))),PermissionsBasicClause(Keyword,Literal))))
+
+# Define field with named type
+
+DEFINE FIELD p ON host TYPE option<port | `my type`>
+
+==>
+
+SurrealQL(DefineStatement(Keyword,Keyword,Idiom(Ident),OnTableClause(Keyword,Ident),TypeClause(Keyword,ParameterizedType(TypeName,"<",UnionType(TypeName,Pipe,TypeName),">"))))
+
 # Define sequence
 
 DEFINE SEQUENCE seq BATCH 100 START 1 TIMEOUT 5s
@@ -375,6 +391,14 @@ DEFINE EXTENSION ext::demo FROM silo::org::pkg<1.2.3> UNSIGNED CAPABILITIES { al
 ==>
 
 SurrealQL(DefineStatement(Keyword,ExtensionDefinition(Keyword,ExtensionName(FunctionName),Keyword,ExtensionSource(ExtensionName(FunctionName,Version)),Keyword,CapabilitiesClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Bool)),BraceClose)))))
+
+# Define extension with bindings
+
+DEFINE EXTENSION ext::demo FROM silo::org::pkg<1.2.3> BINDINGS { db: $db }
+
+==>
+
+SurrealQL(DefineStatement(Keyword,ExtensionDefinition(Keyword,ExtensionName(FunctionName),Keyword,ExtensionSource(ExtensionName(FunctionName,Version)),BindingsClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,VariableName)),BraceClose)))))
 
 # Define field 4.0 clauses
 

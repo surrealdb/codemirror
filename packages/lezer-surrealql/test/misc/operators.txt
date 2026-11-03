@@ -259,3 +259,27 @@ $a NOT IN [1, 2]
 ==>
 
 SurrealQL(BinaryExpression(VariableName,Operator(Keyword,Keyword),Array("[",Number(Int),Number(Int),"]")))
+
+# Remainder operator
+
+10 % 3
+
+==>
+
+SurrealQL(BinaryExpression(Number(Int),Operator,Number(Int)))
+
+# Match operator with logic
+
+title @1,AND@ 'hello'
+
+==>
+
+SurrealQL(BinaryExpression(Ident,Operator(Number(Int)),String))
+
+# Comparison chain is not a version
+
+$a<1>$b
+
+==>
+
+SurrealQL(BinaryExpression(BinaryExpression(VariableName,Operator("<"),Number(Int)),Operator(">"),VariableName))

@@ -56,11 +56,11 @@ SurrealQL(UpdateStatement(Keyword,Ident,ReplaceClause(Keyword,Object(BraceOpen,O
 
 # Update with UNSET
 
-UPDATE person UNSET temp = 0
+UPDATE person UNSET temp, meta.old
 
 ==>
 
-SurrealQL(UpdateStatement(Keyword,Ident,UnsetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int)))))
+SurrealQL(UpdateStatement(Keyword,Ident,UnsetClause(Keyword,Idiom(Ident),Idiom(Ident,Ident))))
 
 # Update with WHERE
 
@@ -93,3 +93,11 @@ UPDATE person SET age = 31 PARALLEL
 ==>
 
 SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),ParallelClause(Keyword)))
+
+# Update assignment if absent
+
+UPDATE person SET tags +?= 'new', meta.count += 1
+
+==>
+
+SurrealQL(UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,String),FieldAssignment(Ident,Ident,Operator,Number(Int)))))

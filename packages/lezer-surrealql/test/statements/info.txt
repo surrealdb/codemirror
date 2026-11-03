@@ -44,7 +44,7 @@ INFO FOR SCOPE myaccount
 
 ==>
 
-SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident))
+SurrealQL(InfoForStatement(Keyword,Keyword,InfoForScope(Keyword,Ident)))
 
 # Info for table
 
@@ -61,3 +61,11 @@ INFO FOR TABLE person STRUCTURE
 ==>
 
 SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident,Keyword))
+
+# Info for index
+
+INFO FOR INDEX idx ON person VERSION d'2026-01-01'
+
+==>
+
+SurrealQL(InfoForStatement(Keyword,Keyword,Keyword,Ident,OnTableClause(Keyword,Ident),VersionClause(Keyword,String)))

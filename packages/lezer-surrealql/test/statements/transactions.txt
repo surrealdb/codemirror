@@ -45,3 +45,19 @@ COMMIT TRANSACTION
 ==>
 
 SurrealQL(CommitStatement(Keyword,Keyword))
+
+# Begin read only
+
+BEGIN TRANSACTION READ ONLY MAX STALENESS 5s STRICT
+
+==>
+
+SurrealQL(BeginStatement(Keyword,Keyword,ReadOnlyClause(Keyword,Keyword,Keyword,Keyword,Duration(DurationPart),Keyword)))
+
+# Begin isolation level
+
+BEGIN ISOLATION LEVEL SERIALIZABLE
+
+==>
+
+SurrealQL(BeginStatement(Keyword,IsolationClause(Keyword,Keyword,Ident)))

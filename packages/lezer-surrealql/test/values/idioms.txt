@@ -164,7 +164,7 @@ person:tobie.{..}.{ id, name, knows: ->knows->person.@ }
 SurrealQL(Path(
   RecordId(RecordTbIdent,Colon,RecordIdIdent),
   Subscript(Recurse(BraceOpen,RecurseRange(RangeOp),RecurseOptions,BraceClose)),
-  Subscript(Destructure(BraceOpen,Ident,Ident,Ident,Colon,Lookup(LookupRight,Ident),Lookup(LookupRight,Ident),Subscript(At),BraceClose))
+  Subscript(Destructure(BraceOpen,Ident,Ident,Ident,Colon,Path(Lookup(LookupRight,Ident),Lookup(LookupRight,Ident),Subscript(At)),BraceClose))
 ))
 
 # Recurse with fixed depth
@@ -226,3 +226,43 @@ SurrealQL(Path(At,Subscript(Ident)))
 ==>
 
 SurrealQL(Path(At,Ident))
+
+# Optional part
+
+$obj.?.name
+
+==>
+
+SurrealQL(Path(VariableName,OptionalPart,Subscript(Ident)))
+
+# Last index
+
+$arr[$]
+
+==>
+
+SurrealQL(Path(VariableName,LastIndex("[","$","]")))
+
+# Flatten
+
+$a.b...
+
+==>
+
+SurrealQL(Path(VariableName,Subscript(Ident),Flatten(Operator)))
+
+# Destructure with expression
+
+$person.{ name, total: math::sum(items), ... }
+
+==>
+
+SurrealQL(Path(VariableName,Subscript(Destructure(BraceOpen,Ident,Ident,Colon,FunctionCall(FunctionName,ArgumentList(Ident)),Operator,BraceClose))))
+
+# Lookup field
+
+$x->(knows FIELD out WHERE weight > 1)
+
+==>
+
+SurrealQL(Path(VariableName,Lookup(LookupRight,LookupSelection(GraphPredicate(Ident,LookupField(Keyword,Ident)),WhereClause(Keyword,BinaryExpression(Ident,Operator(">"),Number(Int)))))))

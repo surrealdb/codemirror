@@ -44,3 +44,11 @@ none
 ==>
 
 SurrealQL(Bool,Bool,None,None)
+
+# Prefixed strings
+
+[s'plain', pd'2026-10-27', pt'09:30:00', ts'2026-10-27T09:30:00', ivl'1 day']
+
+==>
+
+SurrealQL(Array("[",String,String,String,String,String,"]"))

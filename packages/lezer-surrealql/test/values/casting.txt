@@ -93,3 +93,11 @@ SurrealQL(TypeCast("<",ParameterizedType(TypeName,"<",TypeName,">"),">",Ident))
 ==>
 
 SurrealQL(TypeCast("<",UnionType(LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,TypeName)),BraceClose)),Pipe,LiteralType(ObjectType(BraceOpen,ObjectTypeContent(ObjectTypeProperty(ObjectKey(String),Colon,UnionType(LiteralType(ArrayType("[",ParameterizedType(TypeName,"<",TypeName,">"),"]")),Pipe,LiteralType(String)))),BraceClose))),">",Ident))
+
+# Kinds with arguments
+
+<array<int, 10> | set<string>> $v
+
+==>
+
+SurrealQL(TypeCast("<",UnionType(ParameterizedType(TypeName,"<",TypeName,LiteralType(Number(Int)),">"),Pipe,ParameterizedType(TypeName,"<",TypeName,">")),">",VariableName))

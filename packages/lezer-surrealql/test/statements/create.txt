@@ -101,3 +101,19 @@ CREATE person, animal
 ==>
 
 SurrealQL(CreateStatement(Keyword,Ident,Ident))
+
+# Create mock record range
+
+CREATE |person:1..100| SET n = 1 RETURN NONE
+
+==>
+
+SurrealQL(CreateStatement(Keyword,MockRecord(Pipe,RecordId(RecordTbIdent,Colon,RecordIdRange(RecordIdIdent,RangeOp,RecordIdIdent)),Pipe),SetClause(Keyword,FieldAssignment(Ident,Operator,Number(Int))),ReturnClause(Keyword,Fields(Predicate(None)))))
+
+# Create with merge
+
+CREATE person MERGE { a: 1 } TIMEOUT 5s
+
+==>
+
+SurrealQL(CreateStatement(Keyword,Ident,MergeClause(Keyword,Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,Number(Int))),BraceClose)),TimeoutClause(Keyword,Duration(DurationPart))))

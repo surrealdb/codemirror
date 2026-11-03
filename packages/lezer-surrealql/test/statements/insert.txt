@@ -61,3 +61,11 @@ INSERT INTO person $data
 ==>
 
 SurrealQL(InsertStatement(Keyword,Keyword,Ident,VariableName))
+
+# Insert relation ignore
+
+INSERT RELATION IGNORE INTO $tb [{ in: a:1, out: b:1 }]
+
+==>
+
+SurrealQL(InsertStatement(Keyword,Keyword,Keyword,Keyword,VariableName,BulkInsert("[",Object(BraceOpen,ObjectContent(ObjectProperty(ObjectKey(KeyName),Colon,RecordId(RecordTbIdent,Colon,RecordIdIdent)),ObjectProperty(ObjectKey(KeyName),Colon,RecordId(RecordTbIdent,Colon,RecordIdIdent))),BraceClose),"]")))

@@ -229,3 +229,51 @@ SELECT * FROM (SELECT * FROM person)
 ==>
 
 SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,SubQuery(SelectStatement(Keyword,Fields(Any),Keyword,Ident))))
+
+# Select for update
+
+SELECT * FROM person WHERE age > 18 FOR UPDATE
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WhereClause(Keyword,BinaryExpression(Ident,Operator(">"),Number(Int))),ForUpdateClause(Keyword,Keyword)))
+
+# Select with no index
+
+SELECT * FROM person WITH NO INDEX WHERE age > 18
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,WithClause(Keyword,Keyword,Keyword),WhereClause(Keyword,BinaryExpression(Ident,Operator(">"),Number(Int)))))
+
+# Select version param
+
+SELECT * FROM item:1 VERSION $t1
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,RecordId(RecordTbIdent,Colon,RecordIdIdent),VersionClause(Keyword,VariableName)))
+
+# Select limit expression
+
+SELECT * FROM person LIMIT $n START 2
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,LimitStartComboClause(LimitClause(Keyword,VariableName),StartClause(Keyword,Number(Int)))))
+
+# Select split list
+
+SELECT * FROM t SPLIT a, b[0]
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,SplitClause(Keyword,Idiom(Ident),Idiom(Ident,"[",Number(Int),"]"))))
+
+# Select order descending
+
+SELECT * FROM t ORDER BY tags[0] DESCENDING
+
+==>
+
+SurrealQL(SelectStatement(Keyword,Fields(Any),Keyword,Ident,OrderClause(Keyword,Keyword,Order(Idiom(Ident,"[",Number(Int),"]"),Keyword))))

@@ -17,3 +17,11 @@ FOR $item IN $list {
 ==>
 
 SurrealQL(ForStatement(Keyword,VariableName,Keyword,VariableName,Block(BraceOpen,UpdateStatement(Keyword,Ident,SetClause(Keyword,FieldAssignment(Ident,Operator,VariableName))),BraceClose)))
+
+# For over a range
+
+FOR $i IN 0..3 { CREATE t }
+
+==>
+
+SurrealQL(ForStatement(Keyword,VariableName,Keyword,Range(Number(Int),RangeOp,Number(Int)),Block(BraceOpen,CreateStatement(Keyword,Ident),BraceClose)))
